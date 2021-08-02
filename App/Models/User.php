@@ -56,9 +56,6 @@ class User extends \Core\Model
         if($this->emailExists($this->email)){
             $this->errors[] = 'email already taken';
         }
-        if ($this->password != $this->passwordConfirmation) {
-            $this->errors[] = 'Password must match confirmation'; 
-        }
         if (strlen($this->password) < 6) {
             $this->errors[] = 'Please enter at least 6 characters for the password';
         }
@@ -70,7 +67,7 @@ class User extends \Core\Model
         }
    }
 
-   protected function emailExists($email)
+   public static function emailExists($email)
    {
        $sql = 'SELECT * FROM users WHERE email = :email';
 
