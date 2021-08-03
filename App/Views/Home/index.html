@@ -5,7 +5,10 @@
 {% block body %}
 
     <h1>Welcome</h1>
-
-    <a href="/signup/new">Sing up</a>
-
+    {% if session.user_id %}
+        User with ID {{ session.user_id }} is logged in.
+        <a href="/logout">logout</a>
+        {% else %}
+        <a href="/signup/new">Sing up</a> or <a href="/login">Login</a>
+        {% endif %}
 {% endblock %}
