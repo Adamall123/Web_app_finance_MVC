@@ -1,7 +1,7 @@
 <?php
 
 namespace Core;
-
+use App\Auth;
 /**
  * Base controller
  *
@@ -75,5 +75,13 @@ abstract class Controller
     {
         header('Location: http://' . $_SERVER['HTTP_HOST'] . $url, true, 303);
         exit;
+    }
+
+    public function requireLogin()
+    {
+        if (! Auth::getUser() ) {
+            Auth::rememberRequestedPage();
+            $this->redirect('/login');
+        }
     }
 }

@@ -5,12 +5,8 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 
-/**
- * Home controller
- *
- * PHP version 7.0
- */
-class Home extends \Core\Controller
+
+class Income extends Authenticated
 {
 
     /**
@@ -20,6 +16,6 @@ class Home extends \Core\Controller
      */
     public function indexAction()
     {
-        View::renderTemplate('Home/index.html');
+        View::renderTemplate('Income/index.html');
     }
 }
