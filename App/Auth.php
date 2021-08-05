@@ -10,11 +10,12 @@ class Auth
         $_SESSION['user_id'] = $user->id;
     }
     public static function logout()
-    {
+    {   
         //echo $_SESSION['user_id'];
         // Unset all of the session variables.
-        $_SESSION = array();
-
+        //return session to variable and return it to the message
+         $_SESSION = array();
+       
         // If it's desired to kill the session, also delete the session cookie.
         // Note: This will destroy the session, and not just the session data!
         if (ini_get("session.use_cookies")) {
@@ -24,8 +25,8 @@ class Auth
                 $params["secure"], $params["httponly"]
             );
         }
-        // Finally, destroy the session.
-        session_destroy();
+        // // Finally, destroy the session.
+         session_destroy();
     }
     
     public static function getUser()

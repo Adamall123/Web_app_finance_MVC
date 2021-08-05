@@ -20,11 +20,11 @@ set_error_handler('Core\Error::errorHandler');
 set_exception_handler('Core\Error::exceptionHandler');
 
 session_start();
-
 /**
  * Routing
  */
 $router = new Core\Router();
+
 
 // Add the routes
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
