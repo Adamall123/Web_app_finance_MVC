@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use PDO;
-
+use \App\Token;
 /**
  * Example user model
  *
@@ -105,5 +105,25 @@ class User extends \Core\Model
        // $stmt->setFetchMode(PDO::FETCH_CLASS, 'App\Models\User');
         $stmt->setFetchMode(PDO::FETCH_CLASS,  get_called_class());
         return $stmt->fetch();
+   }
+
+   public function rememberLogin()
+   {
+        $token = new Token();
+        $hashed_token = $token->getHash();
+        $this->rememberToken = $token->getValue();
+        $this->expiryTimestamp = time() + 60; 
+
+        $sql = 'INSERT INTO remembered_login (token_hash, user_id, expires_at)
+                VALUES (:token_hash, :user_id, :expires_at)';
+                
+         $db = static::getDB();
+         $stmt = $db->prepare($sql);
+ 
+         $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+         $stmt->bindValue(':user_id', $this->id, PDO::PARAM_STR);
+         $stmt->bindValue(':expires_at', date('Y-m-d H:i:s',$this->expiryTimestamp), PDO::PARAM_STR);
+        
+         return $stmt->execute();
    }
 }
