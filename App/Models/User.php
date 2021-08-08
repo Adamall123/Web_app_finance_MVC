@@ -25,7 +25,6 @@ class User extends \Core\Model
 
    public function save()
    {
-
         $this->validate();
 
         if(empty($this->errors)){
@@ -43,8 +42,35 @@ class User extends \Core\Model
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':password', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
+  
+            
+            if($stmt->execute()) {
+                $user = static::findByEmail($this->email);
 
-            return $stmt->execute();
+                $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name)
+				        SELECT users.id as user_id, incomes_category_default.name 
+                        FROM incomes_category_default,users 
+                        WHERE users.id=:id';
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+                $stmt->execute();
+                $sql = 'INSERT INTO expenses_category_assigned_to_users(user_id,name)
+				        SELECT users.id as user_id, expenses_category_default.name
+                        FROM expenses_category_default,users 
+                        WHERE users.id=:id';
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+                $stmt->execute();
+                $sql = 'INSERT INTO payment_methods_assigned_to_users(user_id,name)
+				        SELECT users.id as user_id, payment_methods_default.name 
+                        FROM payment_methods_default,users 
+                        WHERE users.id=:id';
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+                $stmt->execute();
+                
+                return true; 
+            }
         }
        return false;
    }
