@@ -20,7 +20,6 @@ class Home extends \Core\Controller
      */
     public function indexAction()
     {
-        //\App\Mail::send('adam.wojdylo1234@gmail.com', 'Test', 'This is a test', '<h1>This is a test</h1>');
         View::renderTemplate('Home/index.html');
     }
 }

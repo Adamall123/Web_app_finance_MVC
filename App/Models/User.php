@@ -321,4 +321,37 @@ class User extends \Core\Model
        }
        return false;
    }
+   /////////////////////////////////////////////////////////////////////// INCOMES  ///////////////////////////////////////////////////////////////////////
+   public static function getIncomesCategoryAssignedToUser($id)
+    {
+        $sql = 'SELECT * FROM incomes_category_assigned_to_users WHERE user_id = :id';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue('id', $id , PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        //$stmt->setFetchMode(PDO::FETCH_CLASS,  get_called_class());
+       
+        return $stmt->fetchAll();
+        //return User::findByID($this->user_id);
+    }
+    public function saveIncome($id, $params)
+    {
+
+        $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
+                    VALUES (:id, :income_category_assigned_to_user_id, :amount, :date_of_income, :income_comment)';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+    
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':income_category_assigned_to_user_id', $_POST['income_category_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_INT);
+        $stmt->bindValue(':date_of_income', $_POST['date'], PDO::PARAM_STR);
+        $stmt->bindValue(':income_comment', $_POST['comment'], PDO::PARAM_STR);
+         return $stmt->execute();
+    }
+   
 }
