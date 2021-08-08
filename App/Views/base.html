@@ -6,6 +6,16 @@
     <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
+
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            {% if current_user %}
+            <li><a href="/settings/show">Settings</a></li>
+            <li><a href="/logout">Log out</a></li>
+            {% endif %}
+        </ul>
+    </nav>
     {% for flash_message in flash_messages %}
         <div class="alert alert-{{ flash_message.type }}">
             {{ flash_message.body }}
