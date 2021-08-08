@@ -31,5 +31,6 @@ $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('{controller}/{action}');
 $router->add('login', ['controller' => 'Login', 'action' => 'new']);   
 $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']); 
+$router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action' => 'reset']);
 $router->dispatch($_SERVER['QUERY_STRING']);
 

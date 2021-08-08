@@ -1,0 +1,4 @@
+[07-Aug-2021 17:10:20 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(34): Core\Router->dispatch('password/reset/...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 130

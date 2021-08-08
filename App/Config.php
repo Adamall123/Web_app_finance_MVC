@@ -41,4 +41,6 @@ class Config
     const SHOW_ERRORS = true;
 
     const SECRET_KEY = 'RaHAruH7YLdiQVmoHLuRAvosFCCGd2mp';
+
+    const SENDGRID_API_KEY = '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';
 }
