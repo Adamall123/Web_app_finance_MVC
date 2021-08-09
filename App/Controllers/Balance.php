@@ -10,7 +10,7 @@ use \App\Flash;
 
 class Balance extends Authenticated
 {
-   
+    protected $value=1;
     protected function before()
     {
         parent::before();
@@ -18,12 +18,22 @@ class Balance extends Authenticated
     }
     public function showAction()
     {
-        $this->allIncomesOfUser = User::fillIncomesOfUser($this->user->id);
+        if (isset($_POST['dateCategory'])){
+            $this->value = $_POST['dateCategory'];
+        }
+        $this->allIncomesOfUser = User::fillIncomesOfUser($this->user->id, $this->value );
         $this->allExpensesOfUser = User::fillExpensesOfUser($this->user->id);
         View::renderTemplate('Balance/show.html', [
             'allIncomesOfUser' => $this->allIncomesOfUser,
-            'allExpensesOfUser' => $this->allExpensesOfUser
+            'allExpensesOfUser' => $this->allExpensesOfUser,
+            'user' => $this->user,
+            'selected' => $this->value
         ]);
+    }
+
+    public function changeAction()
+    {
+        
     }
     
 }

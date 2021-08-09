@@ -2,8 +2,18 @@
 
 {% block title %}Balance{% endblock %}
 
-{% block body %}
 
+{% block footer %}
+<script>
+       
+    $( document ).ready(function() {
+        
+    });
+
+ </script>
+{% endblock %}
+   
+{% block body %}
    <h1>Balance</h1>
 
    <main>
@@ -12,12 +22,15 @@
 		<i class="far fa-calendar-check"></i><span style="font-size: 20px;"> Set date range of your transactions:</span>
 		<div class="line"> </div>        
 		<div class="box">
-			 <select name="dateCategory" id="dateCategory">  
-                          <option value="1">Current Month </option>  
-                          <option value="2">Last Month </option>  
-                          <option value="3">This year </option>  
-                          <option value="4">Total Time </option>  
-                     </select>  
+            <form method="post" action="/balance/show" name="dateCategory">
+                <select name="dateCategory" id="dateCategory" onchange="this.form.submit();">  
+                    <option value="1" {% if selected == 1 %} selected {% endif %}>Current Month </option> 
+                    <option value="2" {% if selected == 2 %} selected {% endif %}>Last Month </option>  
+                    <option value="3" {% if selected == 3 %} selected {% endif %}>This year </option>  
+                    <option value="4" {% if selected == 4 %} selected {% endif %}>Total Time </option>  
+                 </select> 
+            </form>
+			
 		</div>
 		</div>
 			<div class="row">
