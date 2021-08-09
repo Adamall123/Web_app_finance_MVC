@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Expenses{% endblock %}
+
+{% block body %}
+
+   <h1>Expenses</h1>
+<main>
+   <div class="container-fluid">
+       <div class="row">
+           <div class="col-lg-12">
+               <div class="text-center-expence">
+                   <div id="expensePanel">
+                       <div id="upperExpensePanel">
+                           <div id="upperExpensePanelText">
+                               Adding Expense
+                           </div>
+                       </div>
+                       <div class="lowerPanel">
+                           <form method="POST" action="/Expense/add">
+                               <div class="inputPanel">
+                                   <input id="inputAmount" onchange="checkLimit();" type="number" name="amount" step="0.01" placeholder="0.01" min="0.01" max="99999999.99" class="form-control" value="">
+                                   <span id="categoryLimitWarning"></span>
+                               </div>
+                               <div class="inputPanel">
+                                   <input type="date" name="date" class="form-control" id="enterDate" value="" required>
+                               </div>
+                               <div class="inputPanel">
+                                   <select  id="inputCategory" class="form-control valid" name="expense_category_id" aria-invalid="false">
+                                        {% for userExpense in userExpenses %}
+                                        <option value="{{ userExpense['id'] }}">{{ userExpense['name'] }}</option>
+                                        {% endfor %}
+                                   </select>
+                               </div>
+                               <div class="inputPanel">
+                                   <select class="form-control" name="payment_method_id">
+                                    
+                                        {% for userPaymentMethod in userPaymentMethods %}
+                                        <option value="{{ userPaymentMethod['id'] }}">{{ userPaymentMethod['name'] }}</option>
+                                        {% endfor %}
+                                   </select>
+                               </div>
+
+                               <div class="inputPanel">
+                                   <input type="text" name="comment" class="form-control" placeholder="Add comment to the income" value="">
+                               </div>
+                               <input type="submit" name="submit" class="btn btn-warning button1" value="ADD">
+                               <input type="button" class="btn btn-warning button1" value="CANCEL">
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+       </div>
+   </div>
+</main>
+
+{% endblock %}
+
