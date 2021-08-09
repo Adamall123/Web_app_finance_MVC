@@ -1,9 +1,47 @@
 {% extends "base.html" %}
 
-{% block title %}Sign up{% endblock %}
+{% block title %}Incomes{% endblock %}
 
 {% block body %}
 
    <h1>Incomes</h1>
-   Hello {{ current_user.email }} !
+  
+   <main>
+		
+		<div class="container">
+		
+			<div id="incomePanel">
+        <div id="upperIncomePanel">
+            <div id="upperIncomePanelText">
+                Adding Income
+            </div>
+        </div>
+        <div class="lowerPanel" style="height: 355px;">
+            <form method="POST" action="/income/add" >
+                <div class="inputPanel">
+                    <input type="number" name="amount" step="0.01" placeholder="0.00" min="0.01" max="99999999.99" class="form-control" value="0">
+                </div>
+					
+                <div class="inputPanel">
+                    <input type="date" name="date" class="form-control" id="enterDate" value="" required>
+					
+                </div>
+                <div class="inputPanel">
+                    <select class="form-control" name="income_category_id">
+                     {% for userIncome in userIncomes %}
+                        <option value="{{ userIncome['id'] }}">{{ userIncome['name'] }}</option>
+                     {% endfor %}
+                    </select>
+                </div>
+                <div class="inputPanel">
+                    <input type="text" name="comment" class="form-control" placeholder="Add comment to the income" value="">
+                </div>
+                <input type="submit" name="submit" class="btn btn-warning button1" value="ADD">
+                <input type="button" class="btn btn-warning button1" value="CANCEL">
+            </form>
+        </div>
+    </div>
+		</div>
+		
+	</main>
 {% endblock %}

@@ -44,7 +44,7 @@ class Auth
                 return static::loginFromRememberCookie();
             }
     }
-    
+
     public static function rememberRequestedPage()
     {
         $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
