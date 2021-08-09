@@ -27,7 +27,7 @@ class Income extends Authenticated
     {
         if ($this->user->saveIncome($this->user->id, $_POST)) {
             Flash::addMessage('A new income has been added succesfuly to your account.');
-            View::renderTemplate('Income/index.html');
+            $this->redirect('/Income/index');
         } else {
             Flash::addMessage('Failed.');
             View::renderTemplate('Income/index.html', 'WARNING');

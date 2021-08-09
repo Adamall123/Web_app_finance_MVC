@@ -332,11 +332,8 @@ class User extends \Core\Model
         $stmt->bindValue('id', $id , PDO::PARAM_INT);
 
         $stmt->execute();
-
-        //$stmt->setFetchMode(PDO::FETCH_CLASS,  get_called_class());
        
         return $stmt->fetchAll();
-        //return User::findByID($this->user_id);
     }
     public function saveIncome($id, $params)
     {
