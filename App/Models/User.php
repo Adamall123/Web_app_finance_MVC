@@ -397,10 +397,10 @@ class User extends \Core\Model
         $month = date('m');
 		$year = date('Y');
 		$numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
-        $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
-
+       
         if($scopeOfDate == 1) {
+            $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
+            $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
             $sql = 'SELECT name, SUM(amount) AS sum 
             FROM incomes, incomes_category_assigned_to_users 
             WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
@@ -467,20 +467,60 @@ class User extends \Core\Model
         $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
         $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
         
-        $sql = 'SELECT name, SUM(amount) AS sum 
+        if ($scopeOfDate == 1) {
+            $sql = 'SELECT name, SUM(amount) AS sum 
                 FROM expenses, expenses_category_assigned_to_users
                 WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
                 AND expenses.user_id = :id
                 AND date_of_expense >= :firstDayOfCurrentMonth
                 AND date_of_expense <= :amountOfDaysOfCurrentMonth 
                 GROUP BY name';
+        } else if ($scopeOfDate == 2) {
+            $lastmonth = date('m', strtotime("last month"));
+            $firstDayOfLastMonth = $year .'-'.$lastmonth.'-01';
+            $amountOfDaysOfLastMonth = $year .'-' . $lastmonth .'-' . $numberOfDaysOfSelectedMonth;
+
+			$sql = 'SELECT name, SUM(amount) AS sum 
+                    FROM expenses, expenses_category_assigned_to_users 
+                    WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
+                    AND expenses.user_id = :id
+                    AND date_of_expense >= :firstDayOfLastMonth 
+                    AND date_of_expense <= :amountOfDaysOfLastMonth
+                    GROUP BY name';
+        } else if ($scopeOfDate == 3) {
+            $currentDay = date('d');
+            $beginningOfCurrentYear = $year . '-' . '01-01';
+            $currentDayOfCurrentYear = $year . '-' . $month . '-' . $currentDay;
+            $sql =  'SELECT name, SUM(amount) AS sum 
+            FROM expenses, expenses_category_assigned_to_users 
+            WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
+            AND expenses.user_id = :id
+            AND date_of_expense >= :beginningOfCurrentYear 
+            AND date_of_expense <= :currentDayOfCurrentYear 
+            GROUP BY name';
+        } else if ($scopeOfDate == 4) {
+            $sql = 'SELECT name, SUM(amount) AS sum 
+                    FROM expenses, expenses_category_assigned_to_users 
+                    WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
+                    AND expenses.user_id = :id 
+                    GROUP BY name';
+        }
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
-        $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
+
+        if ($scopeOfDate == 1) {
+            $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
+             $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
+        } else if ($scopeOfDate == 2) {
+            $stmt->bindValue(':firstDayOfLastMonth', $firstDayOfLastMonth, PDO::PARAM_STR);
+            $stmt->bindValue(':amountOfDaysOfLastMonth', $amountOfDaysOfLastMonth, PDO::PARAM_STR);
+        } else if ($scopeOfDate == 3) {
+            $stmt->bindValue(':beginningOfCurrentYear', $beginningOfCurrentYear, PDO::PARAM_STR);
+            $stmt->bindValue(':currentDayOfCurrentYear', $currentDayOfCurrentYear, PDO::PARAM_STR);
+        }
+        
 
         $stmt->execute();
         return $stmt->fetchAll();
