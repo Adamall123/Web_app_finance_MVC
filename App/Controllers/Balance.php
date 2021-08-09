@@ -19,8 +19,10 @@ class Balance extends Authenticated
     public function showAction()
     {
         $this->allIncomesOfUser = User::fillIncomesOfUser($this->user->id);
+        $this->allExpensesOfUser = User::fillExpensesOfUser($this->user->id);
         View::renderTemplate('Balance/show.html', [
-            'allIncomesOfUser' => $this->allIncomesOfUser
+            'allIncomesOfUser' => $this->allIncomesOfUser,
+            'allExpensesOfUser' => $this->allExpensesOfUser
         ]);
     }
     

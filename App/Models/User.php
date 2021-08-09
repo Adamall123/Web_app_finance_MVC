@@ -396,16 +396,14 @@ class User extends \Core\Model
 		$year = date('Y');
 		$numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
-         //$year-$month-01
-         $currentDay = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
-        //$year-$month-$numberOfDaysOfSelectedMonth
+        $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
 
         $sql = 'SELECT name, SUM(amount) AS sum 
                 FROM incomes, incomes_category_assigned_to_users 
                 WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
                 AND incomes.user_id = :id 
                 AND date_of_income >= :firstDayOfCurrentMonth 
-                AND date_of_income <= :currentDay 
+                AND date_of_income <= :amountOfDaysOfCurrentMonth 
                 GROUP BY name';
 
         $db = static::getDB();
@@ -413,7 +411,34 @@ class User extends \Core\Model
 
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
-        $stmt->bindValue(':currentDay', $currentDay, PDO::PARAM_STR);
+        $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public static function fillExpensesOfUser($id) 
+    {
+        $month = date('m');
+		$year = date('Y');
+		$numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
+        $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
+
+        $sql = 'SELECT name, SUM(amount) AS sum 
+                FROM expenses, expenses_category_assigned_to_users
+                WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
+                AND expenses.user_id = :id
+                AND date_of_expense >= :firstDayOfCurrentMonth
+                AND date_of_expense <= :amountOfDaysOfCurrentMonth 
+                GROUP BY name';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
+        $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
 
         $stmt->execute();
         return $stmt->fetchAll();

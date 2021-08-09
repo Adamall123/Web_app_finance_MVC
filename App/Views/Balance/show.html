@@ -34,13 +34,23 @@
 								</ul>
 							</div>
 						</div>
-					</div>
-					
 				</div>
-			</section>
-		
-			
-		</div>
+                <div class="col-lg-6">
+                    <div class="Category">
+                       <header>
+                           <div class="CategoryHeader"><h4>Expences</h4></div>
+                       </header>
+                            <div class="CategoryColumn">
+                                <ul class="CategoryRow" id="expenses">
+                                    {% for allExpenseOfUser in allExpensesOfUser %}
+                                    <li>{{ allExpenseOfUser['name'] }}: {{ allExpenseOfUser['sum'] }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                   </div>
+               </div>  
+			</div>
+	    
 	</div>
 	</main>
 {% endblock %}
