@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Balance{% endblock %}
+
+{% block body %}
+
+   <h1>Balance</h1>
+
+   <main>
+    <div class="container">
+		<div id="setDateRangeForm">
+		<i class="far fa-calendar-check"></i><span style="font-size: 20px;"> Set date range of your transactions:</span>
+		<div class="line"> </div>        
+		<div class="box">
+			 <select name="dateCategory" id="dateCategory">  
+                          <option value="1">Current Month </option>  
+                          <option value="2">Last Month </option>  
+                          <option value="3">This year </option>  
+                          <option value="4">Total Time </option>  
+                     </select>  
+		</div>
+		</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="Category">
+						<header>
+							<div class="CategoryHeader"><h4>Incomes</h4></div>
+						</header>
+							<div class="CategoryColumn">
+								<ul class="CategoryRow" id="incomes">
+                                    {% for allIncomeOfUser in allIncomesOfUser %}
+                                    <li>{{ allIncomeOfUser['name'] }}: {{ allIncomeOfUser['sum'] }}</li>
+                                    {% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</section>
+		
+			
+		</div>
+	</div>
+	</main>
+{% endblock %}
+

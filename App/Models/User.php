@@ -379,7 +379,7 @@ class User extends \Core\Model
                     VALUES (:id, :expense_category_assigned_to_user_id, :payment_method_assigned_to_user_id , :amount, :date_of_expense, :expense_comment)';
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-    
+        
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':expense_category_assigned_to_user_id', $_POST['expense_category_id'], PDO::PARAM_INT);
         $stmt->bindValue(':payment_method_assigned_to_user_id', $_POST['payment_method_id'], PDO::PARAM_INT);
@@ -388,6 +388,35 @@ class User extends \Core\Model
         $stmt->bindValue(':expense_comment', $_POST['comment'], PDO::PARAM_STR);
          return $stmt->execute();
     }
+    /////////////////////////////////////////////////////////////////////// BALANCE  ///////////////////////////////////////////////////////////////////////
 
+    public static function fillIncomesOfUser($id) 
+    {
+        $month = date('m');
+		$year = date('Y');
+		$numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
+         //$year-$month-01
+         $currentDay = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
+        //$year-$month-$numberOfDaysOfSelectedMonth
+
+        $sql = 'SELECT name, SUM(amount) AS sum 
+                FROM incomes, incomes_category_assigned_to_users 
+                WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
+                AND incomes.user_id = :id 
+                AND date_of_income >= :firstDayOfCurrentMonth 
+                AND date_of_income <= :currentDay 
+                GROUP BY name';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
+        $stmt->bindValue(':currentDay', $currentDay, PDO::PARAM_STR);
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
    
 }
