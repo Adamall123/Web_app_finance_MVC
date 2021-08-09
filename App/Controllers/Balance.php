@@ -21,13 +21,16 @@ class Balance extends Authenticated
         if (isset($_POST['dateCategory'])){
             $this->value = $_POST['dateCategory'];
         }
+        
         $this->allIncomesOfUser = User::fillIncomesOfUser($this->user->id, $this->value );
         $this->allExpensesOfUser = User::fillExpensesOfUser($this->user->id, $this->value);
+        $this->sumFromIncomesAndExpenses = User::sumFromIncomesAndExpenses($this->user->id, $this->value);
         View::renderTemplate('Balance/show.html', [
             'allIncomesOfUser' => $this->allIncomesOfUser,
             'allExpensesOfUser' => $this->allExpensesOfUser,
             'user' => $this->user,
-            'selected' => $this->value
+            'selected' => $this->value,
+            'sumFromIncomesAndExpenses' => $this->sumFromIncomesAndExpenses
         ]);
     }
 

@@ -525,5 +525,104 @@ class User extends \Core\Model
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    public static function sumFromIncomesAndExpenses($id, $scopeOfDate = 1) 
+    {
+        $month = date('m');
+        $year = date('Y');
+        $numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
+        $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
+        
+        if ($scopeOfDate == 1) {
+            $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes
+                                FROM incomes 
+                                WHERE incomes.user_id = :id 
+                                AND date_of_income >= :firstDayOfCurrentMonth 
+                                AND date_of_income <= :amountOfDaysOfCurrentMonth ';
+            $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
+                                FROM expenses 
+                                WHERE expenses.user_id = :id
+                                AND date_of_expense >= :firstDayOfCurrentMonth 
+                                AND date_of_expense <= :amountOfDaysOfCurrentMonth';
+        } else if ($scopeOfDate == 2) {
+            $lastmonth = date('m', strtotime("last month"));
+            $firstDayOfLastMonth = $year .'-'.$lastmonth.'-01';
+            $amountOfDaysOfLastMonth = $year .'-' . $lastmonth .'-' . $numberOfDaysOfSelectedMonth;
+
+            $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes 
+                                FROM incomes 
+                                WHERE incomes.user_id = :id 
+                                AND date_of_income >= :firstDayOfLastMonth 
+                                AND date_of_income <= :amountOfDaysOfLastMonth ';
+            $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
+                                FROM expenses 
+                                WHERE expenses.user_id = :id 
+                                AND date_of_expense >= :firstDayOfLastMonth 
+                                AND date_of_expense <= :amountOfDaysOfLastMonth';
+        } else if ($scopeOfDate == 3) {
+            $currentDay = date('d');
+            $beginningOfCurrentYear = $year . '-' . '01-01';
+            $currentDayOfCurrentYear = $year . '-' . $month . '-' . $currentDay;
+            $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes 
+                                FROM incomes 
+                                WHERE incomes.user_id = :id 
+                                AND date_of_income >= :beginningOfCurrentYear 
+                                AND date_of_income <= :currentDayOfCurrentYear';
+            $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
+                                FROM expenses 
+                                WHERE expenses.user_id = :id 
+                                AND date_of_expense >= :beginningOfCurrentYear 
+                                AND date_of_expense <= :currentDayOfCurrentYear';
+        } else if ($scopeOfDate == 4) {
+            $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes 
+                                FROM incomes 
+                                WHERE incomes.user_id = :id' ;
+            $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
+                                FROM expenses
+                                WHERE expenses.user_id = :id';
+        }
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sqlSumIncomes);
+        $stmt2 = $db->prepare($sqlSumExpenses);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt2->bindValue(':id', $id, PDO::PARAM_INT);
+
+        if ($scopeOfDate == 1) {
+            $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
+             $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
+             $stmt2->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
+             $stmt2->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
+        } else if ($scopeOfDate == 2) {
+            $stmt->bindValue(':firstDayOfLastMonth', $firstDayOfLastMonth, PDO::PARAM_STR);
+            $stmt->bindValue(':amountOfDaysOfLastMonth', $amountOfDaysOfLastMonth, PDO::PARAM_STR);
+            $stmt2->bindValue(':firstDayOfLastMonth', $firstDayOfLastMonth, PDO::PARAM_STR);
+            $stmt2->bindValue(':amountOfDaysOfLastMonth', $amountOfDaysOfLastMonth, PDO::PARAM_STR);
+        } else if ($scopeOfDate == 3) {
+            $stmt->bindValue(':beginningOfCurrentYear', $beginningOfCurrentYear, PDO::PARAM_STR);
+            $stmt->bindValue(':currentDayOfCurrentYear', $currentDayOfCurrentYear, PDO::PARAM_STR);
+            $stmt2->bindValue(':beginningOfCurrentYear', $beginningOfCurrentYear, PDO::PARAM_STR);
+            $stmt2->bindValue(':currentDayOfCurrentYear', $currentDayOfCurrentYear, PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        $stmt2->execute();
+        $sqlSumIncomesResult = $stmt->fetchAll();  
+        $sqlSumExpensesResult = $stmt2->fetchAll();  
+
+		foreach($sqlSumIncomesResult as $sqlSumIncomeResult)
+		  {  
+				$sumIncome = $sqlSumIncomeResult["sumIncomes"];
+		  }  
+		
+		  foreach($sqlSumExpensesResult as $sqlSumExpenseResult) 
+		  {  
+				$sumExpense = $sqlSumExpenseResult["sumExpenses"];
+		  }
+		  $sumFromIncomesExpenses = $sumIncome - $sumExpense;
+
+          return $sumFromIncomesExpenses;
+    }
    
 }

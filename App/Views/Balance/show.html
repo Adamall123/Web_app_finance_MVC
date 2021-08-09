@@ -63,7 +63,22 @@
                    </div>
                </div>  
 			</div>
-	    
+        <div style="clear: both;"></div>
+        <div id="balance">
+             {% if sumFromIncomesAndExpenses >= 0 %}
+                <div id="balanceWindow">
+                    <h5>Your balance is: {{ sumFromIncomesAndExpenses }} zł
+                    <br>
+                    <div class="line"> Welll done! </h5> </div>
+                </div>
+                {% else %}
+                <div id="balanceWindow" style="background-color:#cc7a00">
+                    <h5>Your balance is: {{ sumFromIncomesAndExpenses }} zł
+                    <br>
+                    <div class="line"> Try to get better incomes or spend less money on expenses. </h5> </div>
+                </div>
+            {% endif %}
+		</div>
 	</div>
 	</main>
 {% endblock %}
