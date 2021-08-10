@@ -7,9 +7,39 @@
 <script>
        
     $( document ).ready(function() {
-        
-    });
-
+       
+        $("#dateCategory").on('change', function(){
+            var date_id = $(this).val(); 
+            $.ajax({
+                type: "POST",
+                url: "/balance/change",
+                data: {date_id: date_id},
+                dataType:'JSON', 
+                success: function(response){
+                       var container = $('')
+                       var $resultIncomes ='';
+                       var $resultExpenses ='';
+                       var $resultSumFromIncomesAndExpences ='';
+                       $.each(response.allIncomesOfUser, function (i, val) {
+                           container.append(val)
+                           $resultIncomes += "<li>" + val['name'] + " : " + val['sum'] + "</li>";
+                       })
+                       $('#incomes').html($resultIncomes);
+                       $.each(response.allExpensesOfUser, function (i, val) {
+                           container.append(val)
+                           $resultExpenses += "<li>" + val['name'] + " : " + val['sum'] + "</li>";
+                       })
+                       $('#expenses').html($resultExpenses);
+                       if(response.sumFromIncomesAndExpenses > 0) {
+                           $resultSumFromIncomesAndExpences = "<div id='balanceWindow'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Well done! </h5></div></div>" ; 
+                       } else {
+                          $resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color:#cc7a00'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Try to get better incomes or spend less money on expenses. </h5></div></div>" ;
+                       }
+                       $('#balance').html($resultSumFromIncomesAndExpences);
+                }
+            }); 
+			}); 
+        });
  </script>
 {% endblock %}
    
@@ -23,11 +53,11 @@
 		<div class="line"> </div>        
 		<div class="box">
             <form method="post" action="/balance/show" name="dateCategory">
-                <select name="dateCategory" id="dateCategory" onchange="this.form.submit();">  
-                    <option value="1" {% if selected == 1 %} selected {% endif %}>Current Month </option> 
-                    <option value="2" {% if selected == 2 %} selected {% endif %}>Last Month </option>  
-                    <option value="3" {% if selected == 3 %} selected {% endif %}>This year </option>  
-                    <option value="4" {% if selected == 4 %} selected {% endif %}>Total Time </option>  
+                <select name="dateCategory" id="dateCategory"   {# onchange="this.form.submit();" #}>  
+                    <option value="1">Current Month </option> 
+                    <option value="2">Last Month </option>  
+                    <option value="3">This year </option>  
+                    <option value="4">Total Time </option>  
                  </select> 
             </form>
 			
