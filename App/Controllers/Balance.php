@@ -18,19 +18,8 @@ class Balance extends Authenticated
     }
     public function showAction()
     {
-        if (isset($_POST['dateCategory'])){
-            $this->value = $_POST['dateCategory'];
-        }
-        
-        $this->allIncomesOfUser = User::fillIncomesOfUser($this->user->id, $this->value );
-        $this->allExpensesOfUser = User::fillExpensesOfUser($this->user->id, $this->value);
-        $this->sumFromIncomesAndExpenses = User::sumFromIncomesAndExpenses($this->user->id, $this->value);
         View::renderTemplate('Balance/show.html', [
-            'allIncomesOfUser' => $this->allIncomesOfUser,
-            'allExpensesOfUser' => $this->allExpensesOfUser,
-            'user' => $this->user,
-            'selected' => $this->value,
-            'sumFromIncomesAndExpenses' => $this->sumFromIncomesAndExpenses
+            'user' => $this->user
         ]);
     }
 
@@ -46,5 +35,4 @@ class Balance extends Authenticated
                                 "allExpensesOfUser" => $this->allExpensesOfUser,
                                 "sumFromIncomesAndExpenses" => $this->sumFromIncomesAndExpenses));
     }
-    
 }
