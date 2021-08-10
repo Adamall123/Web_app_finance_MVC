@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Balance{% endblock %}
+
+
+{% block footer %}
+
+<script>
+    
+    $( document ).ready(function() {
+        $.ajax({
+            type: 'GET',
+            url: '/balance/change',
+            dataType: 'JSON',
+            success: function(response){
+                var container = $('')
+                       var $resultIncomes ='';
+                       var $resultExpenses ='';
+                       var $resultSumFromIncomesAndExpences ='';
+                       //console.log(response.allIncomesOfUser)
+                       $.each(response.allIncomesOfUser, function (i, val) {
+                           container.append(val)
+                           $resultIncomes += "<li>" + val['name'] + " : " + val['sum'] + "</li>";
+                       })
+                       $('#incomes').html($resultIncomes);
+                       $.each(response.allExpensesOfUser, function (i, val) {
+                           container.append(val)
+                           $resultExpenses += "<li>" + val['name'] + " : " + val['sum'] + "</li>";
+                       })
+                       $('#expenses').html($resultExpenses);
+                       if(response.sumFromIncomesAndExpenses > 0) {
+                           $resultSumFromIncomesAndExpences = "<div id='balanceWindow'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Well done! </h5></div></div>" ; 
+                       } else {
+                          $resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color:#cc7a00'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Try to get better incomes or spend less money on expenses. </h5></div></div>" ;
+                       }
+                       $('#balance').html($resultSumFromIncomesAndExpences);
+                    
+                        var my_2d_income = response.allIncomesOfUser
+                        var my_2d_expense = response.allExpensesOfUser
+                         // Load the Visualization API and the corechart package.
+                        google.charts.load('current', {'packages':['corechart']});
+
+                        // Set a callback to run when the Google Visualization API is loaded.
+                        google.charts.setOnLoadCallback(draw_my_chart_incomes);
+                        google.charts.setOnLoadCallback(draw_my_chart_expenses);
+                        // Callback that creates and populates a data table,
+                        // instantiates the pie chart, passes in the data and
+                        // draws it.
+                        function draw_my_chart_incomes() {
+                            // Create the data table .
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'name');
+                        data.addColumn('number', 'amount');
+                        for(i = 0; i < my_2d_income.length; i++)
+                        data.addRow([my_2d_income[i][0], parseInt(my_2d_income[i][1])]);
+                        // above row adds the JavaScript two dimensional array data into required chart format
+                        var options = {title:'Costs Incomes',
+                                    width:600,
+                                    height:500,
+                                    titleTextStyle: {color:'#FFFFFF'}, 
+                                    backgroundColor: '#38b6ff',
+                                        is3D: true};
+
+                        // Instantiate and draw the chart
+                        var chart = new google.visualization.PieChart(document.getElementById('chart_div_incomes'));
+                        chart.draw(data, options);
+                        } 
+                        function draw_my_chart_expenses() {
+                        // Create the data table .
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'name');
+                        data.addColumn('number', 'amount');
+                        for(i = 0; i < my_2d_expense.length; i++)
+                        data.addRow([my_2d_expense[i][0], parseInt(my_2d_expense[i][1])]);
+                        // above row adds the JavaScript two dimensional array data into required chart format
+                        var options = {title:'Costs Expenses',
+                                    width:600,
+                                    height:500,
+                                    titleTextStyle: {color:'#FFFFFF'}, 
+                                    backgroundColor: '#38b6ff',
+                                        is3D: true};
+
+                        // Instantiate and draw the chart
+                        var chart = new google.visualization.PieChart(document.getElementById('chart_div_expenses'));
+                        chart.draw(data, options);
+                        }
+                        
+                      
+            }
+        })
+
+        $("#dateCategory").on('change', function(){
+            var date_id = $(this).val(); 
+            $.ajax({
+                type: "POST",
+                url: "/balance/change",
+                data: {date_id: date_id},
+                dataType:'JSON', 
+                success: function(response){
+                       var container = $('')
+                       var $resultIncomes ='';
+                       var $resultExpenses ='';
+                       var $resultSumFromIncomesAndExpences ='';
+                       //console.log(response.allIncomesOfUser)
+                       $.each(response.allIncomesOfUser, function (i, val) {
+                           container.append(val)
+                           $resultIncomes += "<li>" + val['name'] + " : " + val['sum'] + "</li>";
+                       })
+                       $('#incomes').html($resultIncomes);
+                       $.each(response.allExpensesOfUser, function (i, val) {
+                           container.append(val)
+                           $resultExpenses += "<li>" + val['name'] + " : " + val['sum'] + "</li>";
+                       })
+                       $('#expenses').html($resultExpenses);
+                       if(response.sumFromIncomesAndExpenses > 0) {
+                           $resultSumFromIncomesAndExpences = "<div id='balanceWindow'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Well done! </h5></div></div>" ; 
+                       } else {
+                          $resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color:#cc7a00'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Try to get better incomes or spend less money on expenses. </h5></div></div>" ;
+                       }
+                       $('#balance').html($resultSumFromIncomesAndExpences);
+
+                       var my_2d_income = response.allIncomesOfUser
+                        var my_2d_expense = response.allExpensesOfUser
+                        // Load the Visualization API and the corechart package.
+                        google.charts.load('current', {'packages':['corechart']});
+
+                        // Set a callback to run when the Google Visualization API is loaded.
+                        google.charts.setOnLoadCallback(draw_my_chart_incomes);
+                        google.charts.setOnLoadCallback(draw_my_chart_expenses);
+                        // Callback that creates and populates a data table,
+                        // instantiates the pie chart, passes in the data and
+                        // draws it.
+                        function draw_my_chart_incomes() {
+                            // Create the data table .
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'name');
+                        data.addColumn('number', 'amount');
+                        for(i = 0; i < my_2d_income.length; i++)
+                        data.addRow([my_2d_income[i][0], parseInt(my_2d_income[i][1])]);
+                        // above row adds the JavaScript two dimensional array data into required chart format
+                        var options = {title:'Costs Incomes',
+                                    width:600,
+                                    height:500,
+                                    titleTextStyle: {color:'#FFFFFF'}, 
+                                    backgroundColor: '#38b6ff',
+                                        is3D: true};
+
+                        // Instantiate and draw the chart
+                        var chart = new google.visualization.PieChart(document.getElementById('chart_div_incomes'));
+                        chart.draw(data, options);
+                        } 
+                       
+                        function draw_my_chart_expenses() {
+                        // Create the data table .
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'name');
+                        data.addColumn('number', 'amount');
+                        for(i = 0; i < my_2d_expense.length; i++)
+                        data.addRow([my_2d_expense[i][0], parseInt(my_2d_expense[i][1])]);
+                        // above row adds the JavaScript two dimensional array data into required chart format
+                        var options = {title:'Costs Expenses',
+                                    width:600,
+                                    height:500,
+                                    titleTextStyle: {color:'#FFFFFF'}, 
+                                    backgroundColor: '#38b6ff',
+                                        is3D: true};
+
+                        // Instantiate and draw the chart
+                        var chart = new google.visualization.PieChart(document.getElementById('chart_div_expenses'));
+                        chart.draw(data, options);
+                        }
+                }
+            }); 
+			}); 
+            
+    });
+
+
+ </script>
+{% endblock %}
+   
+{% block body %}
+   <h1>Balance</h1>
+
+   <main>
+    <div class="container">
+		<div id="setDateRangeForm">
+		<i class="far fa-calendar-check"></i><span style="font-size: 20px;"> Set date range of your transactions:</span>
+		<div class="line"> </div>        
+		<div class="box">
+            <form method="post" action="/balance/show" name="dateCategory">
+                <select name="dateCategory" id="dateCategory"   {# onchange="this.form.submit();" #}>  
+                    <option value="1">Current Month </option> 
+                    <option value="2">Last Month </option>  
+                    <option value="3">This year </option>  
+                    <option value="4">Total Time </option>  
+                 </select> 
+            </form>
+			
+		</div>
+		</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="Category">
+						<header>
+							<div class="CategoryHeader"><h4>Incomes</h4></div>
+						</header>
+							<div class="CategoryColumn">
+								<ul class="CategoryRow" id="incomes">
+                                    
+								</ul>
+							</div>
+						</div>
+				</div>
+                <div class="col-lg-6">
+                    <div class="Category">
+                       <header>
+                           <div class="CategoryHeader"><h4>Expences</h4></div>
+                       </header>
+                            <div class="CategoryColumn">
+                                <ul class="CategoryRow" id="expenses">
+                                  
+                                </ul>
+                            </div>
+                   </div>
+               </div>  
+			</div>
+        <div style="clear: both;"></div>
+        <div id="balance"></div>
+
+        <section>
+            <div class="row">
+                <div class="col-xl-6">
+                     <div id="chart_div_incomes"></div>
+                </div>
+                <div class="col-xl-6">
+                     <div id="chart_div_expenses"></div>
+                </div>
+            </div>
+        </section>
+	</div>
+	</main>
+{% endblock %}
+
