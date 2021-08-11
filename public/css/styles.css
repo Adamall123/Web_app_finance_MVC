@@ -1,3 +1,15 @@
+html {
+    color: white;
+    font-family: 'Libre Baskerville', 'Arial', sans-serif;
+    min-height: 100%;
+   
+}
 body {
-    margin-top: 3em;
+    /*background:linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../img/business2.jpg");*/
+    background-color: #38b6ff; 
+    padding: 0;
+	margin:0;
+    height: 100%;
+    width: 100%;
+    font-size: 20px;
 }

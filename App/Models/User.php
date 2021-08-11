@@ -283,59 +283,21 @@ class User extends \Core\Model
         $stmt->execute();
    }
 
-   public function updateProfile($data)
-   {
-       $this->name = $data['name'];
-       $this->email = $data['email'];
-       
-       if ($data['password'] != '') {
-            $this->password = $data['password'];
-        }
-        
-
-       $this->validate();
-
-       if (empty($this->errors)) {
-       
-           $sql = 'UPDATE users
-                    SET name = :name,
-                        email = :email';
-            //Add password if it's set
-            if ($data['password'] != '') {
-                $sql .= ', password = :password_hash';
-            }
-      
-            $sql .= "\nWHERE id = :id";
-            
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-
-            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
-            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-            if ($data['password'] != '') {
-                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
-                $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
-            }
-            return $stmt->execute();
-       }
-       return false;
-   }
    /////////////////////////////////////////////////////////////////////// INCOMES  ///////////////////////////////////////////////////////////////////////
-   public static function getIncomesCategoryAssignedToUser($id)
+   public function getIncomesCategoryAssignedToUser()
     {
         $sql = 'SELECT * FROM incomes_category_assigned_to_users WHERE user_id = :id';
         
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
-        $stmt->bindValue('id', $id , PDO::PARAM_INT);
+        $stmt->bindValue('id', $this->id , PDO::PARAM_INT);
 
         $stmt->execute();
        
         return $stmt->fetchAll();
     }
-    public function saveIncome($id, $params)
+    public function saveIncome($params)
     {
 
         $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
@@ -343,7 +305,7 @@ class User extends \Core\Model
         $db = static::getDB();
         $stmt = $db->prepare($sql);
     
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
         $stmt->bindValue(':income_category_assigned_to_user_id', $_POST['income_category_id'], PDO::PARAM_INT);
         $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_INT);
         $stmt->bindValue(':date_of_income', $_POST['date'], PDO::PARAM_STR);
@@ -352,27 +314,27 @@ class User extends \Core\Model
     }
     /////////////////////////////////////////////////////////////////////// EXPENSES  ///////////////////////////////////////////////////////////////////////
 
-    public static function getExpensesCategoryAssignedToUser($id)
+    public function getExpensesCategoryAssignedToUser()
     {
         $sql = 'SELECT * FROM expenses_category_assigned_to_users WHERE user_id = :id';
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindValue('id', $id , PDO::PARAM_INT);
+        $stmt->bindValue('id', $this->id , PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function getPaymentMethodsAssignedToUser($id)
+    public function getPaymentMethodsAssignedToUser()
     {
         $sql = 'SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :id';
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindValue('id', $id , PDO::PARAM_INT);
+        $stmt->bindValue('id', $this->id , PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function saveExpense($id, $params)
+    public function saveExpense($params)
     {
 
         $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment)
@@ -380,7 +342,7 @@ class User extends \Core\Model
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
         $stmt->bindValue(':expense_category_assigned_to_user_id', $_POST['expense_category_id'], PDO::PARAM_INT);
         $stmt->bindValue(':payment_method_assigned_to_user_id', $_POST['payment_method_id'], PDO::PARAM_INT);
         $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_INT);
@@ -390,7 +352,7 @@ class User extends \Core\Model
     }
     /////////////////////////////////////////////////////////////////////// BALANCE  ///////////////////////////////////////////////////////////////////////
 
-    public static function fillIncomesOfUser($id, $scopeOfDate = 1) 
+    public function getSumSpendMoneyOnEachIncomeOfUser($scopeOfDate = 1) 
     {
         
 
@@ -443,7 +405,7 @@ class User extends \Core\Model
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
         if($scopeOfDate == 1) {
             $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
             $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
@@ -459,8 +421,9 @@ class User extends \Core\Model
         return $stmt->fetchAll();
     }
 
-    public static function fillExpensesOfUser($id, $scopeOfDate = 1) 
+    public function getSumSpendMoneyOnEachExpenseOfUser($scopeOfDate = 1) 
     {
+        
         $month = date('m');
 		$year = date('Y');
 		$numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
@@ -508,7 +471,7 @@ class User extends \Core\Model
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
 
         if ($scopeOfDate == 1) {
             $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
@@ -526,7 +489,7 @@ class User extends \Core\Model
         return $stmt->fetchAll();
     }
 
-    public static function sumFromIncomesAndExpenses($id, $scopeOfDate = 1) 
+    public function sumFromIncomesAndExpenses($id, $scopeOfDate = 1) 
     {
         $month = date('m');
         $year = date('Y');
@@ -624,5 +587,148 @@ class User extends \Core\Model
 
           return $sumFromIncomesExpenses;
     }
-   
+/////////////////////////////////////////////////////////////////////// Settings  ///////////////////////////////////////////////////////////////////////
+    
+   public function updateProfile($data)
+   {
+       $this->name = $data['name'];
+       $this->email = $data['email'];
+       if ($data['password'] != '') {
+            $this->password = $data['password'];
+        }
+       $this->validate();
+       if (empty($this->errors)) {
+       
+           $sql = 'UPDATE users
+                    SET name = :name,
+                        email = :email';
+            //Add password if it's set
+            if ($data['password'] != '') {
+                $sql .= ', password = :password_hash';
+            }
+      
+            $sql .= "\nWHERE id = :id";
+            
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+            if ($data['password'] != '') {
+                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+                $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+            }
+            return $stmt->execute();
+       }
+       return false;
+   }
+   public function addNewIncomeCategory($new_income)
+   {
+        if($this->ifIncomeCategoryExists($new_income)) {
+            $sql = 'INSERT INTO incomes_category_assigned_to_users VALUES(NULL,:id,:new_income)';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':new_income',$new_income,PDO::PARAM_STR);
+            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+            return $stmt->execute();
+        }
+   }
+
+   public function addNewExpenseCategory($new_expense)
+   {
+        if($this->ifExpenseCategoryExists($new_expense)) {
+            $sql = 'INSERT INTO expenses_category_assigned_to_users VALUES(NULL,:id,:new_expense)';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':new_expense',$new_expense,PDO::PARAM_STR);
+            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+            return $stmt->execute();
+        }
+   }
+
+   public function addNewPaymentMethodCategory($new_payment_method)
+   {
+        if($this->ifPaymentMethodCategoryExists($new_payment_method)) {
+            $sql = 'INSERT INTO payment_methods_assigned_to_users VALUES(NULL,:id,:new_payment_method)';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':new_payment_method',$new_payment_method,PDO::PARAM_STR);
+            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+            return $stmt->execute();
+        }
+   }
+
+   protected function ifIncomeCategoryExists($new_income) {
+        $sql =  'SELECT name from incomes_category_assigned_to_users
+        WHERE name = :new_income
+        AND user_id = :id';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':new_income',$new_income,PDO::PARAM_STR);
+        $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+        $stmt->execute();
+        //if(!$stmt) throw new Exception($db->error);
+        $amount_of_category_income = $stmt->rowCount();
+
+        if ($amount_of_category_income) {
+        $this->errors[] = 'A category name exists.';
+        return 0;
+        }
+        //make validation method 
+        if (strlen($new_income) > 20 || strlen($new_income) < 3) {
+        $this->errors[] = "A category name must have characters between 3 and 20.";
+        return 0;
+        }
+        return 1;
+   }
+
+   protected function ifExpenseCategoryExists($new_expence) {
+        $sql =  'SELECT name from expenses_category_assigned_to_users
+        WHERE name = :new_expence
+        AND user_id = :id';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':new_expence',$new_expence,PDO::PARAM_STR);
+        $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+        $stmt->execute();
+        //if(!$stmt) throw new Exception($db->error);
+        $amount_of_category_expense = $stmt->rowCount();
+
+        if ($amount_of_category_expense) {
+        $this->errors[] = 'A category name exists.';
+        return 0;
+        }
+        //make validation method 
+        if (strlen($new_expence) > 20 || strlen($new_expence) < 3) {
+        $this->errors[] = "A category name must have characters between 3 and 20.";
+        return 0;
+        }
+        return 1;
+    }
+    protected function ifPaymentMethodCategoryExists($new_payment_method) {
+        $sql =  'SELECT name from payment_methods_assigned_to_users
+        WHERE name = :new_payment_method
+        AND user_id = :id';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':new_payment_method',$new_payment_method,PDO::PARAM_STR);
+        $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+        $stmt->execute();
+        //if(!$stmt) throw new Exception($db->error);
+        $amount_of_category_payment_method = $stmt->rowCount();
+
+        if ($amount_of_category_payment_method) {
+        $this->errors[] = 'A category name exists.';
+        return 0;
+        }
+        //make validation method 
+        if (strlen($new_payment_method) > 20 || strlen($new_payment_method) < 3) {
+        $this->errors[] = "A category name must have characters between 3 and 20.";
+        return 0;
+        }
+        return 1;
+    }
 }
+
+

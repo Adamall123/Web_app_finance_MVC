@@ -28,11 +28,8 @@ class Balance extends Authenticated
         if (isset($_POST['date_id'])){
             $this->value = $_POST['date_id'];
         }
-        $this->allIncomesOfUser = User::fillIncomesOfUser($this->user->id, $this->value );   
-        $this->allExpensesOfUser = User::fillExpensesOfUser($this->user->id, $this->value); 
-        $this->sumFromIncomesAndExpenses = User::sumFromIncomesAndExpenses($this->user->id, $this->value);
-        echo json_encode(array("allIncomesOfUser" => $this->allIncomesOfUser,
-                                "allExpensesOfUser" => $this->allExpensesOfUser,
-                                "sumFromIncomesAndExpenses" => $this->sumFromIncomesAndExpenses));
+        echo json_encode(array("allIncomesOfUser" => $this->user->getSumSpendMoneyOnEachIncomeOfUser($this->value),
+                                "allExpensesOfUser" => $this->user->getSumSpendMoneyOnEachExpenseOfUser($this->value),
+                                "sumFromIncomesAndExpenses" => $this->user->sumFromIncomesAndExpenses($this->user->id, $this->value)));
     }
 }

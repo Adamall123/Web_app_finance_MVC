@@ -17,16 +17,14 @@ class Expense extends Authenticated
     }
     public function indexAction()
     {
-        $this->userExpenses = User::getExpensesCategoryAssignedToUser($this->user->id);
-        $this->userPaymentMethods = User::getPaymentMethodsAssignedToUser($this->user->id);
         View::renderTemplate('Expense/index.html', [
-            'userExpenses' => $this->userExpenses,
-            'userPaymentMethods' => $this->userPaymentMethods
+            'userExpenses' => $this->user->getExpensesCategoryAssignedToUser(),
+            'userPaymentMethods' => $this->user->getPaymentMethodsAssignedToUser()
         ]);
     }
     public function addAction()
     {
-        if ($this->user->saveExpense($this->user->id, $_POST)) {
+        if ($this->user->saveExpense($_POST)) {
             Flash::addMessage('A new expense has been added succesfuly to your account.');
             $this->redirect('/Expense/index');
 

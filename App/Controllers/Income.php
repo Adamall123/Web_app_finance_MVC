@@ -18,14 +18,13 @@ class Income extends Authenticated
     }
     public function indexAction()
     {
-        $this->userIncomes = User::getIncomesCategoryAssignedToUser($this->user->id);
         View::renderTemplate('Income/index.html', [
-            'userIncomes' => $this->userIncomes
+            'userIncomes' => $this->user->getIncomesCategoryAssignedToUser()
         ]);
     }
     public function addAction()
     {
-        if ($this->user->saveIncome($this->user->id, $_POST)) {
+        if ($this->user->saveIncome($_POST)) {
             Flash::addMessage('A new income has been added succesfuly to your account.');
             $this->redirect('/Income/index');
         } else {

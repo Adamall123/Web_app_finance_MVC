@@ -1,8 +1,141 @@
 {% extends "base.html" %}
 
-{% block title %}Sign up{% endblock %}
+{% block title %}Settings{% endblock %}
+
+
+{% block footer %}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    
+    $( document ).ready(function() {
+        
+        $.ajax({
+            type: 'GET',
+            url: '/settings/display',
+            dataType: 'JSON',
+            success: function(response){
+                var resultIncomesCategories ='';
+                var resultExpenseCategories ='';
+                var resultPaymentMethodCategories ='';
+                var container = $('')
+               
+                        $.each(response.getIncomesCategoryAssignedToUser, function (i, val) {
+                            container.append(val)
+                            resultIncomesCategories += "<li>" + val['name'] +  "</li>";
+                        })
+                        $('#incomes').html(resultIncomesCategories);     
+                        $.each(response.getExpensesCategoryAssignedToUser, function (i, val) {
+                            container.append(val)
+                             resultExpenseCategories += "<li>" + val['name'] +  "</li>";
+                        })
+                        $('#expenses').html(resultExpenseCategories);    
+                        $.each(response.getPaymentMethodsAssignedToUser, function (i, val) {
+                            container.append(val)
+                             resultPaymentMethodCategories += "<li>" + val['name'] +  "</li>";
+                        })
+                        $('#paymentMethods').html(resultPaymentMethodCategories); 
+            }
+        }) 
+               
+    });
+
+
+
+ </script>
+{% endblock %}
 
 {% block body %}
+
+<div class="modal fade" id="add-new-income"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+                    <h4 style="color:green"><i class="fas fa-plus"></i> Add category</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+            <div class="container-fluid">
+            <form method="POST" action="/settings/add-new-income">
+                    <div class="form-group">
+                    <label class="col-form-label" style="color:green"><i class="far fa-sticky-note"></i> Name of category:</label>
+                    <input type="text" class="form-control" name="income">
+                    </div>
+            </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                    </button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add New Expence-->
+<div class="modal fade" id="add-new-expence"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+                    <h4 style="color:green"><i class="fas fa-plus"></i> Add category</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+            <div class="container-fluid">
+            <form method="POST" action="/settings/add-new-expense">
+                    <div class="form-group">
+                    <label class="col-form-label" style="color:green"><i class="far fa-sticky-note"></i> Name of category:</label>
+                    <input type="text" class="form-control" name="expense">
+                    </div>
+            </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                    </button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add New Payment-->
+<div class="modal fade" id="add-new-payment-method"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+                    <h4 style="color:green"><i class="fas fa-plus"></i> Add category</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+            <div class="container-fluid">
+            <form method="POST" action="/settings/add-new-payment-method">
+                    <div class="form-group">
+                    <label class="col-form-label" style="color:green"><i class="far fa-sticky-note"></i> Name of category:</label>
+                    <input type="text" class="form-control" name="payment">
+                    </div>
+            </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                    </button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
    <h1>Settings</h1>
    <dl class="dl-horizontal">
@@ -12,4 +145,90 @@
        <dd>{{ user.email }}</dd>
    </dl>
 <a href="/settings/edit">Edit</a>
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="Category" >
+            <header >
+                <div class="CategoryHeader">Incomes Categories</div>
+            </header>
+            <div class="CategoryColumn" id="incomes">
+                <ul class="CategoryRow">
+               {#     
+                     #} 
+                </ul>
+            </div>
+            <footer>
+                <footer>
+						<span><a  href="#add-new-income" data-toggle="modal" type="button" class="CategoryFooter">Add New Income</a></span>
+					</footer>
+                
+            </footer>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="Category">
+            <header>
+                <div class="CategoryHeader">Expences Categories</div>
+            </header>
+            <div class="CategoryColumn" id="expenses">
+                <ul class="CategoryRow">
+                    {#       <?php
+                $expensesQuery = $db->query("SELECT id, name FROM expenses_category_assigned_to_users WHERE user_id = '$user_loggedin_id'");
+                $expenses = $expensesQuery->fetchAll();
+                    foreach($expenses as $expense){
+                    ?>
+                    <li>
+                        <?php echo ucwords($expense['name']); ?>
+                        <?php if($expense['name']!= $defaultCategory){ ?>
+                        <div class='editDeleteSpan'>
+                            <a href="#editExpenceModal<?php echo $expense['id']; ?>" data-toggle="modal" ><i class='fas fa-pencil-alt edit_btn'></i></a>  
+                            <a href="#delExpenceModal<?php echo $expense['id']; ?>" data-toggle="modal" ><i class='far fa-trash-alt'></i></a>
+                            <?php include('button.php'); ?>
+                        </div>
+                        <?php } ?>
+                    </li>
+                    <?php
+                    }
+                    ?> #}
+                </ul>
+            </div>
+            <footer>
+                <span><a  href="#add-new-expence" data-toggle="modal" type="button" class="CategoryFooter">Add New Expence</a></span>
+            </footer>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="Category">
+            <header>
+                <div class="CategoryHeader" >Payment Methods</div>
+            </header>
+            <div class="CategoryColumn" id="paymentMethods">
+                <ul class="CategoryRow">
+                    {#  <?php
+                    $paymentMethodQuery = $db->query("SELECT id, name FROM payment_methods_assigned_to_users WHERE user_id = '$user_loggedin_id'");
+                    $paymentMethods = $paymentMethodQuery->fetchAll();
+                    foreach($paymentMethods as $paymentMethod){
+                        ?>
+                        <li>
+                            <?php echo ucwords($paymentMethod['name']); ?>
+                            <div class='editDeleteSpan'>
+                                <a href="#editPaymentModal<?php echo $paymentMethod['id']; ?>" data-toggle="modal" ><i class='fas fa-pencil-alt edit_btn'></i></a>  
+                                <a href="#delPaymentModal<?php echo $paymentMethod['id']; ?>" data-toggle="modal" ><i class='far fa-trash-alt'></i></a>
+                                <?php include('button.php'); ?>
+                            </div>
+                        </li>
+                        <?php
+                        }
+                    ?> #}
+                </ul>
+                </div>
+                 <footer>
+                <span><a  href="#add-new-payment-method" data-toggle="modal" type="button" class="CategoryFooter">Add New Payment</a></span>
+            </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
