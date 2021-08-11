@@ -9,34 +9,52 @@
     
     $( document ).ready(function() {
         
-        $.ajax({
-            type: 'GET',
-            url: '/settings/display',
-            dataType: 'JSON',
-            success: function(response){
-                var resultIncomesCategories ='';
-                var resultExpenseCategories ='';
-                var resultPaymentMethodCategories ='';
-                var container = $('')
+        // $.ajax({
+        //     type: 'GET',
+        //     url: '/settings/display',
+        //     dataType: 'JSON',
+        //     success: function(response){
+        //         var resultIncomesCategories ='';
+        //         var resultExpenseCategories ='';
+        //         var resultPaymentMethodCategories ='';
+        //         var container = $('')
                
-                        $.each(response.getIncomesCategoryAssignedToUser, function (i, val) {
-                            container.append(val)
-                            resultIncomesCategories += "<li>" + val['name'] +  "</li>";
-                        })
-                        $('#incomes').html(resultIncomesCategories);     
-                        $.each(response.getExpensesCategoryAssignedToUser, function (i, val) {
-                            container.append(val)
-                             resultExpenseCategories += "<li>" + val['name'] +  "</li>";
-                        })
-                        $('#expenses').html(resultExpenseCategories);    
-                        $.each(response.getPaymentMethodsAssignedToUser, function (i, val) {
-                            container.append(val)
-                             resultPaymentMethodCategories += "<li>" + val['name'] +  "</li>";
-                        })
-                        $('#paymentMethods').html(resultPaymentMethodCategories); 
-            }
-        }) 
-               
+        //                 $.each(response.getIncomesCategoryAssignedToUser, function (i, val) {
+        //                     container.append(val)
+        //                     resultIncomesCategories += "<li>" + val['name'] +  "<div class = 'editDeleteSpanIncome'><a href='#edit-income-modal" + val['id'] + "'data-toggle='modal'><i class='fas fa-pencil-alt edit btn'></i></a></div>" + "</li>";
+        //                 })
+        //               //  $('#incomes').html(resultIncomesCategories);     
+        //                 $.each(response.getExpensesCategoryAssignedToUser, function (i, val) {
+        //                     container.append(val)
+        //                      resultExpenseCategories += "<li>" + val['name'] +  "</li>";
+        //                 })
+        //                // $('#expenses').html(resultExpenseCategories);    
+        //                 $.each(response.getPaymentMethodsAssignedToUser, function (i, val) {
+        //                     container.append(val)
+        //                      resultPaymentMethodCategories += "<li>" + val['name'] +  "</li>";
+        //                 })
+        //                 //$('#paymentMethods').html(resultPaymentMethodCategories); 
+        //     }
+        // }) 
+         
+        $(".editDeleteSpanIncome").click(function () {
+            var incomeId = $(this).attr('data-id');
+            var income = $(this).attr('data-info-income'); 
+            $('#form-edit-income').attr('action', 'edit-income?id=' + incomeId);
+            $('#income_id').val(income);
+        });
+        $(".editDeleteSpanExpense").click(function () {
+            var expenseId = $(this).attr('data-id');
+            var expense = $(this).attr('data-info-expense'); 
+            $('#form-edit-expense').attr('action', 'edit-expense?id=' + expenseId);
+            $('#expense_id').val(expense);
+        });
+        $(".editDeleteSpanPaymentMethod").click(function () {
+            var paymentMethodId = $(this).attr('data-id');
+            var paymentMethod = $(this).attr('data-info-expense'); 
+            $('#form-edit-payment-method').attr('action', 'edit-payment-method?id=' + paymentMethodId);
+            $('#payment_method_id').val(paymentMethod);
+        });
     });
 
 
@@ -45,97 +63,6 @@
 {% endblock %}
 
 {% block body %}
-
-<div class="modal fade" id="add-new-income"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-                    <h4 style="color:green"><i class="fas fa-plus"></i> Add category</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-            </div>
-            <div class="modal-body">
-            <div class="container-fluid">
-            <form method="POST" action="/settings/add-new-income">
-                    <div class="form-group">
-                    <label class="col-form-label" style="color:green"><i class="far fa-sticky-note"></i> Name of category:</label>
-                    <input type="text" class="form-control" name="income">
-                    </div>
-            </div> 
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
-                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
-                    <i class="fas fa-times"></i>
-                    Cancel
-                    </button>
-            </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Add New Expence-->
-<div class="modal fade" id="add-new-expence"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-                    <h4 style="color:green"><i class="fas fa-plus"></i> Add category</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-            </div>
-            <div class="modal-body">
-            <div class="container-fluid">
-            <form method="POST" action="/settings/add-new-expense">
-                    <div class="form-group">
-                    <label class="col-form-label" style="color:green"><i class="far fa-sticky-note"></i> Name of category:</label>
-                    <input type="text" class="form-control" name="expense">
-                    </div>
-            </div> 
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
-                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
-                    <i class="fas fa-times"></i>
-                    Cancel
-                    </button>
-            </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Add New Payment-->
-<div class="modal fade" id="add-new-payment-method"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-                    <h4 style="color:green"><i class="fas fa-plus"></i> Add category</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-            </div>
-            <div class="modal-body">
-            <div class="container-fluid">
-            <form method="POST" action="/settings/add-new-payment-method">
-                    <div class="form-group">
-                    <label class="col-form-label" style="color:green"><i class="far fa-sticky-note"></i> Name of category:</label>
-                    <input type="text" class="form-control" name="payment">
-                    </div>
-            </div> 
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
-                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
-                    <i class="fas fa-times"></i>
-                    Cancel
-                    </button>
-            </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
    <h1>Settings</h1>
    <dl class="dl-horizontal">
@@ -154,8 +81,17 @@
             </header>
             <div class="CategoryColumn" id="incomes">
                 <ul class="CategoryRow">
-               {#     
-                     #} 
+                   {% for getIncomeCategoryAssignedToUser in getIncomesCategoryAssignedToUser %}
+                   {% if getIncomeCategoryAssignedToUser['name'] != defaultCategory %}
+                   <li>
+                            <div class = 'editDeleteSpanIncome' data-id="{{ getIncomeCategoryAssignedToUser['id'] }}" data-info-income="{{ getIncomeCategoryAssignedToUser['name'] }}">
+                            {{ getIncomeCategoryAssignedToUser['name'] }} 
+                            <a href="#edit-income-modal" data-toggle='modal' type="button">
+                            <i class='fas fa-pencil-alt edit btn'></i></a></div>
+                    </li>
+                    {% endif %} 
+                   {% endfor %}
+                   <li> {{ defaultCategory }}</li>
                 </ul>
             </div>
             <footer>
@@ -173,24 +109,18 @@
             </header>
             <div class="CategoryColumn" id="expenses">
                 <ul class="CategoryRow">
-                    {#       <?php
-                $expensesQuery = $db->query("SELECT id, name FROM expenses_category_assigned_to_users WHERE user_id = '$user_loggedin_id'");
-                $expenses = $expensesQuery->fetchAll();
-                    foreach($expenses as $expense){
-                    ?>
+                    {% for getExpenseCategoryAssignedToUser in getExpensesCategoryAssignedToUser %}
+                    {% if getExpenseCategoryAssignedToUser['name'] != defaultCategory %}
                     <li>
-                        <?php echo ucwords($expense['name']); ?>
-                        <?php if($expense['name']!= $defaultCategory){ ?>
-                        <div class='editDeleteSpan'>
-                            <a href="#editExpenceModal<?php echo $expense['id']; ?>" data-toggle="modal" ><i class='fas fa-pencil-alt edit_btn'></i></a>  
-                            <a href="#delExpenceModal<?php echo $expense['id']; ?>" data-toggle="modal" ><i class='far fa-trash-alt'></i></a>
-                            <?php include('button.php'); ?>
-                        </div>
-                        <?php } ?>
-                    </li>
-                    <?php
-                    }
-                    ?> #}
+                             <div class = 'editDeleteSpanExpense' data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
+                                {{ getExpenseCategoryAssignedToUser['name'] }} 
+                             <a href="#edit-expense-modal" data-toggle='modal' type="button">
+                             <i class='fas fa-pencil-alt edit btn'></i></a>
+                            </div>
+                     </li>
+                     {% endif %} 
+                    {% endfor %}
+                    <li> {{ defaultCategory }}</li>
                 </ul>
             </div>
             <footer>
@@ -205,22 +135,17 @@
             </header>
             <div class="CategoryColumn" id="paymentMethods">
                 <ul class="CategoryRow">
-                    {#  <?php
-                    $paymentMethodQuery = $db->query("SELECT id, name FROM payment_methods_assigned_to_users WHERE user_id = '$user_loggedin_id'");
-                    $paymentMethods = $paymentMethodQuery->fetchAll();
-                    foreach($paymentMethods as $paymentMethod){
-                        ?>
-                        <li>
-                            <?php echo ucwords($paymentMethod['name']); ?>
-                            <div class='editDeleteSpan'>
-                                <a href="#editPaymentModal<?php echo $paymentMethod['id']; ?>" data-toggle="modal" ><i class='fas fa-pencil-alt edit_btn'></i></a>  
-                                <a href="#delPaymentModal<?php echo $paymentMethod['id']; ?>" data-toggle="modal" ><i class='far fa-trash-alt'></i></a>
-                                <?php include('button.php'); ?>
+                    {% for getPaymentMethodAssignedToUser in getPaymentMethodsAssignedToUser %}
+                    <li>
+                             <div class = 'editDeleteSpanPaymentMethod' data-id="{{ getPaymentMethodAssignedToUser['id'] }}" data-info-expense="{{ getPaymentMethodAssignedToUser['name'] }}">
+                            {{ getPaymentMethodAssignedToUser['name'] }} 
+                            <a href="#edit-payment-method-modal" data-toggle='modal' type="button">
+                             <i class='fas fa-pencil-alt edit btn'></i></a>
+                             <a href="#delete-payment-method-modal" data-toggle="modal" ><i class='far fa-trash-alt'></i></a>
                             </div>
-                        </li>
-                        <?php
-                        }
-                    ?> #}
+                             
+                     </li>
+                    {% endfor %}
                 </ul>
                 </div>
                  <footer>

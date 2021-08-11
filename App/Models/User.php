@@ -626,40 +626,99 @@ class User extends \Core\Model
    public function addNewIncomeCategory($new_income)
    {
         if($this->ifIncomeCategoryExists($new_income)) {
-            $sql = 'INSERT INTO incomes_category_assigned_to_users VALUES(NULL,:id,:new_income)';
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-            $stmt->bindValue(':new_income',$new_income,PDO::PARAM_STR);
-            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
-            return $stmt->execute();
+            if ($this->validateLengthOfCategoryInSettings($new_income)){
+                $sql = 'INSERT INTO incomes_category_assigned_to_users VALUES(NULL,:id,:new_income)';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':new_income',$new_income,PDO::PARAM_STR);
+                $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+                return $stmt->execute();
+            }
         }
    }
 
    public function addNewExpenseCategory($new_expense)
    {
         if($this->ifExpenseCategoryExists($new_expense)) {
-            $sql = 'INSERT INTO expenses_category_assigned_to_users VALUES(NULL,:id,:new_expense)';
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-            $stmt->bindValue(':new_expense',$new_expense,PDO::PARAM_STR);
-            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
-            return $stmt->execute();
+            if ($this->validateLengthOfCategoryInSettings($new_expense)){
+                $sql = 'INSERT INTO expenses_category_assigned_to_users VALUES(NULL,:id,:new_expense)';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':new_expense',$new_expense,PDO::PARAM_STR);
+                $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+                return $stmt->execute();
+            }
         }
    }
 
    public function addNewPaymentMethodCategory($new_payment_method)
    {
         if($this->ifPaymentMethodCategoryExists($new_payment_method)) {
-            $sql = 'INSERT INTO payment_methods_assigned_to_users VALUES(NULL,:id,:new_payment_method)';
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-            $stmt->bindValue(':new_payment_method',$new_payment_method,PDO::PARAM_STR);
-            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
-            return $stmt->execute();
+            if ($this->validateLengthOfCategoryInSettings($new_payment_method)){
+                $sql = 'INSERT INTO payment_methods_assigned_to_users VALUES(NULL,:id,:new_payment_method)';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':new_payment_method',$new_payment_method,PDO::PARAM_STR);
+                $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+                return $stmt->execute();
+            }
         }
    }
+    public function editIncome($idOfIncome, $newNameOfIncome) {
+        if($this->ifIncomeCategoryExists($newNameOfIncome)) {
+            if ($this->validateLengthOfCategoryInSettings($newNameOfIncome)){
+                $sql = 'UPDATE incomes_category_assigned_to_users 
+                    SET name=:edit_income 
+                    WHERE user_id=:id 
+                    AND id= :income_id ';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
 
-   protected function ifIncomeCategoryExists($new_income) {
+                $stmt->bindValue(':edit_income',$newNameOfIncome,PDO::PARAM_STR);
+                $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+                $stmt->bindValue(':income_id',$idOfIncome,PDO::PARAM_INT);
+                return $stmt->execute();
+            }
+        }
+    }
+    public function editExpense($idOfExpense, $newNameOfExpense) {
+       
+        if($this->ifExpenseCategoryExists($newNameOfExpense)) {
+            if ($this->validateLengthOfCategoryInSettings($newNameOfExpense)){
+                $sql = 'UPDATE expenses_category_assigned_to_users 
+                SET name=:edit_expense 
+                WHERE user_id=:id 
+                AND id= :expense_id ';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+
+                $stmt->bindValue(':edit_expense',$newNameOfExpense,PDO::PARAM_STR);
+                $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+                $stmt->bindValue(':expense_id',$idOfExpense,PDO::PARAM_INT);
+                return $stmt->execute();
+            }
+        }
+    }
+    public function editPaymentMethod($idOfPaymentMethod, $newNameOfPaymentMethod) {
+       
+        if($this->ifPaymentMethodCategoryExists($newNameOfPaymentMethod)) {
+            if ($this->validateLengthOfCategoryInSettings($newNameOfPaymentMethod)){
+                $sql = 'UPDATE payment_methods_assigned_to_users 
+                    SET name=:edit_payment_method
+                    WHERE user_id=:id 
+                    AND id= :payment_method_id ';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+
+                $stmt->bindValue(':edit_payment_method',$newNameOfPaymentMethod,PDO::PARAM_STR);
+                $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+                $stmt->bindValue(':payment_method_id',$idOfPaymentMethod,PDO::PARAM_INT);
+                return $stmt->execute();
+            }
+        }
+    }
+
+    protected function ifIncomeCategoryExists($new_income) {
         $sql =  'SELECT name from incomes_category_assigned_to_users
         WHERE name = :new_income
         AND user_id = :id';
@@ -675,14 +734,9 @@ class User extends \Core\Model
         $this->errors[] = 'A category name exists.';
         return 0;
         }
-        //make validation method 
-        if (strlen($new_income) > 20 || strlen($new_income) < 3) {
-        $this->errors[] = "A category name must have characters between 3 and 20.";
-        return 0;
-        }
         return 1;
    }
-
+   
    protected function ifExpenseCategoryExists($new_expence) {
         $sql =  'SELECT name from expenses_category_assigned_to_users
         WHERE name = :new_expence
@@ -699,11 +753,6 @@ class User extends \Core\Model
         $this->errors[] = 'A category name exists.';
         return 0;
         }
-        //make validation method 
-        if (strlen($new_expence) > 20 || strlen($new_expence) < 3) {
-        $this->errors[] = "A category name must have characters between 3 and 20.";
-        return 0;
-        }
         return 1;
     }
     protected function ifPaymentMethodCategoryExists($new_payment_method) {
@@ -715,20 +764,25 @@ class User extends \Core\Model
         $stmt->bindValue(':new_payment_method',$new_payment_method,PDO::PARAM_STR);
         $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
         $stmt->execute();
-        //if(!$stmt) throw new Exception($db->error);
         $amount_of_category_payment_method = $stmt->rowCount();
-
+        // echo $amount_of_category_payment_method;
+        //     exit;
         if ($amount_of_category_payment_method) {
         $this->errors[] = 'A category name exists.';
         return 0;
         }
-        //make validation method 
-        if (strlen($new_payment_method) > 20 || strlen($new_payment_method) < 3) {
-        $this->errors[] = "A category name must have characters between 3 and 20.";
-        return 0;
+        return 1;
+    }
+
+    protected function validateLengthOfCategoryInSettings($text) 
+    {
+        if (strlen($text) > 20 || strlen($text) < 3) {
+            $this->errors[] = "A category name must have characters between 3 and 20.";
+            return 0;
         }
         return 1;
     }
+    
 }
 
 
