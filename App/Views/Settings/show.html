@@ -37,23 +37,42 @@
         //     }
         // }) 
          
-        $(".editDeleteSpanIncome").click(function () {
+        $(".editIncome").click(function () {
             var incomeId = $(this).attr('data-id');
             var income = $(this).attr('data-info-income'); 
             $('#form-edit-income').attr('action', 'edit-income?id=' + incomeId);
             $('#income_id').val(income);
         });
-        $(".editDeleteSpanExpense").click(function () {
+        $(".deleteIncome").click(function () {
+            var incomeId = $(this).attr('data-id');
+            var income = $(this).attr('data-info-income'); 
+            $('#form-delete-income').attr('action', 'delete-income?id=' + incomeId);
+            document.getElementById('delete-income').innerHTML = income; 
+        });
+        $(".editExpense").click(function () {
             var expenseId = $(this).attr('data-id');
             var expense = $(this).attr('data-info-expense'); 
             $('#form-edit-expense').attr('action', 'edit-expense?id=' + expenseId);
             $('#expense_id').val(expense);
         });
-        $(".editDeleteSpanPaymentMethod").click(function () {
+        $(".deleteExpense").click(function () {
+            var expenseId = $(this).attr('data-id');
+            var expense = $(this).attr('data-info-expense'); 
+            $('#form-delete-expense').attr('action', 'delete-expense?id=' + expenseId);
+            document.getElementById('delete-expense').innerHTML = expense; 
+        });
+        $(".editPaymentMethod").click(function () {
             var paymentMethodId = $(this).attr('data-id');
-            var paymentMethod = $(this).attr('data-info-expense'); 
+            var paymentMethod = $(this).attr('data-info-payment-method'); 
             $('#form-edit-payment-method').attr('action', 'edit-payment-method?id=' + paymentMethodId);
             $('#payment_method_id').val(paymentMethod);
+        });
+        $(".deletePaymentMethod").click(function () {
+            var paymentMethodId = $(this).attr('data-id');
+            var paymentMethod = $(this).attr('data-info-payment-method'); 
+            $('#form-delete-payment-method').attr('action', 'delete-payment-method?id=' + paymentMethodId);
+            //$('#payment_method_id').val(paymentMethod);
+            document.getElementById('delete-payment-method').innerHTML = paymentMethod; 
         });
     });
 
@@ -84,10 +103,14 @@
                    {% for getIncomeCategoryAssignedToUser in getIncomesCategoryAssignedToUser %}
                    {% if getIncomeCategoryAssignedToUser['name'] != defaultCategory %}
                    <li>
-                            <div class = 'editDeleteSpanIncome' data-id="{{ getIncomeCategoryAssignedToUser['id'] }}" data-info-income="{{ getIncomeCategoryAssignedToUser['name'] }}">
-                            {{ getIncomeCategoryAssignedToUser['name'] }} 
-                            <a href="#edit-income-modal" data-toggle='modal' type="button">
-                            <i class='fas fa-pencil-alt edit btn'></i></a></div>
+                    <div class = 'editDeleteSpan'>
+                        {{ getIncomeCategoryAssignedToUser['name'] }} 
+                        <span class="editIncome" data-id="{{ getIncomeCategoryAssignedToUser['id'] }}" data-info-income="{{ getIncomeCategoryAssignedToUser['name'] }}">
+                            <a href="#edit-income-modal" data-toggle='modal' type="button"><i class='fas fa-pencil-alt edit btn'></i></a></span>
+                            <span class = 'deleteIncome' data-id="{{ getIncomeCategoryAssignedToUser['id'] }}" data-info-income="{{ getIncomeCategoryAssignedToUser['name'] }}">
+                                <a href="#delete-income-modal" data-toggle="modal" >
+                                <i class='far fa-trash-alt'></i></a></span>
+                            </div>
                     </li>
                     {% endif %} 
                    {% endfor %}
@@ -112,10 +135,14 @@
                     {% for getExpenseCategoryAssignedToUser in getExpensesCategoryAssignedToUser %}
                     {% if getExpenseCategoryAssignedToUser['name'] != defaultCategory %}
                     <li>
-                             <div class = 'editDeleteSpanExpense' data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
+                             <div class = 'editDeleteSpan'>
                                 {{ getExpenseCategoryAssignedToUser['name'] }} 
-                             <a href="#edit-expense-modal" data-toggle='modal' type="button">
-                             <i class='fas fa-pencil-alt edit btn'></i></a>
+                             <span class="editExpense" data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
+                                <a href="#edit-expense-modal"  data-toggle='modal' type="button">
+                                <i class='fas fa-pencil-alt edit btn'></i></a></span>
+                             <span class = 'deleteExpense' data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
+                                <a href="#delete-expense-modal" data-toggle="modal" >
+                                <i class='far fa-trash-alt'></i></a></span>
                             </div>
                      </li>
                      {% endif %} 
@@ -136,16 +163,20 @@
             <div class="CategoryColumn" id="paymentMethods">
                 <ul class="CategoryRow">
                     {% for getPaymentMethodAssignedToUser in getPaymentMethodsAssignedToUser %}
+                    {% if getPaymentMethodAssignedToUser['name'] != defaultCategoryOfPaymentMethods %}
                     <li>
-                             <div class = 'editDeleteSpanPaymentMethod' data-id="{{ getPaymentMethodAssignedToUser['id'] }}" data-info-expense="{{ getPaymentMethodAssignedToUser['name'] }}">
+                             <div class = 'editDeleteSpan'>
                             {{ getPaymentMethodAssignedToUser['name'] }} 
-                            <a href="#edit-payment-method-modal" data-toggle='modal' type="button">
-                             <i class='fas fa-pencil-alt edit btn'></i></a>
-                             <a href="#delete-payment-method-modal" data-toggle="modal" ><i class='far fa-trash-alt'></i></a>
+                             <span class = 'editPaymentMethod' data-id="{{ getPaymentMethodAssignedToUser['id'] }}" data-info-payment-method="{{ getPaymentMethodAssignedToUser['name'] }}">
+                                 <a href="#edit-payment-method-modal" data-toggle='modal' type="button">
+                             <i class='fas fa-pencil-alt edit btn'></i></a></span>
+                             <span class = 'deletePaymentMethod' data-id="{{ getPaymentMethodAssignedToUser['id'] }}" data-info-payment-method="{{ getPaymentMethodAssignedToUser['name'] }}">
+                                 <a href="#delete-payment-method-modal" data-toggle="modal" ><i class='far fa-trash-alt'></i></a></span>
                             </div>
-                             
                      </li>
+                     {% endif %} 
                     {% endfor %}
+                    <li> {{ defaultCategoryOfPaymentMethods }}</li>
                 </ul>
                 </div>
                  <footer>

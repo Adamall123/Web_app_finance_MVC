@@ -717,7 +717,39 @@ class User extends \Core\Model
             }
         }
     }
+    public function deleteIncome($idOfIncome) {
+        $sql = 'DELETE FROM incomes_category_assigned_to_users 
+            WHERE user_id=:id 
+            AND id= :income_id ';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
 
+        $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+        $stmt->bindValue(':income_id',$idOfIncome,PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    public function deleteExpense($idOfExpense) {
+        $sql = 'DELETE FROM expenses_category_assigned_to_users 
+            WHERE user_id=:id 
+            AND id= :expense_id ';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+        $stmt->bindValue(':expense_id',$idOfExpense,PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    public function deletePaymentMethod($idOfPaymentMethod) {
+                $sql = 'DELETE FROM payment_methods_assigned_to_users 
+                    WHERE user_id=:id 
+                    AND id= :payment_method_id ';
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+
+                $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+                $stmt->bindValue(':payment_method_id',$idOfPaymentMethod,PDO::PARAM_INT);
+                return $stmt->execute();
+    }
     protected function ifIncomeCategoryExists($new_income) {
         $sql =  'SELECT name from incomes_category_assigned_to_users
         WHERE name = :new_income
