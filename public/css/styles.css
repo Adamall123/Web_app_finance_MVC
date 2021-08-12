@@ -1,15 +1,499 @@
+
+
 html {
     color: white;
     font-family: 'Libre Baskerville', 'Arial', sans-serif;
     min-height: 100%;
    
 }
+a{
+    cursor: pointer;
+}
 body {
-    /*background:linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../img/business2.jpg");*/
-    background-color: #38b6ff; 
+    background-color: #38b6ff;
+     /*background:linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../img/business2.jpg");*/
+    margin:0;
+    color: white;
     padding: 0;
 	margin:0;
     height: 100%;
     width: 100%;
     font-size: 20px;
 }
+
+header {
+    padding-bottom: 130px;
+	
+}
+
+
+#overlay {
+
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.slider{
+    text-align: center;
+}
+.slider h5{
+    background-color: #0082ce;
+     border-radius: 10px;
+}
+.slider  p{
+    color:white;
+    background-color: #00326c;
+    font-size: 24px; 
+     border-radius: 10px;
+}
+#overlay img {
+    width: 120px;
+    height: 120px;
+    float: left;
+    
+}
+
+#office img {
+    width: 100%;
+}
+
+#icon img {
+    width: 20%;
+}
+.header-icon{
+    margin-right: 10px;
+    float: right;
+}
+
+header .container  h1 {
+    color: #9bddff;
+    margin-top: 50px;
+    float: left;
+}
+
+ h1 .container{
+    color: #9bddff;
+}
+
+ h4 .container{
+    color: white;
+    padding-top: 30px;
+}
+
+.button1 {
+    border-radius: 25px;
+    color: white;
+    margin-left: 50px;
+    font-size: 26px;
+}
+
+.row p {
+    text-align: justify;
+}
+
+.siteFooter{
+    
+    bottom:0;
+    line-height: 200%;
+    background-color: #225071;
+    font-size: 15px;
+    height: 40px;
+    width: 100%;
+	padding: 10px;
+}
+@media screen and (max-width: 600px) {
+    body{
+        font-size: 18px;
+    }
+}
+/* /////////////////////////////////////////////////////////////////////////    MAINPAGE    ///////////////////////////////////////////////////////////////////////// */
+.topnav {
+  overflow: hidden;
+  background-color: #238be3;
+    margin-bottom: 20px;
+    
+    text-align: center;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 34px 36px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.topnav a:hover {
+  
+  color: #d1d1d1;
+}
+
+.topnav a.active {
+  background-color: #72cff8;
+  color: white;
+}
+
+.topnav .icon {
+  display: none;
+}
+/* Right-aligned section inside the top navigation */
+
+@media screen and (max-width: 1310px) {
+    .topnav{
+        padding-left:0;
+    }
+    .topnav-right {
+  margin-left: 0px;
+}
+}
+@media screen and (max-width: 850px) {
+    
+  .topnav a{display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+    .topnav-right {
+       display: none;
+} 
+}
+@media screen and (max-width: 810px) {
+    .topnav {
+    margin-bottom: 10px;
+}
+
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .topnav.responsive .topnav-right {
+    float: none;
+    display: block;
+    text-align: left;
+  }  
+}
+
+
+
+.text-center{
+    cursor: pointer;
+    padding-bottom: 30px;
+   
+}
+.text-center:hover{
+     background-color:#72cff8;
+    border-radius: 25px;
+}
+
+.iconmain {
+   width: 100%;
+}
+/* /////////////////////////////////////////////////////////////////////////    BALANCE    ///////////////////////////////////////////////////////////////////////// */
+#setDateRangeForm{
+    background-color: #0a949a;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 450px;
+    border-radius: 10px;
+    border: 1px solid white;
+    font-size: 18px;
+}
+form {
+    display: block;
+    margin-top: 0em;
+}
+#setDateRangeList{
+    list-style: none;
+    margin-bottom: 15px;
+
+    border-radius: 10px;
+    padding: 15px;
+}
+section{
+    margin:0;
+    padding:0;
+}
+section .Category .CategoryColumn .CategoryRow li {
+    background-color: #818181;
+    border-radius: 10px;
+}
+#balanceWindow {
+    height: 120px;
+    width: 100%;
+    background-color: green;
+    border-radius: 10px;
+    border: 2px solid #38b6ff;
+    font-size: 25px;
+    line-height: 200%;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.row button .Category .CategoryHeader {
+    background-color: #d18700;
+}
+.line{
+    border-bottom: 1px solid white;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+/* /////////////////////////////////////////////////////////////////////////    INCOME    ///////////////////////////////////////////////////////////////////////// */
+#incomePanel {
+    margin: auto;
+    width: 350px;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+#upperIncomePanel {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 10px;
+    background-color: #238be3;
+    border-radius: 10px;
+}
+
+#upperIncomePanelText {
+    float: left;
+    width: 100%;
+    height: 60px;
+    background-color: #238be3;
+    text-align: center;
+    font-size: 28px;
+    line-height: 225%;
+    border-radius: 10px;
+}
+
+
+.lowerPanel {
+    width: 350px;
+    background-color: #38b6ff;
+    border-radius: 10px;
+    padding: 20px 0;
+    margin-bottom: 50px;
+    border-style: solid;
+}
+
+form {
+    display: block;
+    margin-top: 0em;
+}
+
+.inputPanel {
+    width: 340px;
+    text-align: center;
+    height: 40px;
+    margin: 20px auto;
+}
+
+button, input {
+    overflow: visible;
+}
+
+button, input, optgroup, select, textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.addButton {
+    margin-left: 35px;
+    margin-top: 15px;
+    width: 125px;
+    height: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #8bcaff;
+    border-radius: 10px;
+}
+.cancelButton {
+    margin-left: 25px;
+    width: 125px;
+    height: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #ffb100;
+    border-radius: 10px;
+}
+button, input {
+    overflow: visible;
+}
+
+@media screen and (max-width: 600px) {
+    
+}
+/* /////////////////////////////////////////////////////////////////////////    EXPENCE    ///////////////////////////////////////////////////////////////////////// */
+#expensePanel {
+    margin: auto;
+    width: 350px;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+#upperExpensePanel {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 10px;
+    background-color: #238be3;
+    border-radius: 10px;
+}
+#upperExpensePanelText {
+    float: left;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+    font-size: 28px;
+    line-height: 225%;
+    border-radius: 10px;
+}
+
+
+.mt-1, .my-1 {
+    margin-top: .25rem!important;
+}
+
+
+/* /////////////////////////////////////////////////////////////////////////    SETTINGS    ///////////////////////////////////////////////////////////////////////// */
+#profileDetails{
+    min-height: 145px;
+    border: 1px solid #38b6ff;
+    border-radius: 10px;
+    background-color: #82cafd;
+}
+#profileDetailsList{
+    padding-top: 40px;
+    list-style: none;
+}
+dl, ol, ul{
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+#profileSetting{
+    min-height: 145px;
+    border-radius: 10px;
+     
+}
+#profileSettingsList{
+    list-style: none;
+    width: 100%;
+    
+}
+a li{
+    width: 100%;
+    background-color: #82cafd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+a {
+    text-decoration: unset;
+    color:white;
+}
+
+a:hover{
+    text-decoration: unset;
+    color: white;
+}
+
+.Category{
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+	min-height: 200px;
+}
+.Category Header{
+    padding-bottom: 10px;
+}
+.CategoryHeader {
+    text-align: center;
+    font-size: 30px;
+    line-height: 175%;
+    width: 100%;
+    height: 50px;
+    font-weight: 600;
+    border: 1px solid #38b6ff;
+    border-radius: 10px;
+    background-color:#0563af;
+}
+.CategoryColumn{
+    margin-top: 5px;
+    width: 100%;
+    border-radius: 10px;
+}
+.CategoryRow{
+    list-style-type: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+.Category .CategoryColumn .CategoryRow li {
+    background-color:#0a949a;
+    text-align: center;
+    padding-left: 40px;
+    margin-bottom: 2px;
+    border-radius: 25px;
+}
+.editDeleteSpan{
+    float: right;
+    margin-right: 15px;
+    margin-left: -45px;
+}
+.CategoryFooter{
+    clear: both;
+    text-align: center;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #38b6ff;
+    border-radius: 25px;
+    line-height: 150%;
+    margin-bottom: 5px;
+    background-color: #238be3;
+}
+
+
+@media screen and (max-width: 990px) {
+  a li{
+    border-radius: 10px;
+    margin-top:10px;
+    text-align: left;
+}
+}
+
+.error {
+	color: red;
+	font-size: 14px;
+	margin-top: 10xp;
+	margin-bottom: 10px;
+}
+
+.box select {
+  background-color: #0a949a;
+  color: white;
+  padding: 12px;
+  width: 250px;
+  border: none;
+  font-size: 20px;
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+}
+
+.box select option {
+  padding: 30px;
+}
+
+

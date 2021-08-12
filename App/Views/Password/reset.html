@@ -24,7 +24,10 @@
 
             $('#inputPassword').hideShowPassword({
             show: false,
-            innerToggle: 'focus'
+            innerToggle: 'focus',
+            toggle: {
+                className: 'btn-warning'
+            }
             });
         });
       
@@ -33,26 +36,37 @@
 {% endblock %}
 
 {% block body %}
-
-    <h1>Reset</h1>
-    {% if user.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <form method="post"  id="formPassword" action="/Password/reset-password">
-        <input type="hidden" name="token" value = "{{ token }}">
-        <div class="form-group">
-            <label for="inputPassword"> Password </label>
-           <input type="password" id="inputPassword" name="password" placeholder="Password" required
-           class="form-control"/>
+<link rel="stylesheet" href="/vendors/css/registerStyle.css" />
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="wrapper">
+                    <h1>Reset</h1>
+                    {% if user.errors is not empty %}
+                        <p>Errors:</p>
+                        <ul>
+                            {% for error in user.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <form method="post"  id="formPassword" action="/Password/reset-password">
+                        <input type="hidden" name="token" value = "{{ token }}">
+                        <div class="form-group">
+                            <label for="inputPassword"> Password </label>
+                           <input type="password" id="inputPassword" name="password" placeholder="Password" required
+                           class="form-control"/>
+                        </div>
+                      
+                        <button type="submit" class="btn btn-warning">Reset</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      
-        <button type="submit" class="btn btn-warning">Reset</button>
-    </form>
+    </div>
+</main>
+    
 
    
 

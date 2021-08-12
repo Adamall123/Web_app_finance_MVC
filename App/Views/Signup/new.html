@@ -7,7 +7,7 @@
     <script src="/js/app.js"></script>
     <script>
         $(document).ready(function(){
-            $('#formSignup').validate({
+            $('.form').validate({
               rules: {
                   name: 'required',
                   email: {
@@ -25,12 +25,19 @@
                       email: {
                           remote: 'email already taken'
                       }
-                  }
+                  },
+                  errorContainer: "#error",
+                  errorLabelContainer: "#error",
+               
             });
 
             $('#inputPassword').hideShowPassword({
             show: false,
-            innerToggle: 'focus'
+            innerToggle: 'focus',
+            toggle: {
+                className: 'btn-warning'
+            }
+
             });
         });
       
@@ -39,8 +46,8 @@
 {% endblock %}
 
 {% block body %}
-
-    <h1>Sign up</h1>
+<link rel="stylesheet" href="/vendors/css/registerStyle.css" />
+    
     {% if user.errors is not empty %}
         <p>Errors:</p>
         <ul>
@@ -49,26 +56,42 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <form method="post" action="/signup/create" id="formSignup">
-        <div class="form-group">
-            <label for="inputName"> Name </label>
-            <input id="inputName" name="name" placeholder="Name" autofocus value="{{ user.name }}" required
-            class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label for="inputEmail"> Email address </label>
-            <input id="inputEmail" name="email" placeholder="email address"value="{{ user.email }}" required type="email" required type="email"
-            class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label for="inputPassword"> Password </label>
-           <input type="password" id="inputPassword" name="password" placeholder="Password" required
-           class="form-control"/>
-        </div>
-      
-        <button type="submit" class="btn btn-warning">Sign up</button>
-    </form>
 
-    <a href="/login">Login</a>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="wrapper">
+                        <div class="title">
+                            Create a new finanse manager account.
+                        </div>
+                            <form class="form" method="post" action="/signup/create">
+                                <div class="inputfield">
+                                    <label for="inputName"> Name </label>
+                                    <input id="inputName" name="name" placeholder="Name" autofocus value="{{ user.name }}" required
+                                    class="input"/>
+                                </div>
+                                <div class="inputfield">
+                                    <label for="inputEmail"> Email address </label>
+                                    <input id="inputEmail" name="email" placeholder="email address"value="{{ user.email }}" required type="email" required type="email"
+                                    class="input"/>
+                                </div> 
+                                <div class="inputfield">
+                                    <label for="inputPassword"> Password </label>
+                                   <input type="password" id="inputPassword" name="password" placeholder="Password" required
+                                   class="input"/>
+                                </div> <div id="error"></div>
+                               
+                                <div class="inputfield btn-warning">
+                                    <button type="submit" class="btn btn-warning">Sign up</button>
+                                </div>
+                                <p><a href="/login">Already have an account? Log in</a></p>
+                                
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
 {% endblock %}

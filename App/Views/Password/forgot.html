@@ -3,17 +3,25 @@
 {% block title %}Forgot password{% endblock %}
 
 {% block body %}
-
-    <h1>Request password reset</h1>
-    <form method="post" action="/password/request-reset">
-        <div class="form-group">
-            <label for="inputEmail"></label>
-            <input type="email" id="inputEmail" name="email" placeholder="Email address" autofocus required 
-            class="form-control"/>
+<link rel="stylesheet" href="/vendors/css/registerStyle.css" />
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="wrapper">
+                  <h1>Request password reset</h1>
+                    <form  method="post" action="/password/request-reset">
+                    <div class="form-group">
+                        <label for="inputEmail"></label>
+                        <input type="email" id="inputEmail" name="email" placeholder="Email address" autofocus required 
+                        class="form-control"/>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Send password reset</button>
+                </form>
+        <a href="/Login/new">Login</a>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-warning">Send password reset</button>
-    </form>
-
-    <a href="/Login/new">Login</a>
-
+    </div>
+</main>
 {% endblock %}

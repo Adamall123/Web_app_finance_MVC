@@ -6,43 +6,48 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/vendors/css/normalize.css">
+    
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <header>
+        <div class="container">
+            <div id="overlay"><img src="/img/logoTree.gif" alt="logo" /></div>
+            <h1>HomeSavings</h1>
+        </div>
+    </header>
+      {% if current_user %}
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #238be3;">
             <div class="container-fluid">
-              <a class="navbar-brand" href="/">Finance</a>
+              <a class="navbar-brand" href="/"><i class="fas fa-home "  style="color:lightgray"></i>Home</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    {% if current_user %}
+                <ul class="navbar-nav justify-content-end">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/balance/show">Balance</a>
+                    <a class="nav-link" href="/balance/show"><i class="fas fa-chart-pie" style="color:orange"></i>Balance</a>
                     <li class="nav-item">
                   <li class="nav-item">
-                    <a class="nav-link" href="/income/index">Income</a>
+                    <a class="nav-link" href="/income/index"><i class="fas fa-coins" style="color:yellow"></i>Income</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/expense/index">Expence</a>
+                    <a class="nav-link" href="/expense/index"><i class="fas fa-shopping-cart" style="color:lightgreen"></i>Expence</a>
                   </li>
-                        <a class="nav-link" href="/settings/show">Settings</a>
+                        <a class="nav-link" href="/settings/show"><i class="fas fa-cogs" style="color:gray"></i>Settings</a>
                       </li>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/logout">Log out</a>
+                    <a class="nav-link topnav-right" href="/logout"><i class="fas fa-sign-out-alt" style="color: white"></i>Log out</a>
                   </li>
-                  {% endif %}
+                 
                 </ul>
               </div>
             </div>
         </nav>
-       
+        {% endif %}
 <!-- Add New Income-->
 <div class="modal fade" id="add-new-income"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
