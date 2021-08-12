@@ -39,7 +39,10 @@
 
             $('#inputPassword').hideShowPassword({
             show: false,
-            innerToggle: 'focus'
+            innerToggle: 'focus',
+            toggle: {
+                className: 'btn-warning'
+            }
             });
         });
       
@@ -58,26 +61,35 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <form method="post" id="formSettings" action="/settings/update">
-        <div class="form-group">
-            <label for="inputName"> Name </label>
-            <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required
-            class="form-control"/>
+    <link rel="stylesheet" href="/vendors/css/registerStyle.css" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="wrapper">
+                    <form method="post" id="formSettings" action="/settings/update">
+                        <div class="form-group">
+                            <label for="inputName"> Name </label>
+                            <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required
+                            class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail"> Email address </label>
+                            <input id="inputEmail" name="email" placeholder="email address"value="{{ user.email }}" required type="email"
+                            class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword"> Password </label>
+                        <input type="password" id="inputPassword" name="password" placeholder="Password"
+                                    aria-describedby="helpBlock" class="form-control"/>
+                        <span id="helpBlock" class="help-block">Leave blank to keep current password</span>
+                        </div>
+                    
+                        <button type="submit" class="btn btn-warning">Save</button>
+                        <a href="/settings/show">Cancel</a>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="inputEmail"> Email address </label>
-            <input id="inputEmail" name="email" placeholder="email address"value="{{ user.email }}" required type="email"
-            class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputPassword"> Password </label>
-           <input type="password" id="inputPassword" name="password" placeholder="Password"
-                    aria-describedby="helpBlock" class="form-control"/>
-           <span id="helpBlock" class="help-block">Leave blank to keep current password</span>
-        </div>
-      
-        <button type="submit" class="btn btn-warning">Save</button>
-        <a href="/settings/show">Cancel</a>
-    </form>
+    </div>
     
 {% endblock %}

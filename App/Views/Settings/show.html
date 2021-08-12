@@ -83,16 +83,26 @@
 
 {% block body %}
 
-   <h1>Settings</h1>
-   <dl class="dl-horizontal">
-       <dt>Name</dt>
-       <dd>{{ user.name }}</dd>
-       <dt>Email</dt>
-       <dd>{{ user.email }}</dd>
-   </dl>
-<a href="/settings/edit">Edit</a>
-
 <div class="row">
+    <div class="col-lg-12">
+        <div id="profileDetails">
+            <div class="row">
+                <div class="col" style="border-right: 0.5px solid #38b6ff;">
+                    <div id="overlay"><img src="/img/profile.png" alt="profile" /></div>
+                </div>
+                <div class="col">
+                    <ul id="profileDetailsList">
+                       <li>
+                        {{ user.name }}
+                    </li>
+                        <li>{{ user.email }}	
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span><a  href="/settings/edit"  type="button" class="CategoryFooter">Edit</a></span>
+    </div>
     <div class="col-lg-4">
         <div class="Category" >
             <header >
@@ -168,7 +178,7 @@
                      </li>
                      {% endif %} 
                     {% endfor %}
-                     <li> {{ defaultCategory }}</li>
+                     <li> {{ defaultCategoryOfPaymentMethods }}</li>
                 </ul>
                 
                  <footer>
