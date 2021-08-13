@@ -55,7 +55,7 @@
                         data.addRow([my_2d_income[i][0], parseInt(my_2d_income[i][1])]);
                         // above row adds the JavaScript two dimensional array data into required chart format
                         var options = {title:'Costs Incomes',
-                                    width:600,
+                                    width:450,
                                     height:500,
                                     titleTextStyle: {color:'#FFFFFF'}, 
                                     backgroundColor: {fill:'transparent'},
@@ -74,7 +74,7 @@
                         data.addRow([my_2d_expense[i][0], parseInt(my_2d_expense[i][1])]);
                         // above row adds the JavaScript two dimensional array data into required chart format
                         var options = {title:'Costs Expenses',
-                                    width:600,
+                                    width:450,
                                     height:500,
                                     titleTextStyle: {color:'#FFFFFF'}, 
                                     backgroundColor: {fill:'transparent'},
@@ -139,7 +139,7 @@
                         data.addRow([my_2d_income[i][0], parseInt(my_2d_income[i][1])]);
                         // above row adds the JavaScript two dimensional array data into required chart format
                         var options = {title:'Costs Incomes',
-                                    width:600,
+                                    width:450,
                                     height:500,
                                     titleTextStyle: {color:'#FFFFFF'}, 
                                     backgroundColor: {fill:'transparent'},
@@ -159,7 +159,7 @@
                         data.addRow([my_2d_expense[i][0], parseInt(my_2d_expense[i][1])]);
                         // above row adds the JavaScript two dimensional array data into required chart format
                         var options = {title:'Costs Expenses',
-                                    width:600,
+                                    width:450,
                                     height:500,
                                     titleTextStyle: {color:'#FFFFFF'}, 
                                     backgroundColor: {fill:'transparent'},
@@ -225,20 +225,21 @@
                    </div>
                </div>  
 			</div>
-        <div style="clear: both;"></div>
+        
         <div id="balance"></div>
 
         <section>
             <div class="row">
-                <div class="col-xl-6">
+                <div class="col-lg-6">
                      <div id="chart_div_incomes"></div>
                 </div>
-                <div class="col-xl-6">
+                <div class="col-lg-6">
                      <div id="chart_div_expenses"></div>
                 </div>
             </div>
+            </div>
         </section>
-	</div>
+	
 	</main>
 {% endblock %}
 
