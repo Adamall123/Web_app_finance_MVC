@@ -13,15 +13,16 @@ class Settings extends Authenticated
     {
         parent::before();
         $this->user = Auth::getUser();
+        $this->defaultCategory = "Another";
+        $this->defaultCategoryOfPaymentMethods = 'Cash';
     }
     public function showAction()
     {
-        $defaultCategory = "Another";
-        $defaultCategoryOfPaymentMethods = 'Cash';
+       
         View::renderTemplate('Settings/show.html', [
             'user' => $this->user,
-            'defaultCategory' => $defaultCategory,
-            'defaultCategoryOfPaymentMethods' => $defaultCategoryOfPaymentMethods,
+            'defaultCategory' => $this->defaultCategory,
+            'defaultCategoryOfPaymentMethods' => $this->defaultCategoryOfPaymentMethods,
             'getIncomesCategoryAssignedToUser' => $this->user->getIncomesCategoryAssignedToUser(),
             'getExpensesCategoryAssignedToUser' => $this->user->getExpensesCategoryAssignedToUser(),
             'getPaymentMethodsAssignedToUser' => $this->user->getPaymentMethodsAssignedToUser()
@@ -130,7 +131,7 @@ class Settings extends Authenticated
     public function deleteIncomeAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->deleteIncome($paramIDFromURL)) {
+        if ($this->user->deleteIncomeAndUpdateIncomeCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory)) {
             Flash::addMessage('A category has been deleted.');
             $this->redirect('/Settings/show');
         } else {
@@ -141,9 +142,10 @@ class Settings extends Authenticated
     public function deleteExpenseAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->deleteExpense($paramIDFromURL)) {
-            Flash::addMessage('A category has been deleted.');
-            $this->redirect('/Settings/show');
+        if ($this->user->deleteExpenseAndUpdateExpenseCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory)) {
+                
+                Flash::addMessage('A category has been deleted.');
+                $this->redirect('/Settings/show');
         } else {
             Flash::addMessage($this->user->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
@@ -152,7 +154,7 @@ class Settings extends Authenticated
     public function deletePaymentMethodAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->deletePaymentMethod($paramIDFromURL)) {
+        if ($this->user->deletePaymentMethodAndUpdatePaymenthMethodAssignedToUser($paramIDFromURL,$this->defaultCategoryOfPaymentMethods)) {
             Flash::addMessage('A category has been deleted.');
             $this->redirect('/Settings/show');
         } else {

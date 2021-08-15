@@ -170,3 +170,49 @@ Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
 Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
 #1 {main}
 Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 12:37:34 Europe/Berlin] Uncaught exception: 'ErrorException' with message 'Array to string conversion'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\App\Models\User.php(797): Core\Error::errorHandler(2, 'Array to string...', 'C:\\xampp\\htdocs...', 797)
+#1 C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Settings.php(145): App\Models\User->deleteExpense('486')
+#2 [internal function]: App\Controllers\Settings->deleteExpenseAction()
+#3 C:\xampp\htdocs\web_app_finance_MVC\Core\Controller.php(49): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php(123): Core\Controller->__call('deleteExpense', Array)
+#5 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('settings/delete...')
+#6 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\App\Models\User.php' on line 797
+[15-Aug-2021 12:55:31 Europe/Berlin] Uncaught exception: 'PDOException' with message 'SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\App\Models\User.php(808): PDOStatement->execute()
+#1 C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Settings.php(145): App\Models\User->deleteExpense('494', 'Another')
+#2 [internal function]: App\Controllers\Settings->deleteExpenseAction()
+#3 C:\xampp\htdocs\web_app_finance_MVC\Core\Controller.php(49): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php(123): Core\Controller->__call('deleteExpense', Array)
+#5 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('settings/delete...')
+#6 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\App\Models\User.php' on line 808
+[15-Aug-2021 12:55:42 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 13:01:09 Europe/Berlin] Uncaught exception: 'ErrorException' with message 'Undefined variable $nameOfDefaultCategory'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\App\Models\User.php(784): Core\Error::errorHandler(2, 'Undefined varia...', 'C:\\xampp\\htdocs...', 784)
+#1 C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Settings.php(134): App\Models\User->deleteIncome('128')
+#2 [internal function]: App\Controllers\Settings->deleteIncomeAction()
+#3 C:\xampp\htdocs\web_app_finance_MVC\Core\Controller.php(49): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php(123): Core\Controller->__call('deleteIncome', Array)
+#5 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('settings/delete...')
+#6 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\App\Models\User.php' on line 784
+[15-Aug-2021 13:05:35 Europe/Berlin] Uncaught exception: 'ErrorException' with message 'Undefined array key 0'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Settings.php(150): Core\Error::errorHandler(2, 'Undefined array...', 'C:\\xampp\\htdocs...', 150)
+#1 [internal function]: App\Controllers\Settings->deleteExpenseAction()
+#2 C:\xampp\htdocs\web_app_finance_MVC\Core\Controller.php(49): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php(123): Core\Controller->__call('deleteExpense', Array)
+#4 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('settings/delete...')
+#5 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Settings.php' on line 150
+[15-Aug-2021 13:19:08 Europe/Berlin] Uncaught exception: 'TypeError' with message 'Unsupported operand types: string + string'
+Stack trace: #0 [internal function]: App\Controllers\Settings->deleteExpenseAction()
+#1 C:\xampp\htdocs\web_app_finance_MVC\Core\Controller.php(49): call_user_func_array(Array, Array)
+#2 C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php(123): Core\Controller->__call('deleteExpense', Array)
+#3 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('settings/delete...')
+#4 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Settings.php' on line 146

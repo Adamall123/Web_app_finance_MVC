@@ -351,233 +351,88 @@ class User extends \Core\Model
     }
     /////////////////////////////////////////////////////////////////////// BALANCE  ///////////////////////////////////////////////////////////////////////
 
-    public function getSumSpendMoneyOnEachIncomeOfUser($scopeOfDate = 1) 
+    public function getSumSpendMoneyOnEachIncomeOfUser($startDate, $endDate) 
     {
         
-
-        $month = date('m');
-		$year = date('Y');
-		$numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-       
-        if($scopeOfDate == 1) {
-            $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
-            $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
-            $sql = 'SELECT name, SUM(amount) AS sum 
-            FROM incomes, incomes_category_assigned_to_users 
-            WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
-            AND incomes.user_id = :id 
-            AND date_of_income >= :firstDayOfCurrentMonth 
-            AND date_of_income <= :amountOfDaysOfCurrentMonth 
-            GROUP BY name';
-        } else if($scopeOfDate == 2) {
-            
-            $lastmonth = date('m', strtotime("last month"));
-            $firstDayOfLastMonth = $year .'-'.$lastmonth.'-01';
-            $amountOfDaysOfLastMonth = $year .'-' . $lastmonth .'-' . $numberOfDaysOfSelectedMonth;
-            
-			$sql = 'SELECT name, SUM(amount) AS sum 
-                    FROM incomes, incomes_category_assigned_to_users 
-                    WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
-                    AND incomes.user_id = :id
-                    AND date_of_income >= :firstDayOfLastMonth 
-                    AND date_of_income <= :amountOfDaysOfLastMonth 
-                    GROUP BY name';
-        } else if ($scopeOfDate == 3) {
-            $currentDay = date('d');
-            $beginningOfCurrentYear = $year . '-' . '01-01';
-            $currentDayOfCurrentYear = $year . '-' . $month . '-' . $currentDay;
-		    $sql = 'SELECT name, SUM(amount) AS sum 
-                    FROM incomes, incomes_category_assigned_to_users 
-                    WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
-                    AND incomes.user_id = :id 
-                    AND date_of_income >= :beginningOfCurrentYear
-                    AND date_of_income <= :currentDayOfCurrentYear
-                    GROUP BY name';
-        } else if ($scopeOfDate == 4) {
-            $sql = 'SELECT name, SUM(amount) AS sum 
-                    FROM incomes, incomes_category_assigned_to_users 
-                    WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
-                    AND incomes.user_id = :id 
-                    GROUP BY name';
-        }
-       
-
+        $sql = 'SELECT name, SUM(amount) AS sum 
+                FROM incomes, incomes_category_assigned_to_users 
+                WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
+                AND incomes.user_id = :id 
+                AND date_of_income >= :startDate 
+                AND date_of_income <= :endDate 
+                GROUP BY name';
+        
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-        if($scopeOfDate == 1) {
-            $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
-            $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
-        } else if ($scopeOfDate == 2) {
-            $stmt->bindValue(':firstDayOfLastMonth', $firstDayOfLastMonth, PDO::PARAM_STR);
-            $stmt->bindValue(':amountOfDaysOfLastMonth', $amountOfDaysOfLastMonth, PDO::PARAM_STR);
-        } else if ($scopeOfDate == 3) {
-            $stmt->bindValue(':beginningOfCurrentYear', $beginningOfCurrentYear, PDO::PARAM_STR);
-            $stmt->bindValue(':currentDayOfCurrentYear', $currentDayOfCurrentYear, PDO::PARAM_STR);
-        }
         
+        $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+        $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+
         $stmt->execute();
         return $stmt->fetchAll();
+        
     }
 
-    public function getSumSpendMoneyOnEachExpenseOfUser($scopeOfDate = 1) 
+    public function getSumSpendMoneyOnEachExpenseOfUser($startDate, $endDate) 
     {
         
-        $month = date('m');
-		$year = date('Y');
-		$numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
-        $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
-        
-        if ($scopeOfDate == 1) {
-            $sql = 'SELECT name, SUM(amount) AS sum 
+
+        $sql = 'SELECT name, SUM(amount) AS sum 
                 FROM expenses, expenses_category_assigned_to_users
                 WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
                 AND expenses.user_id = :id
-                AND date_of_expense >= :firstDayOfCurrentMonth
-                AND date_of_expense <= :amountOfDaysOfCurrentMonth 
+                AND date_of_expense >= :startDate
+                AND date_of_expense <= :endDate 
                 GROUP BY name';
-        } else if ($scopeOfDate == 2) {
-            $lastmonth = date('m', strtotime("last month"));
-            $firstDayOfLastMonth = $year .'-'.$lastmonth.'-01';
-            $amountOfDaysOfLastMonth = $year .'-' . $lastmonth .'-' . $numberOfDaysOfSelectedMonth;
-
-			$sql = 'SELECT name, SUM(amount) AS sum 
-                    FROM expenses, expenses_category_assigned_to_users 
-                    WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
-                    AND expenses.user_id = :id
-                    AND date_of_expense >= :firstDayOfLastMonth 
-                    AND date_of_expense <= :amountOfDaysOfLastMonth
-                    GROUP BY name';
-        } else if ($scopeOfDate == 3) {
-            $currentDay = date('d');
-            $beginningOfCurrentYear = $year . '-' . '01-01';
-            $currentDayOfCurrentYear = $year . '-' . $month . '-' . $currentDay;
-            $sql =  'SELECT name, SUM(amount) AS sum 
-            FROM expenses, expenses_category_assigned_to_users 
-            WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
-            AND expenses.user_id = :id
-            AND date_of_expense >= :beginningOfCurrentYear 
-            AND date_of_expense <= :currentDayOfCurrentYear 
-            GROUP BY name';
-        } else if ($scopeOfDate == 4) {
-            $sql = 'SELECT name, SUM(amount) AS sum 
-                    FROM expenses, expenses_category_assigned_to_users 
-                    WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
-                    AND expenses.user_id = :id 
-                    GROUP BY name';
-        }
+        
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
 
-        if ($scopeOfDate == 1) {
-            $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
-             $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
-        } else if ($scopeOfDate == 2) {
-            $stmt->bindValue(':firstDayOfLastMonth', $firstDayOfLastMonth, PDO::PARAM_STR);
-            $stmt->bindValue(':amountOfDaysOfLastMonth', $amountOfDaysOfLastMonth, PDO::PARAM_STR);
-        } else if ($scopeOfDate == 3) {
-            $stmt->bindValue(':beginningOfCurrentYear', $beginningOfCurrentYear, PDO::PARAM_STR);
-            $stmt->bindValue(':currentDayOfCurrentYear', $currentDayOfCurrentYear, PDO::PARAM_STR);
-        }
-        
+        $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+        $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
 
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function sumFromIncomesAndExpenses($id, $scopeOfDate = 1) 
+    public function sumFromIncomesAndExpenses($startDate, $endDate) 
     {
-        $month = date('m');
-        $year = date('Y');
-        $numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $firstDayOfCurrentMonth = $year .'-'.$month.'-01';
-        $amountOfDaysOfCurrentMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
+        $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes
+                            FROM incomes 
+                            WHERE incomes.user_id = :id 
+                            AND date_of_income >= :startDate 
+                            AND date_of_income <= :endDate ';
+        $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
+                            FROM expenses 
+                            WHERE expenses.user_id = :id
+                            AND date_of_expense >= :startDate 
+                            AND date_of_expense <= :endDate';
         
-        if ($scopeOfDate == 1) {
-            $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes
-                                FROM incomes 
-                                WHERE incomes.user_id = :id 
-                                AND date_of_income >= :firstDayOfCurrentMonth 
-                                AND date_of_income <= :amountOfDaysOfCurrentMonth ';
-            $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
-                                FROM expenses 
-                                WHERE expenses.user_id = :id
-                                AND date_of_expense >= :firstDayOfCurrentMonth 
-                                AND date_of_expense <= :amountOfDaysOfCurrentMonth';
-        } else if ($scopeOfDate == 2) {
-            $lastmonth = date('m', strtotime("last month"));
-            $firstDayOfLastMonth = $year .'-'.$lastmonth.'-01';
-            $amountOfDaysOfLastMonth = $year .'-' . $lastmonth .'-' . $numberOfDaysOfSelectedMonth;
-
-            $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes 
-                                FROM incomes 
-                                WHERE incomes.user_id = :id 
-                                AND date_of_income >= :firstDayOfLastMonth 
-                                AND date_of_income <= :amountOfDaysOfLastMonth ';
-            $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
-                                FROM expenses 
-                                WHERE expenses.user_id = :id 
-                                AND date_of_expense >= :firstDayOfLastMonth 
-                                AND date_of_expense <= :amountOfDaysOfLastMonth';
-        } else if ($scopeOfDate == 3) {
-            $currentDay = date('d');
-            $beginningOfCurrentYear = $year . '-' . '01-01';
-            $currentDayOfCurrentYear = $year . '-' . $month . '-' . $currentDay;
-            $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes 
-                                FROM incomes 
-                                WHERE incomes.user_id = :id 
-                                AND date_of_income >= :beginningOfCurrentYear 
-                                AND date_of_income <= :currentDayOfCurrentYear';
-            $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
-                                FROM expenses 
-                                WHERE expenses.user_id = :id 
-                                AND date_of_expense >= :beginningOfCurrentYear 
-                                AND date_of_expense <= :currentDayOfCurrentYear';
-        } else if ($scopeOfDate == 4) {
-            $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes 
-                                FROM incomes 
-                                WHERE incomes.user_id = :id' ;
-            $sqlSumExpenses =  'SELECT SUM(expenses.amount) as sumExpenses 
-                                FROM expenses
-                                WHERE expenses.user_id = :id';
-        }
 
         $db = static::getDB();
         $stmt = $db->prepare($sqlSumIncomes);
         $stmt2 = $db->prepare($sqlSumExpenses);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt2->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $stmt2->bindValue(':id', $this->id, PDO::PARAM_INT);
 
-        if ($scopeOfDate == 1) {
-            $stmt->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
-             $stmt->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
-             $stmt2->bindValue(':firstDayOfCurrentMonth', $firstDayOfCurrentMonth, PDO::PARAM_STR);
-             $stmt2->bindValue(':amountOfDaysOfCurrentMonth', $amountOfDaysOfCurrentMonth, PDO::PARAM_STR);
-        } else if ($scopeOfDate == 2) {
-            $stmt->bindValue(':firstDayOfLastMonth', $firstDayOfLastMonth, PDO::PARAM_STR);
-            $stmt->bindValue(':amountOfDaysOfLastMonth', $amountOfDaysOfLastMonth, PDO::PARAM_STR);
-            $stmt2->bindValue(':firstDayOfLastMonth', $firstDayOfLastMonth, PDO::PARAM_STR);
-            $stmt2->bindValue(':amountOfDaysOfLastMonth', $amountOfDaysOfLastMonth, PDO::PARAM_STR);
-        } else if ($scopeOfDate == 3) {
-            $stmt->bindValue(':beginningOfCurrentYear', $beginningOfCurrentYear, PDO::PARAM_STR);
-            $stmt->bindValue(':currentDayOfCurrentYear', $currentDayOfCurrentYear, PDO::PARAM_STR);
-            $stmt2->bindValue(':beginningOfCurrentYear', $beginningOfCurrentYear, PDO::PARAM_STR);
-            $stmt2->bindValue(':currentDayOfCurrentYear', $currentDayOfCurrentYear, PDO::PARAM_STR);
-        }
+        $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+        $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
 
+        $stmt2->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+        $stmt2->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+        
         $stmt->execute();
         $stmt2->execute();
         $sqlSumIncomesResult = $stmt->fetchAll();  
         $sqlSumExpensesResult = $stmt2->fetchAll();  
 
-		foreach($sqlSumIncomesResult as $sqlSumIncomeResult)
+        foreach($sqlSumIncomesResult as $sqlSumIncomeResult)
 		  {  
 				$sumIncome = $sqlSumIncomeResult["sumIncomes"];
 		  }  
-		
 		  foreach($sqlSumExpensesResult as $sqlSumExpenseResult) 
 		  {  
 				$sumExpense = $sqlSumExpenseResult["sumExpenses"];
@@ -779,7 +634,22 @@ class User extends \Core\Model
             }
         }
     }
-    public function deleteIncome($idOfIncome) {
+    public function deleteIncomeAndUpdateIncomeCategoryAssignedToUser($idOfIncome, $nameOfDefaultCategory) {
+
+        $defaultCategoryId = $this->getDefaultIncomeCategoryIdRelatedToUser($nameOfDefaultCategory)['id'] ;
+       
+        $sql = 'UPDATE incomes 
+        SET income_category_assigned_to_user_id = :defaultCategoryId
+        WHERE user_id = :id
+        AND income_category_assigned_to_user_id = :idOfIncome';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+        $stmt->bindValue(':defaultCategoryId',$defaultCategoryId,PDO::PARAM_INT);
+        $stmt->bindValue(':idOfIncome',$idOfIncome,PDO::PARAM_INT);
+        if ($stmt->execute()) {
         $sql = 'DELETE FROM incomes_category_assigned_to_users 
             WHERE user_id=:id 
             AND id= :income_id ';
@@ -789,28 +659,101 @@ class User extends \Core\Model
         $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
         $stmt->bindValue(':income_id',$idOfIncome,PDO::PARAM_INT);
         return $stmt->execute();
+        }
+        return 0;
     }
-    public function deleteExpense($idOfExpense) {
-        $sql = 'DELETE FROM expenses_category_assigned_to_users 
+    protected function getDefaultIncomeCategoryIdRelatedToUser($nameOfDefaultCategory) {
+        $sql = 'SELECT id FROM `incomes_category_assigned_to_users`
+                WHERE name = :nameOfDefaultCategory
+                AND user_id = :id';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(':nameOfDefaultCategory', $nameOfDefaultCategory, PDO::PARAM_STR);
+        $stmt->execute();
+         
+        return $stmt->fetch();
+            
+    }
+    public function deleteExpenseAndUpdateExpenseCategoryAssignedToUser($idOfExpense, $nameOfDefaultCategory) {
+ 
+        $defaultCategoryId = $this->getDefaultExpenseCategoryIdRelatedToUser($nameOfDefaultCategory)['id'] ;
+     
+        $sql = 'UPDATE expenses 
+                SET expense_category_assigned_to_user_id = :defaultCategoryId
+                WHERE user_id = :id
+                AND expense_category_assigned_to_user_id = :idOfExpense';
+
+         $db = static::getDB();
+         $stmt = $db->prepare($sql);
+
+         $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+         $stmt->bindValue(':defaultCategoryId',$defaultCategoryId,PDO::PARAM_INT);
+         $stmt->bindValue(':idOfExpense',$idOfExpense,PDO::PARAM_INT);
+         if ($stmt->execute()) {
+            $sql = 'DELETE FROM expenses_category_assigned_to_users 
             WHERE user_id=:id 
             AND id= :expense_id ';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+            $stmt->bindValue(':expense_id',$idOfExpense,PDO::PARAM_INT);
+            return $stmt->execute();
+         } 
+         return 0;
+    }
+    protected function getDefaultExpenseCategoryIdRelatedToUser($nameOfDefaultCategory) {
+        $sql = 'SELECT id FROM `expenses_category_assigned_to_users`
+                WHERE name = :nameOfDefaultCategory
+                AND user_id = :id';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(':nameOfDefaultCategory', $nameOfDefaultCategory, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    public function deletePaymentMethodAndUpdatePaymenthMethodAssignedToUser($idOfPaymentMethod, $nameOfDefaultCategory) {
+
+        $defaultCategoryId = $this->getDefaultPaymentMethodCategoryIdRelatedToUser($nameOfDefaultCategory)['id'] ; 
+        
+        $sql = 'UPDATE expenses 
+                SET payment_method_assigned_to_user_id = :defaultCategoryId
+                WHERE user_id = :id
+                AND payment_method_assigned_to_user_id = :idOfPaymentMethod';
+
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
         $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
-        $stmt->bindValue(':expense_id',$idOfExpense,PDO::PARAM_INT);
-        return $stmt->execute();
-    }
-    public function deletePaymentMethod($idOfPaymentMethod) {
-                $sql = 'DELETE FROM payment_methods_assigned_to_users 
+        $stmt->bindValue(':defaultCategoryId',$defaultCategoryId,PDO::PARAM_INT);
+        $stmt->bindValue(':idOfPaymentMethod',$idOfPaymentMethod,PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            $sql = 'DELETE FROM payment_methods_assigned_to_users 
                     WHERE user_id=:id 
                     AND id= :payment_method_id ';
-                $db = static::getDB();
-                $stmt = $db->prepare($sql);
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
 
-                $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
-                $stmt->bindValue(':payment_method_id',$idOfPaymentMethod,PDO::PARAM_INT);
-                return $stmt->execute();
+            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+            $stmt->bindValue(':payment_method_id',$idOfPaymentMethod,PDO::PARAM_INT);
+            return $stmt->execute();
+        }
+    }
+    protected function getDefaultPaymentMethodCategoryIdRelatedToUser($nameOfDefaultCategory) {
+        $sql = 'SELECT id FROM `payment_methods_assigned_to_users`
+                WHERE name = :nameOfDefaultCategory
+                AND user_id = :id';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(':nameOfDefaultCategory', $nameOfDefaultCategory, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch();
     }
     protected function ifIncomeCategoryExists($new_income) {
         $sql =  'SELECT name from incomes_category_assigned_to_users

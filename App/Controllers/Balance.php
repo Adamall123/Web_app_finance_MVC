@@ -25,11 +25,12 @@ class Balance extends Authenticated
 
     public function changeAction()
     {
-        if (isset($_POST['date_id'])){
-            $this->value = $_POST['date_id'];
+        if (isset($_POST['start'])){
+            $this->startDate = $_POST['start'];
+            $this->endDate = $_POST['end'];
         }
-        echo json_encode(array("allIncomesOfUser" => $this->user->getSumSpendMoneyOnEachIncomeOfUser($this->value),
-                                "allExpensesOfUser" => $this->user->getSumSpendMoneyOnEachExpenseOfUser($this->value),
-                                "sumFromIncomesAndExpenses" => $this->user->sumFromIncomesAndExpenses($this->user->id, $this->value)));
+        echo json_encode(array("allIncomesOfUser" => $this->user->getSumSpendMoneyOnEachIncomeOfUser($this->startDate, $this->endDate),
+                                "allExpensesOfUser" => $this->user->getSumSpendMoneyOnEachExpenseOfUser($this->startDate, $this->endDate),
+                                "sumFromIncomesAndExpenses" => $this->user->sumFromIncomesAndExpenses($this->startDate, $this->endDate) ));
     }
 }
