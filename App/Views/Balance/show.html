@@ -68,10 +68,11 @@
                         // above row adds the JavaScript two dimensional array data into required chart format
                         var options = {title:'Costs Incomes',
                                     width:450,
-                                    height:500,
+                                    height:300,
                                     titleTextStyle: {color:'#FFFFFF'}, 
                                     backgroundColor: {fill:'transparent'},
-                                        is3D: true};
+                                        is3D: true,
+                                        chartArea:{right: 80,width:'50%',height:'75%'}};
 
                         // Instantiate and draw the chart
                         var chart = new google.visualization.PieChart(document.getElementById('chart_div_incomes'));
@@ -87,10 +88,11 @@
                         // above row adds the JavaScript two dimensional array data into required chart format
                         var options = {title:'Costs Expenses',
                                     width:450,
-                                    height:500,
+                                    height:300,
                                     titleTextStyle: {color:'#FFFFFF'}, 
                                     backgroundColor: {fill:'transparent'},
-                                        is3D: true};
+                                        is3D: true,
+                                        chartArea:{right: 80,width:'50%',height:'75%'}};
 
                         // Instantiate and draw the chart
                         var chart = new google.visualization.PieChart(document.getElementById('chart_div_expenses'));
@@ -128,19 +130,27 @@
 {% endblock %}
    
 {% block body %}
-   <h1>Balance</h1>
+<h3 > 
+    <i class="fas fa-chart-pie" style="color:orange"></i>Balance
+</h3>
+    <hr> 
+    
 
    <main>
    
     <div class="container">
-        
-        <div class="col-lg-4">
-            <div id="reportrange" style="background: rgb(25, 98, 167); cursor: pointer; padding: 5px 10px; border: 1px solid rgb(58, 73, 212); width: 100%">
-                <i class="fa fa-calendar"></i>&nbsp;
-                <span></span> <i class="fa fa-caret-down"></i>
+        <div class="row">
+            <div class="col-lg-9">
             </div>
-            </div>
-
+            <div class="col-lg-3">
+                <div id="reportrange" style="background: rgb(25, 98, 167); cursor: pointer; padding: 5px 10px; border: 1px solid rgb(58, 73, 212); width: 100%">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                </div>
+                </div>
+        </div>
+       
+        <div id="balance"></div>
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="Category">
@@ -154,6 +164,11 @@
 							</div>
 						</div>
 				</div>
+                <div class="col-lg-6" >
+                    <div id="chart_div_incomes"></div>
+               </div>
+			</div>
+            <div class="row">
                 <div class="col-lg-6">
                     <div class="Category">
                        <header>
@@ -165,22 +180,12 @@
                                 </ul>
                             </div>
                    </div>
-               </div>  
-			</div>
-        
-        <div id="balance"></div>
-
-        <section>
-            <div class="row">
-                <div class="col-lg-6">
-                     <div id="chart_div_incomes"></div>
-                </div>
+               </div>
                 <div class="col-lg-6">
                      <div id="chart_div_expenses"></div>
                 </div>
             </div>
             </div>
-        </section>
 	
 	</main>
 {% endblock %}

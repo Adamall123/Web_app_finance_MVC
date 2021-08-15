@@ -60,7 +60,7 @@ header {
     width: 20%;
 }
 .header-icon{
-    margin-right: 10px;
+    margin-right: 14px;
     float: right;
 }
 
@@ -293,6 +293,15 @@ button, input {
 }
 
 /* /////////////////////////////////////////////////////////////////////////    SETTINGS    ///////////////////////////////////////////////////////////////////////// */
+.settings-button{
+
+    width: 100%; 
+    border: 1px solid #38b6ff;
+    border-radius: 10px;
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-bottom: 0;
+}
 #profileDetails{
     min-height: 145px;
     border: 1px solid #38b6ff;
@@ -369,13 +378,20 @@ a:hover{
 }
 .Category .CategoryColumn .CategoryRow li {
     background-color:#0a949a;
-    text-align: center;
+    
     padding-left: 40px;
     margin-bottom: 3px;
     border-radius: 20px;
+    font-size:16px;
 }
 
-
+#editOptions {
+    min-height: 100px;
+    background-color: #82cafd;
+    border: 1px solid #38b6ff;
+    border-radius: 10px;
+    padding: 20px;
+}
 
 .editDeleteSpan{
     float: right;
@@ -386,12 +402,12 @@ a:hover{
     clear: both;
     text-align: center;
     width: 100%;
-    height: 40px;
     border: 1px solid #38b6ff;
     border-radius: 25px;
     line-height: 150%;
     margin-bottom: 5px;
     background-color: #238be3;
+    font-size: 18px;
 }
 
 
@@ -426,9 +442,9 @@ a:hover{
   padding: 30px;
 }
 
-.limit{
-    font-size: 15px;
-    color: rgb(7, 77, 124);
+.limit {
+    font-size: 12px;
+    color: yellow;
     font-weight: bold;
 }
 #income{
@@ -441,8 +457,9 @@ hr {
 }
 .form-check{
     background-color: #238be3;
+    font-size: 16px;
     padding-left: 40px;
-    margin-bottom: 3px;
+    margin-bottom: 1px;
 }
 
 
@@ -459,7 +476,7 @@ hr {
 
 
 .daterangepicker .ranges li:hover {
-    background-color: green;
+    background-color: #08c;
 }
 .daterangepicker .ranges li {
     font-size: 12px;
@@ -468,3 +485,9 @@ hr {
     background: rgb(25, 98, 167)
 }
 
+#reportrange{
+    font-size: 16px;
+}
+.daterangepicker .calendar-table th, .daterangepicker .calendar-table td {
+    color: black;
+}

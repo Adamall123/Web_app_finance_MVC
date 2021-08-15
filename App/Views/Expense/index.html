@@ -77,10 +77,10 @@
                         +' zł</div><div class="col-lg-3">Costs+amount:<br>'+ (parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount))
                         +' zł</div> </div></div>' 
                     } 
-                  $('#resultOfLimit').html($resultSumFromExpences);   
+                  $('#resultOfLimit').fadeIn("slow").html($resultSumFromExpences);   
                   $('.alert').remove()
               } else{
-                $('#resultOfLimit').html('');   
+                $('#resultOfLimit').fadeOut("slow").html('');   
               }
                  
               },
@@ -100,7 +100,9 @@
     </h3>
     <div class="col-lg-8">
         <hr> 
+        <div style="min-height: 120px;">
         <div id="resultOfLimit"></div>
+        </div>
     </div>
     
 <main>

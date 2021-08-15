@@ -53,8 +53,10 @@
         $(".editExpense").click(function () {
             var expenseId = $(this).attr('data-id');
             var expense = $(this).attr('data-info-expense'); 
+            var limit = $(this).attr('data-info-limit');
             $('#form-edit-expense').attr('action', 'edit-expense?id=' + expenseId);
             $('#expense_id').val(expense);
+            $('#expenselimit_id').val(limit);
         });
         $(".deleteExpense").click(function () {
             var expenseId = $(this).attr('data-id');
@@ -75,6 +77,16 @@
             //$('#payment_method_id').val(paymentMethod);
             document.getElementById('delete-payment-method').innerHTML = paymentMethod; 
         });
+        
+        $("#editProfile").click(function(){
+            $("#profileDetails").fadeToggle();
+            $('#editOptions').fadeToggle();
+        });
+
+        $("#incomes-categories").click(function(){
+            $("#incomes").fadeToggle();
+        });
+
     });
 
 
@@ -102,12 +114,35 @@
                 </div>
             </div>
         </div>
-        <span><a  href="/settings/edit"  type="button" class="CategoryFooter">Edit</a></span>
+        <span id="editProfile" type="button" class="btn btn-info CategoryFooter"> <p style="margin-left: 14px;  float: left;"> <i class="far fa-user"></i></p> User <p class="header-icon"> <i class="fas fa-arrows-alt-v "></i> </p></span>
+        <div id="editOptions">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <span ><a  href="/settings/edit"  type="button" class="btn btn-info settings-button"  >
+                        <p style=" margin-bottom:0px; float: left;"><i class='fas fa-pencil-alt edit_btn'></i></p>Edit user profile</a></span>
+                </div>
+                <div class="col-lg-6">
+
+                    <span ><a  href="/settings/delete-all"  type="button" class="btn btn-danger settings-button" style="background-color:#ff6e6e;" >
+                        <p style=" margin-bottom:0px; float: left;"><i class='far fa-trash-alt'></i></p>Delete All Incomes And Expenses</a></span>
+                </div>
+                <div class="col-lg-12">
+
+                    <span ><a  href="/settings/delete-all"  type="button" class="btn btn-danger settings-button" style="background-color:#ff6e6e;"  >
+                        <p style=" margin-bottom:0px; float: left;"><i class="fas fa-broom"></i></p>Delete Your Account</a></span>
+                </div>
+            </div>
+            
+           
+        </div>
+
+        
     </div>
     <div class="col-lg-4">
         <div class="Category" >
             <header >
-                <div class="CategoryHeader">Incomes Categories</div>
+              <button id="incomes-categories" type="button" class="btn btn-info" style="width: 100%;">  Incomes Categories <p style=" margin: 0;float: right;"><i i class="fas fa-arrow-down"></i></p></button> 
             </header>
             <div class="CategoryColumn" id="incomes">
                 <ul class="CategoryRow">
@@ -126,7 +161,7 @@
                    <li> {{ defaultCategory }}</li>
                 </ul>
                 <footer>
-						<span><a  href="#add-new-income" data-toggle="modal" type="button" class="CategoryFooter">Add New Income</a></span>
+						<span><a  href="#add-new-income" data-toggle="modal" type="button" class="CategoryFooter"><p style="padding-left: 10px; margin-bottom:0px; float: left;"><i class="fas fa-plus"></i></p>Add New Income</a></span>
 				</footer>
         </div>
         </div>
@@ -145,7 +180,7 @@
                             <span class = 'header-icon deleteExpense' data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
                                 <a href="#delete-expense-modal" data-toggle="modal" >
                                 <i class=' far fa-trash-alt'></i></a></span>
-                             <span class="header-icon editExpense" data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
+                             <span class="header-icon editExpense" data-info-limit = "{{ getExpenseCategoryAssignedToUser['monthly_limit'] }}" data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
                                 <a href="#edit-expense-modal"  data-toggle='modal' type="button">
                                     <i class='fas fa-pencil-alt edit_btn'></i></a></span>
                                     {% if getExpenseCategoryAssignedToUser['monthly_limit'] != null %} <div class="limit"> Limit: {{ getExpenseCategoryAssignedToUser['monthly_limit'] }} zł</div> {% endif %}
@@ -160,7 +195,7 @@
                 </ul>
           
             <footer>
-                <span><a  href="#add-new-expence" data-toggle="modal" type="button" class="CategoryFooter">Add New Expence</a></span>
+                <span><a  href="#add-new-expence" data-toggle="modal" type="button" class="CategoryFooter"><p style="padding-left: 10px; margin-bottom:0px; float: left;"><i class="fas fa-plus"></i></p>Add New Expence</a></span>
             </footer>
         </div>
     </div>
@@ -188,7 +223,7 @@
                 </ul>
                 
                  <footer>
-                <span><a  href="#add-new-payment-method" data-toggle="modal" type="button" class="CategoryFooter">Add New Payment</a></span>
+                <span><a  href="#add-new-payment-method" data-toggle="modal" type="button" class="CategoryFooter"><p style="padding-left: 10px; margin-bottom:0px; float: left;"><i class="fas fa-plus"></i></p>Add New Payment</a></span>
             </footer>
             </div>
             </div>

@@ -162,4 +162,14 @@ class Settings extends Authenticated
             $this->redirect('/Settings/show');
         }
     }
+    public function deleteAllAction()
+    {
+        if ($this->user->deleteAllIncomesAndExpenses()) {
+            Flash::addMessage('All incomes and expenses has been removed', Flash::WARNING);
+            $this->redirect('/Settings/show');
+        } else {
+            Flash::addMessage("You do not have any incomes and expenses.",  Flash::WARNING );
+            $this->redirect('/Settings/show');
+        }
+    }
 }
