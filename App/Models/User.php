@@ -586,6 +586,39 @@ class User extends \Core\Model
 
           return $sumFromIncomesExpenses;
     }
+    public function MonthlyCostsOfEachExpenseFromSelectedDate($idOfExpense, $date)
+    {
+         $month = date('m', strtotime($date));
+         $year = date('Y', strtotime($date));
+         $numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+         $firstDayOfSelectedMonth = $year .'-'.$month.'-01';
+         $amountOfDaysOfSelectedMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
+        $sql =  'SELECT SUM(expenses.amount) as sumExpenses 
+                FROM expenses
+                WHERE expense_category_assigned_to_user_id	 = :expense_id
+                AND user_id = :id
+                AND date_of_expense >= :firstDayOfSelectedMonth 
+                AND date_of_expense <= :amountOfDaysOfSelectedMonth';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(':expense_id', $idOfExpense, PDO::PARAM_INT);
+        $stmt->bindValue(':firstDayOfSelectedMonth', $firstDayOfSelectedMonth, PDO::PARAM_STR);
+        $stmt->bindValue(':amountOfDaysOfSelectedMonth', $amountOfDaysOfSelectedMonth, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            $sqlSumExpensesResult = $stmt->fetchAll();
+            if (count($sqlSumExpensesResult) == 0)  return 0;
+            foreach($sqlSumExpensesResult as $sqlSumExpenseResult)
+              {  
+                    $sumExpense = $sqlSumExpenseResult["sumExpenses"];
+              } 
+              if ($sumExpense == null) return 0;
+              return $sumExpense;
+        }
+        return 0;
+    }
 /////////////////////////////////////////////////////////////////////// Settings  ///////////////////////////////////////////////////////////////////////
     
    public function updateProfile($data)
@@ -635,16 +668,17 @@ class User extends \Core\Model
             }
         }
    }
-
    public function addNewExpenseCategory($new_expense)
    {
         if($this->ifExpenseCategoryExists($new_expense)) {
             if ($this->validateLengthOfCategoryInSettings($new_expense)){
-                $sql = 'INSERT INTO expenses_category_assigned_to_users VALUES(NULL,:id,:new_expense)';
+                
+                $sql = 'INSERT INTO expenses_category_assigned_to_users VALUES(NULL,:id,:new_expense,:limit)';
                 $db = static::getDB();
                 $stmt = $db->prepare($sql);
                 $stmt->bindValue(':new_expense',$new_expense,PDO::PARAM_STR);
                 $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+                $stmt->bindValue(':limit',null,PDO::PARAM_INT);
                 return $stmt->execute();
             }
         }
@@ -680,8 +714,9 @@ class User extends \Core\Model
             }
         }
     }
+    
     public function editExpense($idOfExpense, $newNameOfExpense) {
-       
+      
         if($this->ifExpenseCategoryExists($newNameOfExpense)) {
             if ($this->validateLengthOfCategoryInSettings($newNameOfExpense)){
                 $sql = 'UPDATE expenses_category_assigned_to_users 
@@ -697,6 +732,34 @@ class User extends \Core\Model
                 return $stmt->execute();
             }
         }
+    }
+    public function updateLimitExpenseCategory($idOfExpense, $monthlyLimit)
+    {
+        if($monthlyLimit != null) {
+            $sql = 'UPDATE expenses_category_assigned_to_users
+            SET monthly_limit=:monthlyLimit
+            WHERE user_id=:id
+            AND id=:expense_id';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':monthlyLimit',$monthlyLimit,PDO::PARAM_INT);
+            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+            $stmt->bindValue(':expense_id',$idOfExpense,PDO::PARAM_INT);
+            return $stmt->execute();
+        }
+    }
+    public function getExpenseLimit($idOfExpense) {
+            $sqlSumExpenses =  'SELECT monthly_limit  
+                                FROM expenses_category_assigned_to_users 
+                                WHERE id = :expense_id
+                                AND user_id = :id ';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':expense_id', $idOfExpense, PDO::PARAM_INT);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+            
+            return $stmt->execute();
     }
     public function editPaymentMethod($idOfPaymentMethod, $newNameOfPaymentMethod) {
        

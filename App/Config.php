@@ -42,6 +42,5 @@ class Config
 
     const SECRET_KEY = 'RaHAruH7YLdiQVmoHLuRAvosFCCGd2mp';
 
-    //const SENDGRID_API_KEY = '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';
-    const SENDGRID_API_KEY = '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';
+    const SENDGRID_API_KEY = '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';
 }

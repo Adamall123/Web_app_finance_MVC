@@ -42,6 +42,7 @@
             var income = $(this).attr('data-info-income'); 
             $('#form-edit-income').attr('action', 'edit-income?id=' + incomeId);
             $('#income_id').val(income);
+            
         });
         $(".deleteIncome").click(function () {
             var incomeId = $(this).attr('data-id');
@@ -141,16 +142,21 @@
                     {% if getExpenseCategoryAssignedToUser['name'] != defaultCategory %}
                     <li>
                             {{ getExpenseCategoryAssignedToUser['name'] }} 
-                            <span class = 'deleteExpense' data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
+                            <span class = 'header-icon deleteExpense' data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
                                 <a href="#delete-expense-modal" data-toggle="modal" >
-                                <i class='header-icon far fa-trash-alt'></i></a></span>
+                                <i class=' far fa-trash-alt'></i></a></span>
                              <span class="header-icon editExpense" data-id="{{ getExpenseCategoryAssignedToUser['id'] }}" data-info-expense="{{ getExpenseCategoryAssignedToUser['name'] }}">
                                 <a href="#edit-expense-modal"  data-toggle='modal' type="button">
                                     <i class='fas fa-pencil-alt edit_btn'></i></a></span>
+                                    {% if getExpenseCategoryAssignedToUser['monthly_limit'] != null %} <div class="limit"> Limit: {{ getExpenseCategoryAssignedToUser['monthly_limit'] }} zł</div> {% endif %}
                      </li>
+                      
                      {% endif %} 
                     {% endfor %}
-                    <li> {{ defaultCategory }}</li>
+                    <li> 
+                        {{ defaultCategory }}
+                        {% if getExpenseCategoryAssignedToUser['monthly_limit'] != null %} <span class="limit"> Limit: {{ getExpenseCategoryAssignedToUser['monthly_limit'] }} zł</span> {% endif %} 
+                    </li>
                 </ul>
           
             <footer>

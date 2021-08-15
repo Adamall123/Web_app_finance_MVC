@@ -1,0 +1,172 @@
+[15-Aug-2021 09:11:05 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('favicon.ico')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 09:11:08 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 09:11:13 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 09:11:27 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 09:11:34 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 09:11:39 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 09:13:26 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:14:17 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:14:42 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:14:50 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:14:58 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:16:09 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:16:35 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:16:45 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:16:45 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('favicon.ico')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:17:05 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:17:33 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:19:50 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:20:25 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:20:39 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:20:45 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:20:56 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:21:17 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:21:33 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:21:59 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:22:18 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:22:18 Europe/Berlin] Uncaught exception: 'ErrorException' with message 'Undefined array key "expense_category_id"'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Expense.php(45): Core\Error::errorHandler(2, 'Undefined array...', 'C:\\xampp\\htdocs...', 45)
+#1 [internal function]: App\Controllers\Expense->getAction()
+#2 C:\xampp\htdocs\web_app_finance_MVC\Core\Controller.php(49): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php(123): Core\Controller->__call('get', Array)
+#4 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('expense/get')
+#5 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Expense.php' on line 45
+[15-Aug-2021 10:22:39 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:22:39 Europe/Berlin] Uncaught exception: 'ErrorException' with message 'Undefined array key "expense_category_id"'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Expense.php(45): Core\Error::errorHandler(2, 'Undefined array...', 'C:\\xampp\\htdocs...', 45)
+#1 [internal function]: App\Controllers\Expense->getAction()
+#2 C:\xampp\htdocs\web_app_finance_MVC\Core\Controller.php(49): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php(123): Core\Controller->__call('get', Array)
+#4 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('expense/get')
+#5 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Expense.php' on line 45
+[15-Aug-2021 10:23:20 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:23:25 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:23:25 Europe/Berlin] Uncaught exception: 'ErrorException' with message 'Undefined array key "expense_category_id"'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Expense.php(45): Core\Error::errorHandler(2, 'Undefined array...', 'C:\\xampp\\htdocs...', 45)
+#1 [internal function]: App\Controllers\Expense->getAction()
+#2 C:\xampp\htdocs\web_app_finance_MVC\Core\Controller.php(49): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php(123): Core\Controller->__call('get', Array)
+#4 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('expense/get')
+#5 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\App\Controllers\Expense.php' on line 45
+[15-Aug-2021 10:35:03 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:35:29 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:35:56 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:36:06 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:36:31 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:37:26 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:37:56 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132
+[15-Aug-2021 10:38:06 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\web_app_finance_MVC\public\index.php(37): Core\Router->dispatch('vendors/js/boot...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\web_app_finance_MVC\Core\Router.php' on line 132

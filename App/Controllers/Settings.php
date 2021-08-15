@@ -70,6 +70,7 @@ class Settings extends Authenticated
     }
     public function addNewExpenseAction()
     {
+       
         if ($this->user->addNewExpenseCategory($_POST['expense'])){
             Flash::addMessage('Added new expense.');
             $this->redirect('/Settings/show');
@@ -102,7 +103,12 @@ class Settings extends Authenticated
     public function editExpenseAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->editExpense($paramIDFromURL, $_POST['editexpence'])) {
+        $updatedLimitIncome = false;
+        if(isset($_POST['remember_me_expense'])) {
+            $checkedUpdateLimit = $_POST['remember_me_expense'];
+            $updatedLimitIncome = $this->user->updateLimitExpenseCategory($paramIDFromURL, $_POST['editexpenselimit'] ?? null);
+        }
+        if ($this->user->editExpense($paramIDFromURL, $_POST['editexpence']) || $updatedLimitIncome) {
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {

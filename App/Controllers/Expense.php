@@ -33,4 +33,15 @@ class Expense extends Authenticated
             View::renderTemplate('Income/index.html', 'WARNING');
         }
     }
+    public function changeAction()
+    {
+        echo json_encode(array("MonthlyCostsOfEachExpenseFromSelectedDate" =>  $this->user->MonthlyCostsOfEachExpenseFromSelectedDate( $_POST['expense_id'], $_POST['date'])));
+    }
+    public function getAction()
+    {
+         if (isset($_GET['expense_category_id'])){
+             $this->value = $_GET['expense_category_id'];
+         }
+         echo json_encode(array("MonthlyCostsOfEachExpenseFromSelectedDate" =>  $this->user->MonthlyCostsOfEachExpenseFromSelectedDate($_GET['expense_category_id'], $_GET['date'])));
+    }
 }

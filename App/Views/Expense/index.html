@@ -1,48 +1,150 @@
 {% extends "base.html" %}
 
 {% block title %}Expenses{% endblock %}
+{% block footer %}
+
+<script>
+    
+    $( document ).ready(function() {
+        
+        Date.prototype.toDateInputValue = (function() {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+        
+        //takie current value of date 
+        $('input[type=date][name=date]').val(new Date().toDateInputValue());
+        var date = (new Date().toDateInputValue())
+        var amount = $('input[type=number][name=amount]').val()
+        
+        var expense_id =  $('input[type=radio][name=expense_category_id]').val()
+       
+        var limit = ''
+        
+        // const el = document.querySelector('input[type=radio][name=expense_category_id]');
+        // console.log(el.InfoLimit);
+        var amount = 0;
+        
+       
+
+        $('input[type=number][name=amount]').change(function() {
+             amount = $(this).val();
+             
+             getInformationAboutLimit()
+        })
+       
+        $('input[type=date][name=date]').change(function() {
+             date = $(this).val();
+             getInformationAboutLimit()
+        })
+
+       $('input[type=radio][name=expense_category_id]').change(function() {
+             limit = $(this).attr('data-info-limit'); 
+             expense_id = this.id
+            
+             getInformationAboutLimit()
+      });
+     
+     function getInformationAboutLimit(){
+        $.ajax({
+          type: "POST",
+          url: "/expense/change",
+          data: {
+            expense_id: expense_id,
+            date: date
+          },
+          dataType:'JSON', 
+          success: function(response){
+              console.log(limit)
+               var $resultSumFromExpences ='';
+              if(!isNaN(parseFloat(limit))) {
+                if((parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount)) <= limit ) {
+                  
+                    $resultSumFromExpences = "<div class='limit'>Information about limit: You can spend: " + (limit - response.MonthlyCostsOfEachExpenseFromSelectedDate) + " zł</div>"
+                    $resultSumFromExpences += '<div class="container"><div class="row expenseWindow"> <div class="col-lg-3">Limit:<br>'+ limit 
+                        +' zł</div> <div class="col-lg-3">Spend money:<br>'+ response.MonthlyCostsOfEachExpenseFromSelectedDate 
+                        +' zł</div><div class="col-lg-3"> Left money:<br>'+  (limit - parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate))
+                        +' zł</div><div class="col-lg-3">Costs+amount:<br>'+ (parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount))
+                        +' zł</div> </div></div>' 
+                  } 
+                  else {
+                    // $resultSumFromExpences = "<div>Information about limit: You : " + (limit - response.MonthlyCostsOfEachExpenseFromSelectedDate) + " </div>"
+                    $resultSumFromExpences = "<div class='limit'>Information about limit: You have spent too much money. If you need - increase your limit in settings option. </div>"
+                    $resultSumFromExpences += '<div class="container"><div class="row expenseWindow" style="background-color:#F08080" > <div class="col-lg-3">Limit:<br>'+ limit 
+                        +' zł</div> <div class="col-lg-3">Spend money:<br>'+ response.MonthlyCostsOfEachExpenseFromSelectedDate 
+                        +' zł</div><div class="col-lg-3"> Difference:<br>'+  (limit - response.MonthlyCostsOfEachExpenseFromSelectedDate)
+                        +' zł</div><div class="col-lg-3">Costs+amount:<br>'+ (parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount))
+                        +' zł</div> </div></div>' 
+                    } 
+                  $('#resultOfLimit').html($resultSumFromExpences);   
+                  $('.alert').remove()
+              } else{
+                $('#resultOfLimit').html('');   
+              }
+                 
+              },
+              error: function(status, exception) {
+             alert('Error');
+         }
+          });
+      }
+  });
+</script>
+{% endblock %}
 
 {% block body %}
-
-   <h1>Expenses</h1>
+    
+    <h3 > 
+        <i class="fas fa-shopping-cart" style="color:lightgreen"></i> Add Expense
+    </h3>
+    <div class="col-lg-8">
+        <hr> 
+        <div id="resultOfLimit"></div>
+    </div>
+    
 <main>
-   <div class="container-fluid">
+   <div class="container-fluid"> 
        <div class="row">
-           <div class="col-lg-12">
+        <div class="col-lg-8">
                <div class="text-center-expence">
-                   <div id="expensePanel">
-                       <div id="upperExpensePanel">
-                           <div id="upperExpensePanelText">
-                               Adding Expense
-                           </div>
-                       </div>
-                       <div class="lowerPanel">
-                           <form method="POST" action="/Expense/add">
+                   <div id="">
+                       <div class="">
+                           <form id="form" method="POST" action="/Expense/add">
+                                <div class="form-row">
+                                    <div class="col inputPanel">
+                                        <input id="inputAmount" {# onchange="checkLimit();" #} type="number" style="background-color: rgb(137, 219, 247); color:white;" name="amount" step="0.01" placeholder="0.01" min="0.01" max="99999999.99" class="form-control" value="0" required>
+                                        <span id="categoryLimitWarning"></span>
+                                    </div>
+                                    <div class="col inputPanel">
+                                        <input type="date" style="background-color: rgb(137, 219, 247); color:white;" name="date" class="form-control" id="enterDate" value="" required>
+                                    </div>
+                                </div>
+                               
                                <div class="inputPanel">
-                                   <input id="inputAmount" onchange="checkLimit();" type="number" name="amount" step="0.01" placeholder="0.01" min="0.01" max="99999999.99" class="form-control" value="">
-                                   <span id="categoryLimitWarning"></span>
-                               </div>
-                               <div class="inputPanel">
-                                   <input type="date" name="date" class="form-control" id="enterDate" value="" required>
-                               </div>
-                               <div class="inputPanel">
-                                   <select  id="inputCategory" class="form-control valid" name="expense_category_id" aria-invalid="false">
-                                        {% for userExpense in userExpenses %}
-                                        <option value="{{ userExpense['id'] }}">{{ userExpense['name'] }}</option>
-                                        {% endfor %}
-                                   </select>
-                               </div>
-                               <div class="inputPanel">
-                                   <select class="form-control" name="payment_method_id">
-                                    
-                                        {% for userPaymentMethod in userPaymentMethods %}
-                                        <option value="{{ userPaymentMethod['id'] }}">{{ userPaymentMethod['name'] }}</option>
-                                        {% endfor %}
-                                   </select>
-                               </div>
+                                <select class="form-control" style="background-color: rgb(137, 219, 247); color:white;" name="payment_method_id">
+                                     {% for userPaymentMethod in userPaymentMethods %}
+                                     <option value="{{ userPaymentMethod['id'] }}">{{ userPaymentMethod['name'] }}</option>
+                                     {% endfor %}
+                                </select>
+                              </div>
+                               {% for userExpense in userExpenses %}
+                               
+                               <div class="form-check">
+                                <input class="form-check-input" type="radio" name="expense_category_id" data-info-limit="{{ userExpense['monthly_limit'] }}" id="{{ userExpense['id'] }}" value="{{ userExpense['id'] }}" >
+                                <label id="inputCategory" name="expense_category" class="form-check-label valid" for="exampleRadios1">
+                                   <div><option value="{{ userExpense['id'] }}">{{ userExpense['name'] }}</option></div> 
+                                   {% if userExpense['monthly_limit'] != null %} <div class="limit"> Limit: {{ userExpense['monthly_limit'] }} zł</div> {% endif %}
+                                </label>
+                               
+                              </div> 
+                             
+                              {% endfor %}
+                               
+                              
 
                                <div class="inputPanel">
-                                   <input type="text" name="comment" class="form-control" placeholder="Add comment to the income" value="">
+                                   <input type="text" style="background-color: rgb(137, 219, 247); color:white;" name="comment" class="form-control" placeholder="Add comment to the income" value="">
                                </div>
                                <input type="submit" name="submit" class="btn btn-warning button1" value="ADD">
                                <input type="button" class="btn btn-warning button1" value="CANCEL">
@@ -50,8 +152,7 @@
                        </div>
                    </div>
                </div>
-           </div>
-
+               </div>
        </div>
    </div>
 </main>

@@ -8,7 +8,7 @@ class Mail
     public static function send($to, $subject, $text, $html)
     {
         $email = new \SendGrid\Mail\Mail();
-        $email->setFrom("adam.wojdylo.programista@gmail.com", "Adam Wojdylo");
+        $email->setFrom("adam.wojdylo1234@gmail.com", "Adam Wojdylo");
         $email->setSubject($subject);
         $email->addTo($to);
         $email->addContent("text/plain", $text);
