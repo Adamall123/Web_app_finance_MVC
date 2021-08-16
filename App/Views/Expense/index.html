@@ -77,10 +77,10 @@
                         +' zł</div><div class="col-lg-3">Costs+amount:<br>'+ (parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount))
                         +' zł</div> </div></div>' 
                     } 
-                  $('#resultOfLimit').fadeIn("slow").html($resultSumFromExpences);   
+                  $('#resultOfLimit').slideDown().html($resultSumFromExpences);   
                   $('.alert').remove()
               } else{
-                $('#resultOfLimit').fadeOut("slow").html('');   
+                $('#resultOfLimit').slideUp().html('');   
               }
                  
               },
@@ -100,9 +100,9 @@
     </h3>
     <div class="col-lg-8">
         <hr> 
-        <div style="min-height: 120px;">
+       
         <div id="resultOfLimit"></div>
-        </div>
+        
     </div>
     
 <main>
@@ -115,16 +115,16 @@
                            <form id="form" method="POST" action="/Expense/add">
                                 <div class="form-row">
                                     <div class="col inputPanel">
-                                        <input id="inputAmount" {# onchange="checkLimit();" #} type="number" style="background-color: rgb(137, 219, 247); color:white;" name="amount" step="0.01" placeholder="0.01" min="0.01" max="99999999.99" class="form-control" value="0" required>
+                                        <input id="inputAmount" {# onchange="checkLimit();" #} type="number"  name="amount" step="0.01" placeholder="0.01" min="0.01" max="99999999.99" class="form-control" value="0" required>
                                         <span id="categoryLimitWarning"></span>
                                     </div>
                                     <div class="col inputPanel">
-                                        <input type="date" style="background-color: rgb(137, 219, 247); color:white;" name="date" class="form-control" id="enterDate" value="" required>
+                                        <input type="date"  name="date" class="form-control" id="enterDate" value="" required>
                                     </div>
                                 </div>
                                
                                <div class="inputPanel">
-                                <select class="form-control" style="background-color: rgb(137, 219, 247); color:white;" name="payment_method_id">
+                                <select class="form-control"  name="payment_method_id">
                                      {% for userPaymentMethod in userPaymentMethods %}
                                      <option value="{{ userPaymentMethod['id'] }}">{{ userPaymentMethod['name'] }}</option>
                                      {% endfor %}
@@ -138,18 +138,19 @@
                                    <div><option value="{{ userExpense['id'] }}">{{ userExpense['name'] }}</option></div> 
                                    {% if userExpense['monthly_limit'] != null %} <div class="limit"> Limit: {{ userExpense['monthly_limit'] }} zł</div> {% endif %}
                                 </label>
-                               
                               </div> 
-                             
                               {% endfor %}
-                               
-                              
-
                                <div class="inputPanel">
-                                   <input type="text" style="background-color: rgb(137, 219, 247); color:white;" name="comment" class="form-control" placeholder="Add comment to the income" value="">
+                                   <input type="text"  name="comment" class="form-control" placeholder="Add comment to the income" value="">
                                </div>
-                               <input type="submit" name="submit" class="btn btn-warning button1" value="ADD">
-                               <input type="button" class="btn btn-warning button1" value="CANCEL">
+                               <div class="row">
+                                <div class="col-lg-6">
+                                    <input type="submit" name="submit" class="btn btn-success " value="ADD" style="width: 100%;">
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="button" class="btn btn-warning" value="CANCEL" style="width: 100%;">
+                                </div>
+                                </div>
                            </form>
                        </div>
                    </div>

@@ -2,46 +2,73 @@
 
 {% block title %}Incomes{% endblock %}
 
+{% block footer%}
+<script>
+    Date.prototype.toDateInputValue = (function() {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+        
+        //takie current value of date 
+        $('input[type=date][name=date]').val(new Date().toDateInputValue());
+</script>
+{% endblock %}
 {% block body %}
 
-   <h1>Incomes</h1>
-  
+<h3 > 
+    <i class="fas fa-coins" style="color:yellow"></i> Add Income
+</h3>
+<div class="col-lg-8">
+    <hr> 
+    
+</div>
    <main>
-		
-		<div class="container">
-            
-			<div id="incomePanel">
-        <div id="upperIncomePanel">
-            <div id="upperIncomePanelText">
-                Adding Income
-            </div>
-        </div>
-        <div class="lowerPanel" style="height: 355px;">
+	<div class="container">  
+	    <div id="">
+       
+        <div class="" style="">
             <form method="POST" action="/income/add" >
-                <div class="inputPanel">
-                    <input type="number" name="amount" step="0.01" placeholder="0.00" min="0.01" max="99999999.99" class="form-control" value="0">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="inputPanel">
+                            <input type="number" name="amount" step="0.01" placeholder="0.00" min="0.01" max="99999999.99" class="form-control" value="0">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="inputPanel">
+                            <input type="date" name="date" class="form-control" id="enterDate" value="" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="inputPanel">
+                            <select class="form-control" name="income_category_id">
+                             {% for userIncome in userIncomes %}
+                                <option value="{{ userIncome['id'] }}">{{ userIncome['name'] }}</option>
+                             {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="inputPanel">
+                            <input type="text" name="comment" class="form-control" placeholder="Add comment to the income" value="">
+                        </div>
+                    </div>
                 </div>
-					
-                <div class="inputPanel">
-                    <input type="date" name="date" class="form-control" id="enterDate" value="" required>
-					
+                <div class="row">
+                    <div class="col-lg-4">
+                        <input type="submit" name="submit" class="btn btn-success" value="ADD" style="width: 100%;">
+                    </div>
+                      <div class="col-lg-4">
+                        <input type="button" class="btn btn-warning " value="CANCEL" style="width: 100%;">
+                    </div>
                 </div>
-                <div class="inputPanel">
-                    <select class="form-control" name="income_category_id">
-                     {% for userIncome in userIncomes %}
-                        <option value="{{ userIncome['id'] }}">{{ userIncome['name'] }}</option>
-                     {% endfor %}
-                    </select>
-                </div>
-                <div class="inputPanel">
-                    <input type="text" name="comment" class="form-control" placeholder="Add comment to the income" value="">
-                </div>
-                <input type="submit" name="submit" class="btn btn-warning button1" value="ADD">
-                <input type="button" class="btn btn-warning button1" value="CANCEL">
+          
+              
             </form>
         </div>
-    </div>
-		</div>
+        </div>
+	</div>
 		
 	</main>
 {% endblock %}

@@ -64,6 +64,10 @@
             $('#form-delete-expense').attr('action', 'delete-expense?id=' + expenseId);
             document.getElementById('delete-expense').innerHTML = expense; 
         });
+        $("#deleteAll").click(function () {
+            console.log('clicked')
+            $('#form-delete-all').attr('action', 'delete-all');
+        });
         $(".editPaymentMethod").click(function () {
             var paymentMethodId = $(this).attr('data-id');
             var paymentMethod = $(this).attr('data-info-payment-method'); 
@@ -79,17 +83,19 @@
         });
         
         $("#editProfile").click(function(){
-            $("#profileDetails").fadeToggle();
-            $('#editOptions').fadeToggle();
+            $('#editOptions').slideToggle();
         });
 
         $("#incomes-categories").click(function(){
-            $("#incomes").fadeToggle();
+            $("#incomes").slideToggle();
         });
-
+        $("#expenses-categories").click(function(){
+            $("#expenses").slideToggle();
+        });
+        $("#payment-method-categories").click(function(){
+            $("#paymentMethods").slideToggle();
+        });
     });
-
-
 
  </script>
 {% endblock %}
@@ -98,9 +104,9 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <div id="profileDetails">
+        <div id="profileDetails" style="border-radius: 25px;" >
             <div class="row">
-                <div class="col" style="border-right: 0.5px solid #38b6ff;">
+                <div class="col" style="border-right: 0.5px solid #38b6ff; ">
                     <div id="overlay"><img src="/img/profile.png" alt="profile" /></div>
                 </div>
                 <div class="col">
@@ -114,8 +120,8 @@
                 </div>
             </div>
         </div>
-        <span id="editProfile" type="button" class="btn btn-info CategoryFooter"> <p style="margin-left: 14px;  float: left;"> <i class="far fa-user"></i></p> User <p class="header-icon"> <i class="fas fa-arrows-alt-v "></i> </p></span>
-        <div id="editOptions">
+        <span id="editProfile" type="button" class="btn btn-info CategoryFooter"> <p style="margin-left: 14px;  float: left;"> <i class="far fa-user"></i></p> User <p class="header-icon"> <i class="fas fa-arrow-down"></i> </p></span>
+        <div id="editOptions"  style="display: none;">
             <div class="row">
                 <div class="col-lg-6">
 
@@ -123,29 +129,28 @@
                         <p style=" margin-bottom:0px; float: left;"><i class='fas fa-pencil-alt edit_btn'></i></p>Edit user profile</a></span>
                 </div>
                 <div class="col-lg-6">
-
-                    <span ><a  href="/settings/delete-all"  type="button" class="btn btn-danger settings-button" style="background-color:#ff6e6e;" >
+                    <span  id="deleteAll"><a  href="#delete-all-modal"  data-toggle="modal" type="button" class="btn btn-danger settings-button" style="background-color:#ff6e6e;" >
                         <p style=" margin-bottom:0px; float: left;"><i class='far fa-trash-alt'></i></p>Delete All Incomes And Expenses</a></span>
                 </div>
                 <div class="col-lg-12">
 
-                    <span ><a  href="/settings/delete-all"  type="button" class="btn btn-danger settings-button" style="background-color:#ff6e6e;"  >
+                    <span ><a  href="/settings/delete-your-account"  type="button" class="btn btn-danger settings-button" style="background-color:#ff6e6e;"  >
                         <p style=" margin-bottom:0px; float: left;"><i class="fas fa-broom"></i></p>Delete Your Account</a></span>
                 </div>
             </div>
             
-           
+            
         </div>
 
         
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-12">
         <div class="Category" >
-            <header >
-              <button id="incomes-categories" type="button" class="btn btn-info" style="width: 100%;">  Incomes Categories <p style=" margin: 0;float: right;"><i i class="fas fa-arrow-down"></i></p></button> 
+            <header>
+              <button id="incomes-categories" type="button" class="btn btn-info" style="width: 100%; border-radius: 25px;">  Incomes Categories <p style=" margin: 0;float: right;"><i i class="fas fa-arrow-down"></i></p></button> 
             </header>
-            <div class="CategoryColumn" id="incomes">
-                <ul class="CategoryRow">
+            <div class="CategoryColumn" id="incomes" style="display: none;" >
+                <ul class="CategoryRow" >
                    {% for getIncomeCategoryAssignedToUser in getIncomesCategoryAssignedToUser %}
                    {% if getIncomeCategoryAssignedToUser['name'] != defaultCategory %}
                    <li>
@@ -166,12 +171,12 @@
         </div>
         </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-12">
         <div class="Category">
-            <header>
-                <div class="CategoryHeader">Expences Categories</div>
+            <header >
+              <button id="expenses-categories" type="button" class="btn btn-info" style="width: 100%; border-radius: 25px;">  Expenses Categories <p style=" margin: 0;float: right;"><i i class="fas fa-arrow-down"></i></p></button> 
             </header>
-            <div class="CategoryColumn" id="expenses">
+            <div class="CategoryColumn" id="expenses"  style="display: none;">
                 <ul class="CategoryRow">
                     {% for getExpenseCategoryAssignedToUser in getExpensesCategoryAssignedToUser %}
                     {% if getExpenseCategoryAssignedToUser['name'] != defaultCategory %}
@@ -200,12 +205,12 @@
         </div>
     </div>
  </div>
-    <div class="col-lg-4">
+    <div class="col-lg-12">
         <div class="Category">
-            <header>
-                <div class="CategoryHeader" >Payment Methods</div>
-            </header>
-            <div class="CategoryColumn" id="paymentMethods">
+            <header >
+                <button id="payment-method-categories" type="button" class="btn btn-info" style="width: 100%; border-radius: 25px;">  Payment Methods <p style=" margin: 0;float: right;"><i i class="fas fa-arrow-down"></i></p></button> 
+              </header>
+            <div class="CategoryColumn" id="paymentMethods"  style="display: none;">
                 <ul class="CategoryRow">
                     {% for getPaymentMethodAssignedToUser in getPaymentMethodsAssignedToUser %}
                     {% if getPaymentMethodAssignedToUser['name'] != defaultCategoryOfPaymentMethods %}
