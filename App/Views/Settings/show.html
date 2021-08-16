@@ -9,33 +9,6 @@
     
     $( document ).ready(function() {
         
-        // $.ajax({
-        //     type: 'GET',
-        //     url: '/settings/display',
-        //     dataType: 'JSON',
-        //     success: function(response){
-        //         var resultIncomesCategories ='';
-        //         var resultExpenseCategories ='';
-        //         var resultPaymentMethodCategories ='';
-        //         var container = $('')
-               
-        //                 $.each(response.getIncomesCategoryAssignedToUser, function (i, val) {
-        //                     container.append(val)
-        //                     resultIncomesCategories += "<li>" + val['name'] +  "<div class = 'editDeleteSpanIncome'><a href='#edit-income-modal" + val['id'] + "'data-toggle='modal'><i class='fas fa-pencil-alt edit btn'></i></a></div>" + "</li>";
-        //                 })
-        //               //  $('#incomes').html(resultIncomesCategories);     
-        //                 $.each(response.getExpensesCategoryAssignedToUser, function (i, val) {
-        //                     container.append(val)
-        //                      resultExpenseCategories += "<li>" + val['name'] +  "</li>";
-        //                 })
-        //                // $('#expenses').html(resultExpenseCategories);    
-        //                 $.each(response.getPaymentMethodsAssignedToUser, function (i, val) {
-        //                     container.append(val)
-        //                      resultPaymentMethodCategories += "<li>" + val['name'] +  "</li>";
-        //                 })
-        //                 //$('#paymentMethods').html(resultPaymentMethodCategories); 
-        //     }
-        // }) 
          
         $(".editIncome").click(function () {
             var incomeId = $(this).attr('data-id');

@@ -42,7 +42,10 @@
                        $('#expenses').html($resultExpenses);
                        if(response.sumFromIncomesAndExpenses > 0) {
                            $resultSumFromIncomesAndExpences = "<div id='balanceWindow'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Well done! </h5></div></div>" ; 
-                       } else {
+                       }else if (response.sumFromIncomesAndExpenses == 0) {
+                        $resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color: #baa30b;' ><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'></h5></div></div>" ; 
+                       }
+                        else {
                           $resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color:#cc7a00'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Try to get better incomes or spend less money on expenses. </h5></div></div>" ;
                        }
                        $('#balance').html($resultSumFromIncomesAndExpences);
@@ -53,8 +56,12 @@
                         google.charts.load('current', {'packages':['corechart']});
 
                         // Set a callback to run when the Google Visualization API is loaded.
-                        google.charts.setOnLoadCallback(draw_my_chart_incomes);
-                        google.charts.setOnLoadCallback(draw_my_chart_expenses);
+                        
+                        if (my_2d_income.length > 0) google.charts.setOnLoadCallback(draw_my_chart_incomes);
+                        else  $('#chart_div_incomes').html("there are no incomes from this period time.");  
+                        if (my_2d_expense.length > 0) google.charts.setOnLoadCallback(draw_my_chart_expenses);
+                        else  $('#chart_div_expenses').html("there are no expenses from this period time.");    
+                       
                         // Callback that creates and populates a data table,
                         // instantiates the pie chart, passes in the data and
                         // draws it.

@@ -28,8 +28,11 @@ class Income extends Authenticated
             Flash::addMessage('A new income has been added succesfuly to your account.');
             $this->redirect('/Income/index');
         } else {
-            Flash::addMessage('Failed.');
-            View::renderTemplate('Income/index.html', 'WARNING');
+            Flash::addMessage('Failed.', Flash::WARNING);
+            View::renderTemplate('Income/index.html', [
+                'user' => $this->user,
+                'userIncomes' => $this->user->getIncomesCategoryAssignedToUser()
+            ]);
         }
     }
 }

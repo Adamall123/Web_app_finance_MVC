@@ -16,6 +16,12 @@
         //takie current value of date 
         $('input[type=date][name=date]').val(new Date().toDateInputValue());
         var date = (new Date().toDateInputValue())
+
+        $('#cancel-button').click(function() {
+          $('input[type=number][name=amount]').val(0)
+          $('input[type=text][name=comment]').val('')
+       })
+
         var amount = $('input[type=number][name=amount]').val()
         
         var expense_id =  $('input[type=radio][name=expense_category_id]').val()
@@ -148,7 +154,7 @@
                                     <input type="submit" name="submit" class="btn btn-success " value="ADD" style="width: 100%;">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="button" class="btn btn-warning" value="CANCEL" style="width: 100%;">
+                                    <input id="cancel-button" type="button" class="btn btn-warning" value="CANCEL" style="width: 100%;">
                                 </div>
                                 </div>
                            </form>

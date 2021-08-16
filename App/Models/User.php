@@ -296,20 +296,36 @@ class User extends \Core\Model
        
         return $stmt->fetchAll();
     }
+    protected function validateAmountAndComment($params)
+    {   
+        if (! preg_match('/^[0-9]+(?:\.[0-9]{0,2})?$/', $_POST['amount']))
+            {
+                $this->errors[] = 'Number is required';
+            } 
+            if (!preg_match('/^[.]{0,30}$/', $_POST['comment']))
+            {
+                $this->errors['comment'] = 'Comment length can not be longer than 30 characters.'; 
+            }     
+    }
+         
     public function saveIncome($params)
     {
+        $this->validateAmountAndComment($params);
+        if(empty($this->errors)){
+            $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
+            VALUES (:id, :income_category_assigned_to_user_id, :amount, :date_of_income, :income_comment)';
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
 
-        $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
-                    VALUES (:id, :income_category_assigned_to_user_id, :amount, :date_of_income, :income_comment)';
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
-    
-        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-        $stmt->bindValue(':income_category_assigned_to_user_id', $_POST['income_category_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_INT);
-        $stmt->bindValue(':date_of_income', $_POST['date'], PDO::PARAM_STR);
-        $stmt->bindValue(':income_comment', $_POST['comment'], PDO::PARAM_STR);
-         return $stmt->execute();
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(':income_category_assigned_to_user_id', $_POST['income_category_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_STR);
+            $stmt->bindValue(':date_of_income', $_POST['date'], PDO::PARAM_STR);
+            $stmt->bindValue(':income_comment', $_POST['comment'], PDO::PARAM_STR);
+            return $stmt->execute();
+        }
+       
+        return false;
     }
     /////////////////////////////////////////////////////////////////////// EXPENSES  ///////////////////////////////////////////////////////////////////////
 
@@ -344,7 +360,7 @@ class User extends \Core\Model
         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
         $stmt->bindValue(':expense_category_assigned_to_user_id', $_POST['expense_category_id'], PDO::PARAM_INT);
         $stmt->bindValue(':payment_method_assigned_to_user_id', $_POST['payment_method_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_INT);
+        $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_STR);
         $stmt->bindValue(':date_of_expense', $_POST['date'], PDO::PARAM_STR);
         $stmt->bindValue(':expense_comment', $_POST['comment'], PDO::PARAM_STR);
          return $stmt->execute();
