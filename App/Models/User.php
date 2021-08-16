@@ -651,6 +651,35 @@ class User extends \Core\Model
         return $stmt2->execute();
 
     }
+    public function deleteAllIncomesAndExpensesCategoriesAssignedToUser()
+    {
+        $sqlIncomes = 'DELETE FROM incomes_category_assigned_to_users 
+            WHERE user_id=:id';
+        $sqlExpenses = 'DELETE FROM expenses_category_assigned_to_users 
+          WHERE user_id=:id';
+
+         $db = static::getDB();
+         $stmt = $db->prepare($sqlIncomes);
+         $stmt2 = $db->prepare($sqlExpenses);
+         $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+         $stmt2->bindValue(':id',$this->id,PDO::PARAM_INT);
+
+         if ($stmt->execute())
+        return $stmt2->execute();
+    }
+    public function deleteUserAccount()
+    {
+        $sql = 'DELETE FROM users 
+            WHERE id=:id';
+
+         $db = static::getDB();
+         $stmt = $db->prepare($sql);
+         
+         $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+
+         return $stmt->execute();
+    }
+
     public function deleteIncomeAndUpdateIncomeCategoryAssignedToUser($idOfIncome, $nameOfDefaultCategory) {
 
         $defaultCategoryId = $this->getDefaultIncomeCategoryIdRelatedToUser($nameOfDefaultCategory)['id'] ;

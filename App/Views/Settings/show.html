@@ -68,6 +68,10 @@
             console.log('clicked')
             $('#form-delete-all').attr('action', 'delete-all');
         });
+        $("#deleteUser").click(function () {
+            $('#form-delete-user').attr('action', 'delete-user');
+        });
+        
         $(".editPaymentMethod").click(function () {
             var paymentMethodId = $(this).attr('data-id');
             var paymentMethod = $(this).attr('data-info-payment-method'); 
@@ -134,7 +138,7 @@
                 </div>
                 <div class="col-lg-12">
 
-                    <span ><a  href="/settings/delete-your-account"  type="button" class="btn btn-danger settings-button" style="background-color:#ff6e6e;"  >
+                    <span id="deleteUser" ><a  href="#delete-user-modal" data-toggle="modal" type="button" class="btn btn-danger settings-button" style="background-color:#ff6e6e;"  >
                         <p style=" margin-bottom:0px; float: left;"><i class="fas fa-broom"></i></p>Delete Your Account</a></span>
                 </div>
             </div>

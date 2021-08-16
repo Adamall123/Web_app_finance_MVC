@@ -172,4 +172,17 @@ class Settings extends Authenticated
             $this->redirect('/Settings/show');
         }
     }
+    public function deleteUserAction()
+    {
+        if ($this->user->deleteAllIncomesAndExpenses()){
+            if( $this->user->deleteAllIncomesAndExpensesCategoriesAssignedToUser()) {
+                //delete user 
+                $this->user->deleteUserAccount();
+                Auth::logout();//destroy session
+                Flash::addMessage('The account has been deleted.', Flash::WARNING);
+                $this->redirect('/');
+            }
+        }
+       
+    }
 }
