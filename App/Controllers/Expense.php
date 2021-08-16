@@ -29,8 +29,12 @@ class Expense extends Authenticated
             $this->redirect('/Expense/index');
 
         } else {
-            Flash::addMessage('Failed.');
-            View::renderTemplate('Income/index.html', 'WARNING');
+            Flash::addMessage('Failed.', FLASH::WARNING);
+            View::renderTemplate('Expense/index.html', [
+                'user' => $this->user,
+                'userExpenses' => $this->user->getExpensesCategoryAssignedToUser(),
+                'userPaymentMethods' => $this->user->getPaymentMethodsAssignedToUser()
+            ]);
         }
     }
     public function changeAction()

@@ -351,7 +351,8 @@ class User extends \Core\Model
 
     public function saveExpense($params)
     {
-
+        $this->validateAmountAndComment($params);
+        if(empty($this->errors)){
         $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment)
                     VALUES (:id, :expense_category_assigned_to_user_id, :payment_method_assigned_to_user_id , :amount, :date_of_expense, :expense_comment)';
         $db = static::getDB();
@@ -364,6 +365,8 @@ class User extends \Core\Model
         $stmt->bindValue(':date_of_expense', $_POST['date'], PDO::PARAM_STR);
         $stmt->bindValue(':expense_comment', $_POST['comment'], PDO::PARAM_STR);
          return $stmt->execute();
+        }
+        return false;
     }
     /////////////////////////////////////////////////////////////////////// BALANCE  ///////////////////////////////////////////////////////////////////////
 
