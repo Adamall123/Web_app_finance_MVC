@@ -31,13 +31,15 @@
                        var $resultSumFromIncomesAndExpences ='';
                        //console.log(response.allIncomesOfUser)
                        $.each(response.allIncomesOfUser, function (i, val) {
+                           
                            container.append(val)
-                           $resultIncomes += "<li>" + val['name'] + " : " + val['sum'] + "</li>";
+                           $resultIncomes += "<li>" + val['name'] + " : " + val['sum'] + " zł</li>";
                        })
                        $('#incomes').html($resultIncomes);
                        $.each(response.allExpensesOfUser, function (i, val) {
+                       
                            container.append(val)
-                           $resultExpenses += "<li>" + val['name'] + " : " + val['sum'] + "</li>";
+                           $resultExpenses += "<li>" + val['name'] + " : " + val['sum'] + " zł</li>";
                        })
                        $('#expenses').html($resultExpenses);
                        if(response.sumFromIncomesAndExpenses > 0) {
@@ -146,19 +148,17 @@
    <main>
    
     <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-            </div>
-            <div class="col-lg-3">
-                <div id="reportrange" style="background: rgb(25, 98, 167); cursor: pointer; padding: 5px 10px; border: 1px solid rgb(58, 73, 212); width: 100%">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span></span> <i class="fa fa-caret-down"></i>
-                </div>
-                </div>
-        </div>
-       
-        <div id="balance"></div>
+        
 			<div class="row">
+                <div class="col-lg-9">
+                    <div id="balance"></div>
+                </div>
+                <div class="col-lg-3">
+                    <div id="reportrange" style="background: rgb(25, 98, 167); cursor: pointer; padding: 5px 10px; border: 1px solid rgb(58, 73, 212); width: 100%">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span></span> <i class="fa fa-caret-down"></i>
+                    </div>
+                    </div>
 				<div class="col-lg-6">
 					<div class="Category">
 						<header>

@@ -380,6 +380,10 @@ a:hover{
     border-radius: 20px;
     font-size:16px;
 }
+.Category .CategoryColumn .CategoryRow li:hover {
+    background-color: rgb(25, 98, 167);
+
+}
 
 #editOptions {
     min-height: 100px;
@@ -492,3 +496,4 @@ hr {
 .daterangepicker .calendar-table th, .daterangepicker .calendar-table td {
     color: black;
 }
+

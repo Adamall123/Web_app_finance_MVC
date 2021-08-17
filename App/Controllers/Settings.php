@@ -5,7 +5,9 @@ namespace App\Controllers;
 use Core\View;
 use \App\Auth;
 use App\Models\User;
+use App\Models\_Settings;
 use \App\Flash;
+
 
 class Settings extends Authenticated
 {
@@ -13,12 +15,16 @@ class Settings extends Authenticated
     {
         parent::before();
         $this->user = Auth::getUser();
+       
+        $this->settingsUser = new _Settings($this->user);
+        
         $this->defaultCategory = "Another";
         $this->defaultCategoryOfPaymentMethods = 'Cash';
+        
     }
     public function showAction()
     {
-       
+        
         View::renderTemplate('Settings/show.html', [
             'user' => $this->user,
             'defaultCategory' => $this->defaultCategory,
@@ -38,8 +44,8 @@ class Settings extends Authenticated
 
     public function updateAction()
     {
-        
-        if ($this->user->updateProfile($_POST)) {
+       
+        if ($this->settingsUser->updateProfile($_POST)) {
 
             Flash::addMessage('Changes saved');
 
@@ -61,43 +67,44 @@ class Settings extends Authenticated
     }
     public function addNewIncomeAction()
     {
-        if ($this->user->addNewIncomeCategory($_POST['income'])){
+        
+        if ($this->settingsUser->addNewIncomeCategory($_POST['income'])){
             Flash::addMessage('Added new income.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function addNewExpenseAction()
     {
        
-        if ($this->user->addNewExpenseCategory($_POST['expense'])){
+        if ($this->settingsUser->addNewExpenseCategory($_POST['expense'])){
             Flash::addMessage('Added new expense.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function addNewPaymentMethodAction()
     {
-        if ($this->user->addNewPaymentMethodCategory($_POST['payment'])){
+        if ($this->settingsUser->addNewPaymentMethodCategory($_POST['payment'])){
             Flash::addMessage('Added new payment method.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function editIncomeAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->editIncome($paramIDFromURL, $_POST['editincome'])) {
+        if ($this->settingsUser->editIncome($paramIDFromURL, $_POST['editincome'])) {
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
@@ -110,62 +117,62 @@ class Settings extends Authenticated
             $checkedUpdateLimit = $_POST['remember_me_expense'];
             $updatedLimitIncome = $this->user->updateLimitExpenseCategory($paramIDFromURL, $_POST['editexpenselimit'] ?? null);
         }
-        if ($this->user->editExpense($paramIDFromURL, $_POST['editexpence']) || $updatedLimitIncome) {
+        if ($this->settingsUser->editExpense($paramIDFromURL, $_POST['editexpence']) || $updatedLimitIncome) {
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function editPaymentMethodAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->editPaymentMethod($paramIDFromURL, $_POST['editpayment'])) {
+        if ($this->settingsUser->editPaymentMethod($paramIDFromURL, $_POST['editpayment'])) {
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function deleteIncomeAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->deleteIncomeAndUpdateIncomeCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory)) {
+        if ($this->settingsUser->deleteIncomeAndUpdateIncomeCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory)) {
             Flash::addMessage('A category has been deleted.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function deleteExpenseAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->deleteExpenseAndUpdateExpenseCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory)) {
+        if ($this->settingsUser->deleteExpenseAndUpdateExpenseCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory)) {
                 
                 Flash::addMessage('A category has been deleted.');
                 $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function deletePaymentMethodAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($this->user->deletePaymentMethodAndUpdatePaymenthMethodAssignedToUser($paramIDFromURL,$this->defaultCategoryOfPaymentMethods)) {
+        if ($this->settingsUser->deletePaymentMethodAndUpdatePaymenthMethodAssignedToUser($paramIDFromURL,$this->defaultCategoryOfPaymentMethods)) {
             Flash::addMessage('A category has been deleted.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($this->user->errors[0],  Flash::WARNING );
+            Flash::addMessage($this->settingsUser->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function deleteAllAction()
     {
-        if ($this->user->deleteAllIncomesAndExpenses()) {
+        if ($this->settingsUser->deleteAllIncomesAndExpenses()) {
             Flash::addMessage('All incomes and expenses has been removed', Flash::WARNING);
             $this->redirect('/Settings/show');
         } else {
@@ -175,10 +182,10 @@ class Settings extends Authenticated
     }
     public function deleteUserAction()
     {
-        if ($this->user->deleteAllIncomesAndExpenses()){
-            if( $this->user->deleteAllIncomesAndExpensesCategoriesAssignedToUser()) {
+        if ($this->settingsUser->deleteAllIncomesAndExpenses()){
+            if( $this->settingsUser->deleteAllIncomesAndExpensesCategoriesAssignedToUser()) {
                 //delete user 
-                $this->user->deleteUserAccount();
+                $this->settingsUser->deleteUserAccount();
                 Auth::logout();//destroy session
                 Flash::addMessage('The account has been deleted.', Flash::WARNING);
                 $this->redirect('/');
