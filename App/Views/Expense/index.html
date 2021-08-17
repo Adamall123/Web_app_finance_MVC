@@ -62,16 +62,15 @@
           },
           dataType:'JSON', 
           success: function(response){
-              console.log(limit)
                var $resultSumFromExpences ='';
               if(!isNaN(parseFloat(limit))) {
                 if((parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount)) <= limit ) {
-                  
-                    $resultSumFromExpences = "<div class='limit'>Information about limit: You can spend: " + (limit - response.MonthlyCostsOfEachExpenseFromSelectedDate) + " zł</div>"
+                    
+                    $resultSumFromExpences = "<div class='limit'>Information about limit: You can spend: " + (parseFloat(limit) - parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate)).toFixed(2) + " zł</div>"
                     $resultSumFromExpences += '<div class="container"><div class="row expenseWindow"> <div class="col-lg-3">Limit:<br>'+ limit 
                         +' zł</div> <div class="col-lg-3">Spend money:<br>'+ response.MonthlyCostsOfEachExpenseFromSelectedDate 
-                        +' zł</div><div class="col-lg-3"> Left money:<br>'+  (limit - parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate))
-                        +' zł</div><div class="col-lg-3">Costs+amount:<br>'+ (parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount))
+                        +' zł</div><div class="col-lg-3"> Left money:<br>'+  (parseFloat(limit) - parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate)).toFixed(2)
+                        +' zł</div><div class="col-lg-3">Costs+amount:<br>'+ (parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount)).toFixed(2)
                         +' zł</div> </div></div>' 
                   } 
                   else {
@@ -79,10 +78,11 @@
                     $resultSumFromExpences = "<div class='limit'>Information about limit: You have spent too much money. If you need - increase your limit in settings option. </div>"
                     $resultSumFromExpences += '<div class="container"><div class="row expenseWindow" style="background-color:#F08080" > <div class="col-lg-3">Limit:<br>'+ limit 
                         +' zł</div> <div class="col-lg-3">Spend money:<br>'+ response.MonthlyCostsOfEachExpenseFromSelectedDate 
-                        +' zł</div><div class="col-lg-3"> Difference:<br>'+  (limit - response.MonthlyCostsOfEachExpenseFromSelectedDate)
-                        +' zł</div><div class="col-lg-3">Costs+amount:<br>'+ (parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount))
+                        +' zł</div><div class="col-lg-3"> Difference:<br>'+  (parseFloat(limit) - parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate)).toFixed(2)
+                        +' zł</div><div class="col-lg-3">Costs+amount:<br>'+ (parseFloat(response.MonthlyCostsOfEachExpenseFromSelectedDate) + parseFloat(amount)).toFixed(2)
                         +' zł</div> </div></div>' 
                     } 
+                    if(amount < 0 || amount > 1000000000000 || amount == '') $resultSumFromExpences = "<div class='limit'>Information about amount: You have to provide amount bigger than 0 and less than 1 000 000 000 000. </div>"
                   $('#resultOfLimit').slideDown().html($resultSumFromExpences);   
                   $('.alert').remove()
               } else{

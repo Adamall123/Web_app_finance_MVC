@@ -104,6 +104,7 @@ class Settings extends Authenticated
     public function editExpenseAction()
     {
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
+        
         $updatedLimitIncome = false;
         if(isset($_POST['remember_me_expense'])) {
             $checkedUpdateLimit = $_POST['remember_me_expense'];

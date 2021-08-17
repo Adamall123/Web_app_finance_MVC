@@ -616,7 +616,7 @@ class User extends \Core\Model
             AND id=:expense_id';
             $db = static::getDB();
             $stmt = $db->prepare($sql);
-            $stmt->bindValue(':monthlyLimit',$monthlyLimit,PDO::PARAM_INT);
+            $stmt->bindValue(':monthlyLimit',$monthlyLimit,PDO::PARAM_STR);
             $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
             $stmt->bindValue(':expense_id',$idOfExpense,PDO::PARAM_INT);
             return $stmt->execute();
