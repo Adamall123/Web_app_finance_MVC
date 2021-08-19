@@ -18,11 +18,12 @@ class User extends \Core\Model
 
    public function __construct($data = [])
    {
+       
        foreach($data as $key => $value){
            $this->$key = $value;
        };
    }
-  
+   
    public function save()
    {
         $this->validate();
@@ -282,33 +283,18 @@ class User extends \Core\Model
         
         $stmt->execute();
    }
-
-   /////////////////////////////////////////////////////////////////////// INCOMES  ///////////////////////////////////////////////////////////////////////
-   public function getIncomesCategoryAssignedToUser()
-    {
-        $sql = 'SELECT * FROM incomes_category_assigned_to_users WHERE user_id = :id';
-        
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
-
-        $stmt->bindValue('id', $this->id , PDO::PARAM_INT);
-
-        $stmt->execute();
-       
-        return $stmt->fetchAll();
-    }
-    protected function validateAmountAndComment($params)
-    {   
-        if (! preg_match('/^[0-9]+(?:\.[0-9]{0,2})?$/', $_POST['amount']))
-            {
-                $this->errors[] = 'Number is required';
-            } 
-            if (!preg_match('/^[.]{0,30}$/', $_POST['comment']))
-            {
-                $this->errors['comment'] = 'Comment length can not be longer than 30 characters.'; 
-            }     
-    }
-         
+   protected function validateAmountAndComment($params)
+   {   
+       if (! preg_match('/^[0-9]+(?:\.[0-9]{0,2})?$/', $_POST['amount']))
+           {
+               $this->errors[] = 'Number is required';
+           } 
+           if (!preg_match('/^[.]{0,30}$/', $_POST['comment']))
+           {
+               $this->errors['comment'] = 'Comment length can not be longer than 30 characters.'; 
+           }     
+   }
+   /////////////////////////////////////////////////////////////////////// INCOMES  ///////////////////////////////////////////////////////////////////////   
     public function saveIncome($params)
     {
         $this->validateAmountAndComment($params);
@@ -329,27 +315,6 @@ class User extends \Core\Model
         return false;
     }
     /////////////////////////////////////////////////////////////////////// EXPENSES  ///////////////////////////////////////////////////////////////////////
-
-    public function getExpensesCategoryAssignedToUser()
-    {
-        $sql = 'SELECT * FROM expenses_category_assigned_to_users WHERE user_id = :id';
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue('id', $this->id , PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
-    public function getPaymentMethodsAssignedToUser()
-    {
-        $sql = 'SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :id';
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue('id', $this->id , PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
     public function saveExpense($params)
     {
         $this->validateAmountAndComment($params);
@@ -418,7 +383,7 @@ class User extends \Core\Model
         return $stmt->fetchAll();
     }
 
-    public function sumFromIncomesAndExpenses($startDate, $endDate) 
+    public function sumFromIncomesAndExpenses($startDate, $endDate) // get sum from incomes  - // get sum from expenses?
     {
         $sqlSumIncomes =   'SELECT SUM(incomes.amount) as sumIncomes
                             FROM incomes 
@@ -496,36 +461,63 @@ class User extends \Core\Model
     }
 /////////////////////////////////////////////////////////////////////// Settings  ///////////////////////////////////////////////////////////////////////
     
-  
+    
+public function updateProfile($data) 
+{
+    $this->name = $data['name'];
+    $this->email = $data['email'];
+    if ($data['password'] != '') {
+         $this->password = $data['password'];
+     }
+    $this->validate();
+    if (empty($this->errors)) {
+    
+        $sql = 'UPDATE users
+                 SET name = :name,
+                     email = :email';
+         //Add password if it's set
+         if ($data['password'] != '') {
+             $sql .= ', password = :password_hash';
+         }
    
-    public function updateLimitExpenseCategory($idOfExpense, $monthlyLimit)
-    {
-        if($monthlyLimit != null) {
-            $sql = 'UPDATE expenses_category_assigned_to_users
-            SET monthly_limit=:monthlyLimit
-            WHERE user_id=:id
-            AND id=:expense_id';
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-            $stmt->bindValue(':monthlyLimit',$monthlyLimit,PDO::PARAM_STR);
-            $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
-            $stmt->bindValue(':expense_id',$idOfExpense,PDO::PARAM_INT);
-            return $stmt->execute();
-        }
-    }
-    public function getExpenseLimit($idOfExpense) {
-            $sqlSumExpenses =  'SELECT monthly_limit  
-                                FROM expenses_category_assigned_to_users 
-                                WHERE id = :expense_id
-                                AND user_id = :id ';
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
+         $sql .= "\nWHERE id = :id";
+         
+         $db = static::getDB();
+         $stmt = $db->prepare($sql);
 
-            $stmt->bindValue(':expense_id', $idOfExpense, PDO::PARAM_INT);
-            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-            
-            return $stmt->execute();
+         $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+         $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+         if ($data['password'] != '') {
+             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+         }
+         return $stmt->execute();
     }
+    return false;
+}
+
+    public function deleteUserAccount() // user
+    {
+        $sql = 'DELETE FROM users 
+            WHERE id=:id';
+
+         $db = static::getDB();
+         $stmt = $db->prepare($sql);
+         
+         $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
+
+         return $stmt->execute();
+    }
+    protected function validateLengthOfCategoryInSettings($text) 
+    {
+        if (strlen($text) > 20 || strlen($text) < 3) {
+            $this->errors[] = "A category name must have characters between 3 and 20.";
+            return 0;
+        }
+        return 1;
+    }
+    
 }
 
 

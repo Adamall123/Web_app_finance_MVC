@@ -26,31 +26,31 @@
                 dataType:'JSON', 
                 success: function(response){
                 var container = $('')
-                       var $resultIncomes ='';
-                       var $resultExpenses ='';
-                       var $resultSumFromIncomesAndExpences ='';
-                       //console.log(response.allIncomesOfUser)
+                       var resultIncomes ='';
+                       var resultExpenses ='';
+                       var resultSumFromIncomesAndExpences ='';
+
                        $.each(response.allIncomesOfUser, function (i, val) {
                            
                            container.append(val)
-                           $resultIncomes += "<li>" + val['name'] + " : " + val['sum'] + " zł</li>";
+                           resultIncomes += "<li>" + val['name'] + " : " + val['sum'] + " zł</li>";
                        })
-                       $('#incomes').html($resultIncomes);
+                       $('#incomes').html(resultIncomes);
                        $.each(response.allExpensesOfUser, function (i, val) {
                        
                            container.append(val)
-                           $resultExpenses += "<li>" + val['name'] + " : " + val['sum'] + " zł</li>";
+                           resultExpenses += "<li>" + val['name'] + " : " + val['sum'] + " zł</li>";
                        })
-                       $('#expenses').html($resultExpenses);
+                       $('#expenses').html(resultExpenses);
                        if(response.sumFromIncomesAndExpenses > 0) {
-                           $resultSumFromIncomesAndExpences = "<div id='balanceWindow'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Well done! </h5></div></div>" ; 
+                           resultSumFromIncomesAndExpences = "<div id='balanceWindow'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Well done! </h5></div></div>" ; 
                        }else if (response.sumFromIncomesAndExpenses == 0) {
-                        $resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color: #baa30b;' ><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'></h5></div></div>" ; 
+                        resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color: #baa30b;' ><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'></h5></div></div>" ; 
                        }
                         else {
-                          $resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color:#cc7a00'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Try to get better incomes or spend less money on expenses. </h5></div></div>" ;
+                          resultSumFromIncomesAndExpences = "<div id='balanceWindow' style='background-color:#cc7a00'><h5>Your balance is: " + response.sumFromIncomesAndExpenses + " zł<br><div class='line'> Try to get better incomes or spend less money on expenses. </h5></div></div>" ;
                        }
-                       $('#balance').html($resultSumFromIncomesAndExpences);
+                       $('#balance').html(resultSumFromIncomesAndExpences);
                     
                         var my_2d_income = response.allIncomesOfUser
                         var my_2d_expense = response.allExpensesOfUser

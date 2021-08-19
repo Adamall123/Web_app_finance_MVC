@@ -10,7 +10,6 @@ use \App\Flash;
 
 class Balance extends Authenticated
 {
-    protected $value=1;
     protected function before()
     {
         parent::before();
@@ -22,13 +21,13 @@ class Balance extends Authenticated
             'user' => $this->user
         ]);
     }
-
     public function changeAction()
     {
         if (isset($_POST['start'])){
             $this->startDate = $_POST['start'];
             $this->endDate = $_POST['end'];
         }
+        
         echo json_encode(array("allIncomesOfUser" => $this->user->getSumSpendMoneyOnEachIncomeOfUser($this->startDate, $this->endDate),
                                 "allExpensesOfUser" => $this->user->getSumSpendMoneyOnEachExpenseOfUser($this->startDate, $this->endDate),
                                 "sumFromIncomesAndExpenses" => $this->user->sumFromIncomesAndExpenses($this->startDate, $this->endDate) ));
