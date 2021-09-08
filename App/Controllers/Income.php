@@ -28,9 +28,11 @@ class Income extends Authenticated
     }
     public function addAction()
     {
-        $income = new _Income($this->user);
+        
         $incomeDB = new IncomesDB();
-        if ($this->user->saveIncome($_POST)) {
+        $income = new _Income($_POST);
+        
+        if ($incomeDB->saveIncome($income, $this->user)) {
             Flash::addMessage('A new income has been added succesfuly to your account.');
             $this->redirect('/Income/index');
         } else {

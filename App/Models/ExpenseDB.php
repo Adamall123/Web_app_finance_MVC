@@ -140,5 +140,89 @@ public function deleteExpenseAndUpdateExpenseCategoryAssignedToUser(int $id_of_e
         $stmt->execute();
         return $stmt->fetch();
     }
+    public function MonthlyCostsOfEachExpenseFromSelectedDate($id_of_expense, $date, $user)
+    {
+         $month = date('m', strtotime($date));
+         $year = date('Y', strtotime($date));
+         $numberOfDaysOfSelectedMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+         $firstDayOfSelectedMonth = $year .'-'.$month.'-01';
+         $amountOfDaysOfSelectedMonth = $year .'-' . $month .'-' . $numberOfDaysOfSelectedMonth;
+        $sql =  'SELECT SUM(expenses.amount) as sumExpenses 
+                FROM expenses
+                WHERE expense_category_assigned_to_user_id	 = :expense_id
+                AND user_id = :id
+                AND date_of_expense >= :firstDayOfSelectedMonth 
+                AND date_of_expense <= :amountOfDaysOfSelectedMonth';
+        
+        $db = Model::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+        $stmt->bindValue(':expense_id', $id_of_expense, PDO::PARAM_INT);
+        $stmt->bindValue(':firstDayOfSelectedMonth', $firstDayOfSelectedMonth, PDO::PARAM_STR);
+        $stmt->bindValue(':amountOfDaysOfSelectedMonth', $amountOfDaysOfSelectedMonth, PDO::PARAM_STR);
 
+        if ($stmt->execute()) {
+            $sqlSumExpensesResult = $stmt->fetchAll();
+            if (count($sqlSumExpensesResult) == 0)  return 0;
+            foreach($sqlSumExpensesResult as $sqlSumExpenseResult)
+              {  
+                    $sumExpense = $sqlSumExpenseResult["sumExpenses"];
+              } 
+              if ($sumExpense == null) return 0;
+              return $sumExpense;
+        }
+        return 0;
+    }
+    public function getSumSpendMoneyOnEachExpenseOfUser($startDate, $endDate, $user) 
+    {
+        $sql = 'SELECT name, SUM(amount) AS sum 
+                FROM expenses, expenses_category_assigned_to_users
+                WHERE expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id 
+                AND expenses.user_id = :id
+                AND date_of_expense >= :startDate
+                AND date_of_expense <= :endDate 
+                GROUP BY name';
+        
+
+        $db = Model::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+
+        $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+        $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function saveExpense(_Expense $expense, $user)
+    {
+        //$this->validateAmountAndComment($params);
+        if(empty($this->errors)){
+        $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment)
+                    VALUES (:id, :expense_category_assigned_to_user_id, :payment_method_assigned_to_user_id , :amount, :date_of_expense, :expense_comment)';
+        $db = Model::getDB();
+        $stmt = $db->prepare($sql);
+        
+        $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+        $stmt->bindValue(':expense_category_assigned_to_user_id', $expense->expense_category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':payment_method_assigned_to_user_id', $expense->payment_method_id, PDO::PARAM_INT);
+        $stmt->bindValue(':amount', $expense->amount, PDO::PARAM_STR);
+        $stmt->bindValue(':date_of_expense', $expense->date, PDO::PARAM_STR);
+        $stmt->bindValue(':expense_comment', $expense->comment, PDO::PARAM_STR);
+         return $stmt->execute();
+        }
+        return false;
+    }
+    
+    public function deleteAllExpensesCategoriesAssignedToUser($user)
+    {
+        $sqlExpenses = 'DELETE FROM expenses_category_assigned_to_users 
+                        WHERE user_id=:id';
+        $db = Model::getDB();
+        $stmt = $db->prepare($sqlExpenses);
+        $stmt->bindValue(':id',$user->id,PDO::PARAM_INT);
+        return $stmt->execute();
+        
+    }
 }

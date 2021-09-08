@@ -15,6 +15,13 @@ use Core\View;
 class _Expense extends User
 {
 
+    public function __construct($data = [])
+    {
+
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
+        };
+    }
 //     public function getExpenseLimit($idOfExpense) {
 //             $sqlSumExpenses =  'SELECT monthly_limit  
 //                                 FROM expenses_category_assigned_to_users 

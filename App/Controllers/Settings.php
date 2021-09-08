@@ -194,8 +194,6 @@ class Settings extends Authenticated
     }
     public function deleteAllAction()
     {
-        $income = new _Income($this->user);
-        $expense = new _Expense($this->user);
         $incomeDB = new IncomesDB();
         $expenseDB = new ExpenseDB();
         if ($incomeDB->deleteAllIncomes($this->user) && $expenseDB->deleteAllExpenses($this->user)) {
@@ -211,7 +209,7 @@ class Settings extends Authenticated
         $incomeDB = new IncomesDB();
         $expenseDB = new ExpenseDB();
         if ($incomeDB->deleteAllIncomes($this->user) && $expenseDB->deleteAllExpenses($this->user)){
-            if($incomeDB->deleteAllIncomesCategoriesAssignedToUser() && $expenseDB->deleteAllExpensesCategoriesAssignedToUser()) {
+            if($incomeDB->deleteAllIncomesCategoriesAssignedToUser($this->user) && $expenseDB->deleteAllExpensesCategoriesAssignedToUser($this->user)) {
                 //delete user 
                 //delete payments
                 $this->user->deleteUserAccount();

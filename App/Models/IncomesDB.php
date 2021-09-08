@@ -86,6 +86,49 @@ class IncomesDB implements IncomeRepository
         $stmt->bindValue(':id',$user->id,PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function getSumSpendMoneyOnEachIncomeOfUser($startDate, $endDate, $user) 
+    {
+        
+        $sql = 'SELECT name, SUM(amount) AS sum 
+                FROM incomes, incomes_category_assigned_to_users 
+                WHERE incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id 
+                AND incomes.user_id = :id 
+                AND date_of_income >= :startDate 
+                AND date_of_income <= :endDate 
+                GROUP BY name';
+        
+        $db = Model::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+        
+        $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+        $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+        
+    }
+
+    public function saveIncome(_Income $income, $user){
+       // $this->validateAmountAndComment($params);
+        if(empty($this->errors)){
+            $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
+            VALUES (:id, :income_category_assigned_to_user_id, :amount, :date_of_income, :income_comment)';
+            $db = Model::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+            $stmt->bindValue(':income_category_assigned_to_user_id', $income->income_category_id, PDO::PARAM_INT);
+            $stmt->bindValue(':amount', $income->amount, PDO::PARAM_STR);
+            $stmt->bindValue(':date_of_income', $income->date, PDO::PARAM_STR);
+            $stmt->bindValue(':income_comment', $income->comment, PDO::PARAM_STR);
+            return $stmt->execute();
+        }
+       
+        return false;
+    }
+
     protected function getDefaultIncomeCategoryIdRelatedToUser($name_of_default_category, $user)
     {
         $sql = 'SELECT id FROM `incomes_category_assigned_to_users`
@@ -125,5 +168,15 @@ class IncomesDB implements IncomeRepository
             return 0;
         }
         return 1;
+    }
+        public function deleteAllIncomesCategoriesAssignedToUser($user)
+    {
+        $sqlIncomes =  'DELETE FROM incomes_category_assigned_to_users 
+                        WHERE user_id=:id';
+        $db = Model::getDB();
+        $stmt = $db->prepare($sqlIncomes);
+        $stmt->bindValue(':id',$user->id,PDO::PARAM_INT);
+        return $stmt->execute();
+
     }
 }

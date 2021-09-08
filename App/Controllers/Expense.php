@@ -31,10 +31,10 @@ class Expense extends Authenticated
     }
     public function addAction()
     {
-        $expense = new _Expense($this->user);
+        $expense = new _Expense($_POST);
         $expenseDB = new ExpenseDB();
         $paymentDB = new PaymentDB();
-        if ($this->user->saveExpense($_POST)) {
+        if ($expenseDB->saveExpense($expense, $this->user)) {
             Flash::addMessage('A new expense has been added succesfuly to your account.');
             $this->redirect('/Expense/index');
 
@@ -49,13 +49,15 @@ class Expense extends Authenticated
     }
     public function changeAction()
     {
-        echo json_encode(array("MonthlyCostsOfEachExpenseFromSelectedDate" =>  $this->user->MonthlyCostsOfEachExpenseFromSelectedDate( $_POST['expense_id'], $_POST['date'])));
+        $expenseDB = new ExpenseDB();
+        echo json_encode(array("MonthlyCostsOfEachExpenseFromSelectedDate" =>  $expenseDB->MonthlyCostsOfEachExpenseFromSelectedDate( $_POST['expense_id'], $_POST['date'], $this->user)));
     }
     public function getAction()
     {
+        $expenseDB = new ExpenseDB();
          if (isset($_GET['expense_category_id'])){
              $this->value = $_GET['expense_category_id'];
          }
-         echo json_encode(array("MonthlyCostsOfEachExpenseFromSelectedDate" =>  $this->user->MonthlyCostsOfEachExpenseFromSelectedDate($_GET['expense_category_id'], $_GET['date'])));
+         echo json_encode(array("MonthlyCostsOfEachExpenseFromSelectedDate" =>  $expenseDB->MonthlyCostsOfEachExpenseFromSelectedDate($_GET['expense_category_id'], $_GET['date'], $this->user)));
     }
 }

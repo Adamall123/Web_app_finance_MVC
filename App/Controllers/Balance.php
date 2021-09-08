@@ -5,6 +5,9 @@ namespace App\Controllers;
 use Core\View;
 use App\Models\User;
 use \App\Auth; 
+use App\Models\IncomesDB;
+use App\Models\ExpenseDB;
+
 use \App\Flash;
 
 
@@ -23,13 +26,17 @@ class Balance extends Authenticated
     }
     public function changeAction()
     {
+        $incomeDB = new IncomesDB();
+        $expenseDB = new ExpenseDB();
         if (isset($_POST['start'])){
             $this->startDate = $_POST['start'];
             $this->endDate = $_POST['end'];
         }
         
-        echo json_encode(array("allIncomesOfUser" => $this->user->getSumSpendMoneyOnEachIncomeOfUser($this->startDate, $this->endDate),
-                                "allExpensesOfUser" => $this->user->getSumSpendMoneyOnEachExpenseOfUser($this->startDate, $this->endDate),
-                                "sumFromIncomesAndExpenses" => $this->user->sumFromIncomesAndExpenses($this->startDate, $this->endDate) ));
+        echo json_encode(array("allIncomesOfUser" => $incomeDB->getSumSpendMoneyOnEachIncomeOfUser($this->startDate, $this->endDate, $this->user),
+                                "allExpensesOfUser" => $expenseDB->getSumSpendMoneyOnEachExpenseOfUser($this->startDate, $this->endDate, $this->user),
+    /*  "sumFromIncomesAndExpenses" => 120 */));
     }
 }
+
+//$this->user->sumFromIncomesAndExpenses($this->startDate, $this->endDate)
