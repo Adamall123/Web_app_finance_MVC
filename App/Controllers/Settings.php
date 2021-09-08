@@ -11,6 +11,7 @@ use App\Models\IncomesDB;
 use App\Models\_Expense;
 use App\Models\ExpenseDB;
 use App\Models\_PaymentMethod;
+use App\Models\PaymentDB;
 use \App\Flash;
 
 
@@ -29,6 +30,7 @@ class Settings extends Authenticated
         $income = new _Income($this->user);
         $incomeDB = new IncomesDB();
         $expenseDB = new ExpenseDB();
+        $paymentDB = new PaymentDB();
         //$expense = new _Expense($this->user);
         //$paymentMethod = new _PaymentMethod($this->user);
         View::renderTemplate('Settings/show.html', [
@@ -37,7 +39,7 @@ class Settings extends Authenticated
             'defaultCategoryOfPaymentMethods' => $this->defaultCategoryOfPaymentMethods,
             'getIncomesCategoryAssignedToUser' => $incomeDB->getIncomesCategoryAssignedToUser($this->user),
             'getExpensesCategoryAssignedToUser' => $expenseDB->getExpensesCategoryAssignedToUser($this->user),
-          //  'getPaymentMethodsAssignedToUser' => $paymentMethod->getPaymentMethodsAssignedToUser()
+            'getPaymentMethodsAssignedToUser' => $paymentDB->getPaymentMethodsAssignedToUser($this->user)
         ]);
     }
 
@@ -66,10 +68,10 @@ class Settings extends Authenticated
         $expense = new _Expense($this->user);
         $incomeDB = new IncomesDB();
         $expenseDB = new ExpenseDB();
-        $paymentMethod = new _PaymentMethod($this->user);
+        $paymentDB = new PaymentDB();
         echo json_encode(array("getIncomesCategoryAssignedToUser" => $incomeDB->getIncomesCategoryAssignedToUser($this->user),
         "getExpensesCategoryAssignedToUser" => $expenseDB->getExpensesCategoryAssignedToUser($this->user),
-        "getPaymentMethodsAssignedToUser" => $paymentMethod->getPaymentMethodsAssignedToUser()
+        "getPaymentMethodsAssignedToUser" => $paymentDB->getPaymentMethodsAssignedToUser($this->user)
         ));
 
         
@@ -100,7 +102,8 @@ class Settings extends Authenticated
     public function addNewPaymentMethodAction()
     {
         $paymentMethod = new _PaymentMethod($this->user);
-        if ($paymentMethod->addNewPaymentMethodCategory($_POST['payment'])){
+        $paymentDB = new PaymentDB();
+        if ($paymentDB->addNewPaymentMethodCategory($_POST['payment'], $this->user)){
             Flash::addMessage('Added new payment method.');
             $this->redirect('/Settings/show');
         } else {
@@ -141,13 +144,13 @@ class Settings extends Authenticated
     }
     public function editPaymentMethodAction()
     {
-        $paymentMethod = new _PaymentMethod($this->user);
+        $paymentDB = new PaymentDB();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($paymentMethod->editPaymentMethod($paramIDFromURL, $_POST['editpayment'])) {
+        if ($paymentDB->editPaymentMethodCategory($paramIDFromURL, $_POST['editpayment'], $this->user)) {
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($paymentMethod->errors[0],  Flash::WARNING );
+            Flash::addMessage($paymentDB->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
@@ -179,13 +182,13 @@ class Settings extends Authenticated
     }
     public function deletePaymentMethodAction()
     {
-        $paymentMethod = new _PaymentMethod($this->user);
+        $paymentDB = new PaymentDB();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($paymentMethod->deletePaymentMethodAndUpdatePaymenthMethodAssignedToUser($paramIDFromURL,$this->defaultCategoryOfPaymentMethods)) {
+        if ($paymentDB->deletePaymentMethodAndUpdatePaymenthMethodAssignedToUser($paramIDFromURL,$this->defaultCategoryOfPaymentMethods, $this->user)) {
             Flash::addMessage('A category has been deleted.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($paymentMethod->errors[0],  Flash::WARNING );
+            Flash::addMessage($paymentDB->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
