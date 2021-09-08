@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Core\View;
 use App\Models\User;
 use App\Models\_Expense;
+use App\Models\ExpenseDB;
 use App\Models\_PaymentMethod;
 use \App\Auth; 
 use \App\Flash;
@@ -20,15 +21,17 @@ class Expense extends Authenticated
     public function indexAction()
     {
         $expense = new _Expense($this->user);
+        $expenseDB = new ExpenseDB();
         $paymentMethod = new _PaymentMethod($this->user);
         View::renderTemplate('Expense/index.html', [
-            'userExpenses' => $expense->getExpensesCategoryAssignedToUser(),
-            'userPaymentMethods' => $paymentMethod->getPaymentMethodsAssignedToUser()
+            'userExpenses' => $expenseDB->getExpensesCategoryAssignedToUser($this->user),
+            //'userPaymentMethods' => $paymentMethod->getPaymentMethodsAssignedToUser()
         ]);
     }
     public function addAction()
     {
         $expense = new _Expense($this->user);
+        $expenseDB = new ExpenseDB();
         $paymentMethod = new _PaymentMethod($this->user);
         if ($this->user->saveExpense($_POST)) {
             Flash::addMessage('A new expense has been added succesfuly to your account.');
@@ -38,7 +41,7 @@ class Expense extends Authenticated
             Flash::addMessage('Failed.', FLASH::WARNING);
             View::renderTemplate('Expense/index.html', [
                 'user' => $this->user,
-                'userExpenses' => $expense->getExpensesCategoryAssignedToUser(),
+                'userExpenses' => $expenseDB->getExpensesCategoryAssignedToUser($this->user),
                 'userPaymentMethods' => $paymentMethod->getPaymentMethodsAssignedToUser()
             ]);
         }

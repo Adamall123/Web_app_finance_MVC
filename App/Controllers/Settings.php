@@ -9,6 +9,7 @@ use App\Models\_Settings;
 use App\Models\_Income;
 use App\Models\IncomesDB; 
 use App\Models\_Expense;
+use App\Models\ExpenseDB;
 use App\Models\_PaymentMethod;
 use \App\Flash;
 
@@ -27,6 +28,7 @@ class Settings extends Authenticated
     {
         $income = new _Income($this->user);
         $incomeDB = new IncomesDB();
+        $expenseDB = new ExpenseDB();
         //$expense = new _Expense($this->user);
         //$paymentMethod = new _PaymentMethod($this->user);
         View::renderTemplate('Settings/show.html', [
@@ -34,7 +36,7 @@ class Settings extends Authenticated
             'defaultCategory' => $this->defaultCategory,
             'defaultCategoryOfPaymentMethods' => $this->defaultCategoryOfPaymentMethods,
             'getIncomesCategoryAssignedToUser' => $incomeDB->getIncomesCategoryAssignedToUser($this->user),
-         //   'getExpensesCategoryAssignedToUser' => $expense->getExpensesCategoryAssignedToUser(),
+            'getExpensesCategoryAssignedToUser' => $expenseDB->getExpensesCategoryAssignedToUser($this->user),
           //  'getPaymentMethodsAssignedToUser' => $paymentMethod->getPaymentMethodsAssignedToUser()
         ]);
     }
@@ -62,9 +64,11 @@ class Settings extends Authenticated
     {
         $income = new _Income($this->user);
         $expense = new _Expense($this->user);
+        $incomeDB = new IncomesDB();
+        $expenseDB = new ExpenseDB();
         $paymentMethod = new _PaymentMethod($this->user);
-        echo json_encode(array("getIncomesCategoryAssignedToUser" => $income->getIncomesCategoryAssignedToUser(),
-        "getExpensesCategoryAssignedToUser" => $expense->getExpensesCategoryAssignedToUser(),
+        echo json_encode(array("getIncomesCategoryAssignedToUser" => $incomeDB->getIncomesCategoryAssignedToUser($this->user),
+        "getExpensesCategoryAssignedToUser" => $expenseDB->getExpensesCategoryAssignedToUser($this->user),
         "getPaymentMethodsAssignedToUser" => $paymentMethod->getPaymentMethodsAssignedToUser()
         ));
 
@@ -84,11 +88,12 @@ class Settings extends Authenticated
     public function addNewExpenseAction()
     {
         $expense = new _Expense($this->user);
-        if ($expense->addNewExpenseCategory($_POST['expense'])){
+        $expenseDB = new ExpenseDB();
+        if ($expenseDB->addNewExpenseCategory($_POST['expense'], $this->user)){
             Flash::addMessage('Added new expense.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($expense->errors[0],  Flash::WARNING );
+            Flash::addMessage($expenseDB->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
@@ -119,13 +124,14 @@ class Settings extends Authenticated
     public function editExpenseAction()
     {
         $expense = new _Expense($this->user);
+        $expenseDB = new ExpenseDB();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
         $updatedLimitIncome = false;
         if(isset($_POST['remember_me_expense'])) {
-            $checkedUpdateLimit = $_POST['remember_me_expense'];
-            $updatedLimitIncome = $expense->updateLimitExpenseCategory($paramIDFromURL, $_POST['editexpenselimit'] ?? null);
+            //$checkedUpdateLimit = $_POST['remember_me_expense'];
+            $updatedLimitIncome = $expenseDB->updateLimitExpenseCategory($paramIDFromURL, $_POST['editexpenselimit'] ?? null, $this->user);
         }
-        if ($expense->editExpense($paramIDFromURL, $_POST['editexpence']) || $updatedLimitIncome) {
+        if ($expenseDB->editExpenseCategory($paramIDFromURL, $_POST['editexpence'], $this->user) || $updatedLimitIncome) {
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
@@ -161,12 +167,13 @@ class Settings extends Authenticated
     public function deleteExpenseAction()
     {
         $expense = new _Expense($this->user);
+        $expenseDB = new ExpenseDB();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($expense->deleteExpenseAndUpdateExpenseCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory)) {
+        if ($expenseDB->deleteExpenseAndUpdateExpenseCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory, $this->user)) {
                 Flash::addMessage('A category has been deleted.');
                 $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($expense->errors[0],  Flash::WARNING );
+            Flash::addMessage($expenseDB->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
@@ -187,7 +194,8 @@ class Settings extends Authenticated
         $income = new _Income($this->user);
         $expense = new _Expense($this->user);
         $incomeDB = new IncomesDB();
-        if ($incomeDB->deleteAllIncomes($this->user) && $expense->deleteAllExpenses()) {
+        $expenseDB = new ExpenseDB();
+        if ($incomeDB->deleteAllIncomes($this->user) && $expenseDB->deleteAllExpenses($this->user)) {
             Flash::addMessage('All incomes and expenses has been removed', Flash::WARNING);
             $this->redirect('/Settings/show');
         } else {
@@ -197,10 +205,10 @@ class Settings extends Authenticated
     }
     public function deleteUserAction()
     {
-        $income = new _Income($this->user);
-        $expense = new _Expense($this->user);
-        if ($income->deleteAllIncomes() && $expense->deleteAllExpenses()){
-            if($income->deleteAllIncomesCategoriesAssignedToUser() && $expense->deleteAllExpensesCategoriesAssignedToUser()) {
+        $incomeDB = new IncomesDB();
+        $expenseDB = new ExpenseDB();
+        if ($incomeDB->deleteAllIncomes($this->user) && $expenseDB->deleteAllExpenses($this->user)){
+            if($incomeDB->deleteAllIncomesCategoriesAssignedToUser() && $expenseDB->deleteAllExpensesCategoriesAssignedToUser()) {
                 //delete user 
                 //delete payments
                 $this->user->deleteUserAccount();
