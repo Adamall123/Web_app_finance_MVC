@@ -6,6 +6,7 @@ use Core\View;
 use App\Models\User;
 use App\Models\_Income;
 use App\Models\IncomesDB;
+use App\Models\Walidator;
 use \App\Auth; 
 use \App\Flash;
 
@@ -20,7 +21,6 @@ class Income extends Authenticated
     }
     public function indexAction()
     {
-        $income = new _Income($this->user);
        $incomeDB = new IncomesDB();
         View::renderTemplate('Income/index.html', [
             'userIncomes' => $incomeDB->getIncomesCategoryAssignedToUser($this->user)
@@ -31,15 +31,18 @@ class Income extends Authenticated
         
         $incomeDB = new IncomesDB();
         $income = new _Income($_POST);
+        $walidator = new Walidator();
         
-        if ($incomeDB->saveIncome($income, $this->user)) {
+        if ($walidator->validateAmountAndComment($_POST)) {
+            $incomeDB->saveIncome($income, $this->user);
             Flash::addMessage('A new income has been added succesfuly to your account.');
             $this->redirect('/Income/index');
         } else {
             Flash::addMessage('Failed.', Flash::WARNING);
             View::renderTemplate('Income/index.html', [
                 'user' => $this->user,
-                'userIncomes' => $incomeDB->getIncomesCategoryAssignedToUser($this->user)
+                'userIncomes' => $incomeDB->getIncomesCategoryAssignedToUser($this->user),
+                'walidator' => $walidator
             ]);
         }
     }

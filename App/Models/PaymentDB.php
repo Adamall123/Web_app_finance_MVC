@@ -19,20 +19,17 @@ class PaymentDB implements PaymentRepository
     public function addNewPaymentMethodCategory(String $new_payment_method, $user)
     {
          if($this->ifPaymentMethodCategoryExists($new_payment_method, $user)) {
-             if ($this->validateLengthOfCategory($new_payment_method)){
                  $sql = 'INSERT INTO payment_methods_assigned_to_users VALUES(NULL,:id,:new_payment_method)';
                  $db = Model::getDB();
                  $stmt = $db->prepare($sql);
                  $stmt->bindValue(':new_payment_method',$new_payment_method,PDO::PARAM_STR);
                  $stmt->bindValue(':id',$user->id,PDO::PARAM_INT);
                  return $stmt->execute();
-             }
          }
     }
       public function editPaymentMethodCategory(int $id_of_payment_method,String $new_name_of_payment_method, $user) {
         
          if($this->ifPaymentMethodCategoryExists($new_name_of_payment_method, $user)) {
-             if ($this->validateLengthOfCategory($new_name_of_payment_method)){
                  $sql = 'UPDATE payment_methods_assigned_to_users 
                      SET name=:edit_payment_method
                      WHERE user_id=:id 
@@ -44,7 +41,6 @@ class PaymentDB implements PaymentRepository
                  $stmt->bindValue(':id',$user->id,PDO::PARAM_INT);
                  $stmt->bindValue(':payment_method_id',$id_of_payment_method,PDO::PARAM_INT);
                  return $stmt->execute();
-             }
          }
      }
        public function deletePaymentMethodAndUpdatePaymenthMethodAssignedToUser(int $id_of_payment_method,String $name_of_default_category, $user) {
@@ -101,14 +97,6 @@ class PaymentDB implements PaymentRepository
          if ($amount_of_category_payment_method) {
          $this->errors[] = 'A category name exists.';
          return 0;
-         }
-         return 1;
-     }
-     protected function validateLengthOfCategory($text)
-     {
-         if (strlen($text) > 20 || strlen($text) < 3) {
-             $this->errors[] = "A category name must have characters between 3 and 20.";
-             return 0;
          }
          return 1;
      }

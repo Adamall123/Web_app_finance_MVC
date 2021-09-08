@@ -20,20 +20,17 @@ class IncomesDB implements IncomeRepository
     {
 
         if ($this->ifIncomeCategoryExists($income_category_name, $user)) {
-            if ($this->validateLengthOfCategory($income_category_name)) {
                 $sql = 'INSERT INTO incomes_category_assigned_to_users VALUES(NULL,:id,:new_income)';
                 $db = Model::getDB();
                 $stmt = $db->prepare($sql);
                 $stmt->bindValue(':new_income', $income_category_name, PDO::PARAM_STR);
                 $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
                 return $stmt->execute();
-            }
         }
     }
     public function editIncomeCategory(int $id_of_income, String $name_of_income_category, $user)
     {
         if ($this->ifIncomeCategoryExists($name_of_income_category, $user)) {
-            if ($this->validateLengthOfCategory($name_of_income_category)) {
                 $sql = 'UPDATE incomes_category_assigned_to_users 
                     SET name=:edit_income 
                     WHERE user_id=:id 
@@ -45,7 +42,6 @@ class IncomesDB implements IncomeRepository
                 $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
                 $stmt->bindValue(':income_id', $id_of_income, PDO::PARAM_INT);
                 return $stmt->execute();
-            }
         }
     }
     public function deleteIncomeCategoryAndUpdateIncomeCategoryAssignedToUser(int $id_of_income, String $name_of_default_income_category, $user)
@@ -112,7 +108,7 @@ class IncomesDB implements IncomeRepository
 
     public function saveIncome(_Income $income, $user){
        // $this->validateAmountAndComment($params);
-        if(empty($this->errors)){
+        if(empty($user->errors)){
             $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
             VALUES (:id, :income_category_assigned_to_user_id, :amount, :date_of_income, :income_comment)';
             $db = Model::getDB();
@@ -157,14 +153,6 @@ class IncomesDB implements IncomeRepository
 
         if ($amount_of_category_income) {
             $this->errors[] = 'A category name exists.';
-            return 0;
-        }
-        return 1;
-    }
-    protected function validateLengthOfCategory($text)
-    {
-        if (strlen($text) > 20 || strlen($text) < 3) {
-            $this->errors[] = "A category name must have characters between 3 and 20.";
             return 0;
         }
         return 1;

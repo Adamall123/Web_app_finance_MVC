@@ -2,11 +2,6 @@
 
 namespace App\Models;
 
-use PDO;
-use \App\Token;
-use  \App\Mail;
-use Core\View;
-use \Core\Model;
 
 class Walidator
 {
@@ -33,5 +28,24 @@ class Walidator
                 $user->errors[] = 'Password need at least one number';
             }
         }
+    }
+    public function validateLengthOfCategory($text)
+    {
+        if (strlen($text) > 20 || strlen($text) < 3) {
+            $this->errors[] = "A category name must have characters between 3 and 20.";
+            return 0;
+        }
+        return 1;
+    }
+    public function validateAmountAndComment($params)
+    {   
+        if (! preg_match('/^[0-9]+(?:\.[0-9]{0,2})?$/', $_POST['amount']))
+            {
+                $this->errors[] = 'Number is required';
+            } 
+            if (!preg_match('/^[.]{0,30}$/', $_POST['comment']))
+            {
+                $this->errors['comment'] = 'Comment length can not be longer than 30 characters.'; 
+            }     
     }
 }

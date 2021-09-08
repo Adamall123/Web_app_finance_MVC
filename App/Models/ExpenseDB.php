@@ -19,8 +19,6 @@ class ExpenseDB implements ExpenseRepository
     public function addNewExpenseCategory(String $expense_category_name, $user)
     {
         if ($this->ifExpenseCategoryExists($expense_category_name, $user)) {
-            if ($this->validateLengthOfCategory($expense_category_name)) {
-
                 $sql = 'INSERT INTO expenses_category_assigned_to_users VALUES(NULL,:id,:new_expense,:limit)';
                 $db = Model::getDB();
                 $stmt = $db->prepare($sql);
@@ -28,13 +26,12 @@ class ExpenseDB implements ExpenseRepository
                 $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
                 $stmt->bindValue(':limit', null, PDO::PARAM_INT);
                 return $stmt->execute();
-            }
         }
     }
     public function editExpenseCategory(int $id_of_expense,String $name_of_expense_category, $user) {
-      
+  
     if($this->ifExpenseCategoryExists($name_of_expense_category, $user)) {
-        if ($this->validateLengthOfCategory($name_of_expense_category, $user)){
+        
             $sql = 'UPDATE expenses_category_assigned_to_users 
             SET name=:edit_expense 
             WHERE user_id=:id 
@@ -46,7 +43,7 @@ class ExpenseDB implements ExpenseRepository
             $stmt->bindValue(':id',$user->id,PDO::PARAM_INT);
             $stmt->bindValue(':expense_id',$id_of_expense,PDO::PARAM_INT);
             return $stmt->execute();
-        }
+        
     }
 }
 
@@ -120,14 +117,7 @@ public function deleteExpenseAndUpdateExpenseCategoryAssignedToUser(int $id_of_e
             return $stmt->execute();
         }
     }
-    protected function validateLengthOfCategory($text)
-    {
-        if (strlen($text) > 20 || strlen($text) < 3) {
-            $this->errors[] = "A category name must have characters between 3 and 20.";
-            return 0;
-        }
-        return 1;
-    }
+   
         protected function getDefaultExpenseCategoryIdRelatedToUser($nameOfDefaultCategory, $user) {
         $sql = 'SELECT id FROM `expenses_category_assigned_to_users`
                 WHERE name = :nameOfDefaultCategory

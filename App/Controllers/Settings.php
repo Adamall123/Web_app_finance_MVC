@@ -12,6 +12,7 @@ use App\Models\_Expense;
 use App\Models\ExpenseDB;
 use App\Models\_PaymentMethod;
 use App\Models\PaymentDB;
+use App\Models\Walidator;
 use \App\Flash;
 
 
@@ -79,48 +80,55 @@ class Settings extends Authenticated
     public function addNewIncomeAction()
     {
         $incomeDB = new IncomesDB();
-        if ($incomeDB->addNewIncomeCategory($_POST['income'], $this->user)){
+        $walidator = new Walidator();
+        if ($walidator->validateLengthOfCategory($_POST['income'], $this->user)){
+            $incomeDB->addNewIncomeCategory($_POST['income'], $this->user);
             Flash::addMessage('Added new income.');
-            $this->redirect('/Settings/show');
+            $this->redirect('/Settings/show');$walidator->validateLengthOfCategory($_POST['income'], $this->user);
         } else {
-            Flash::addMessage($incomeDB->errors[0],  Flash::WARNING );
+            Flash::addMessage($walidator->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function addNewExpenseAction()
     {
-        $expense = new _Expense($this->user);
         $expenseDB = new ExpenseDB();
-        if ($expenseDB->addNewExpenseCategory($_POST['expense'], $this->user)){
+        $walidator = new Walidator();
+        
+        if ($walidator->validateLengthOfCategory($_POST['expense'], $this->user)){
+            $expenseDB->addNewExpenseCategory($_POST['expense'], $this->user);
             Flash::addMessage('Added new expense.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($expenseDB->errors[0],  Flash::WARNING );
+            Flash::addMessage($walidator->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function addNewPaymentMethodAction()
     {
-        $paymentMethod = new _PaymentMethod($this->user);
         $paymentDB = new PaymentDB();
-        if ($paymentDB->addNewPaymentMethodCategory($_POST['payment'], $this->user)){
+        $walidator = new Walidator();
+        
+        if ($walidator->validateLengthOfCategory($_POST['payment'], $this->user)){
+            $paymentDB->addNewPaymentMethodCategory($_POST['payment'], $this->user);
             Flash::addMessage('Added new payment method.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($paymentMethod->errors[0],  Flash::WARNING );
+            Flash::addMessage($walidator->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function editIncomeAction()
     {
-        //$income = new _Income($this->user);
         $incomeDB = new IncomesDB();
+        $walidator = new Walidator();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($incomeDB->editIncomeCategory($paramIDFromURL, $_POST['editincome'], $this->user)) {
+        if ($walidator->validateLengthOfCategory($_POST['editincome'], $this->user)) {
+            $incomeDB->editIncomeCategory($paramIDFromURL, $_POST['editincome'], $this->user);
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($incomeDB->errors[0],  Flash::WARNING );
+            Flash::addMessage($walidator->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
@@ -128,29 +136,33 @@ class Settings extends Authenticated
     {
         $expense = new _Expense($this->user);
         $expenseDB = new ExpenseDB();
+        $walidator = new Walidator();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
         $updatedLimitIncome = false;
         if(isset($_POST['remember_me_expense'])) {
             //$checkedUpdateLimit = $_POST['remember_me_expense'];
             $updatedLimitIncome = $expenseDB->updateLimitExpenseCategory($paramIDFromURL, $_POST['editexpenselimit'] ?? null, $this->user);
         }
-        if ($expenseDB->editExpenseCategory($paramIDFromURL, $_POST['editexpence'], $this->user) || $updatedLimitIncome) {
+        if ($walidator->validateLengthOfCategory($_POST['editexpence'], $this->user) || $updatedLimitIncome) {
+            $expenseDB->editExpenseCategory($paramIDFromURL, $_POST['editexpence'], $this->user);
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($expense->errors[0],  Flash::WARNING );
+            Flash::addMessage($walidator->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
     public function editPaymentMethodAction()
     {
         $paymentDB = new PaymentDB();
+        $walidator = new Walidator();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($paymentDB->editPaymentMethodCategory($paramIDFromURL, $_POST['editpayment'], $this->user)) {
+        if ($walidator->validateLengthOfCategory($_POST['editpayment'], $this->user)) {
+            $paymentDB->editPaymentMethodCategory($paramIDFromURL, $_POST['editpayment'], $this->user);
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($paymentDB->errors[0],  Flash::WARNING );
+            Flash::addMessage($walidator->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }

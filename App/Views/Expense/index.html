@@ -152,8 +152,8 @@
                                
                                <div class="row">
                                 <div class="col-lg-12">
-                                    {% if user.errors is not empty %}
-                                    {% for error in user.errors %}
+                                    {% if walidator.errors is not empty %}
+                                    {% for error in walidator.errors %}
                                     <li class="errorInput"> {{ error }}</li>
                                     {% endfor %}
                                     {% endif %}
