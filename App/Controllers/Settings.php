@@ -7,6 +7,7 @@ use \App\Auth;
 use App\Models\User;
 use App\Models\_Settings;
 use App\Models\_Income;
+use App\Models\IncomesDB; 
 use App\Models\_Expense;
 use App\Models\_PaymentMethod;
 use \App\Flash;
@@ -25,15 +26,16 @@ class Settings extends Authenticated
     public function showAction()
     {
         $income = new _Income($this->user);
-        $expense = new _Expense($this->user);
-        $paymentMethod = new _PaymentMethod($this->user);
+        $incomeDB = new IncomesDB();
+        //$expense = new _Expense($this->user);
+        //$paymentMethod = new _PaymentMethod($this->user);
         View::renderTemplate('Settings/show.html', [
             'user' => $this->user,
             'defaultCategory' => $this->defaultCategory,
             'defaultCategoryOfPaymentMethods' => $this->defaultCategoryOfPaymentMethods,
-            'getIncomesCategoryAssignedToUser' => $income->getIncomesCategoryAssignedToUser(),
-            'getExpensesCategoryAssignedToUser' => $expense->getExpensesCategoryAssignedToUser(),
-            'getPaymentMethodsAssignedToUser' => $paymentMethod->getPaymentMethodsAssignedToUser()
+            'getIncomesCategoryAssignedToUser' => $incomeDB->getIncomesCategoryAssignedToUser($this->user),
+         //   'getExpensesCategoryAssignedToUser' => $expense->getExpensesCategoryAssignedToUser(),
+          //  'getPaymentMethodsAssignedToUser' => $paymentMethod->getPaymentMethodsAssignedToUser()
         ]);
     }
 
@@ -70,12 +72,12 @@ class Settings extends Authenticated
     }
     public function addNewIncomeAction()
     {
-        $income = new _Income($this->user);
-        if ($income->addNewIncomeCategory($_POST['income'])){
+        $incomeDB = new IncomesDB();
+        if ($incomeDB->addNewIncomeCategory($_POST['income'], $this->user)){
             Flash::addMessage('Added new income.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($income->errors[0],  Flash::WARNING );
+            Flash::addMessage($incomeDB->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
@@ -103,13 +105,14 @@ class Settings extends Authenticated
     }
     public function editIncomeAction()
     {
-        $income = new _Income($this->user);
+        //$income = new _Income($this->user);
+        $incomeDB = new IncomesDB();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($income->editIncome($paramIDFromURL, $_POST['editincome'])) {
+        if ($incomeDB->editIncomeCategory($paramIDFromURL, $_POST['editincome'], $this->user)) {
             Flash::addMessage('A category has been updated.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($income->errors[0],  Flash::WARNING );
+            Flash::addMessage($incomeDB->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
@@ -144,13 +147,14 @@ class Settings extends Authenticated
     }
     public function deleteIncomeAction()
     {
-        $income = new _Income($this->user);
+        //$income = new _Income($this->user);
+        $incomeDB = new IncomesDB();
         $paramIDFromURL =  htmlspecialchars($_GET["id"]);
-        if ($income->deleteIncomeAndUpdateIncomeCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory)) {
+        if ($incomeDB->deleteIncomeCategoryAndUpdateIncomeCategoryAssignedToUser($paramIDFromURL,$this->defaultCategory, $this->user)) {
             Flash::addMessage('A category has been deleted.');
             $this->redirect('/Settings/show');
         } else {
-            Flash::addMessage($income->errors[0],  Flash::WARNING );
+            Flash::addMessage($incomeDB->errors[0],  Flash::WARNING );
             $this->redirect('/Settings/show');
         }
     }
@@ -182,7 +186,8 @@ class Settings extends Authenticated
     {
         $income = new _Income($this->user);
         $expense = new _Expense($this->user);
-        if ($income->deleteAllIncomes() && $expense->deleteAllExpenses()) {
+        $incomeDB = new IncomesDB();
+        if ($incomeDB->deleteAllIncomes($this->user) && $expense->deleteAllExpenses()) {
             Flash::addMessage('All incomes and expenses has been removed', Flash::WARNING);
             $this->redirect('/Settings/show');
         } else {
