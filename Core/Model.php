@@ -18,7 +18,7 @@ abstract class Model
      *
      * @return mixed
      */
-    protected static function getDB()
+    public static function getDB()
     {
         static $db = null;
 

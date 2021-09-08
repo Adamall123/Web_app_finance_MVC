@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use \App\Models\User;
+use \App\Models\UserDB;
 use \Core\View;
 
 /**
@@ -25,10 +26,9 @@ class Signup extends \Core\Controller
     public function createAction()
     {
         $user = new User($_POST);
-        if ($user->save()) {
-
-            $user->sendActivationEmail();
-
+        $userDB = new UserDB();
+        if ($userDB->save($user)) {
+            $userDB->sendActivationEmail($user);
             $this->redirect('/signup/success');
         }else {
             View::renderTemplate('Signup/new.html', [
@@ -42,7 +42,7 @@ class Signup extends \Core\Controller
     }
     public function activateAction()
     {
-         User::activate($this->route_params['token']);
+        UserDB::activate($this->route_params['token']);
          $this->redirect('/signup/activated');
     }
     public function activatedAction()

@@ -5,6 +5,7 @@ namespace App\Models;
 use PDO;
 use \App\Token;
 use  \App\Mail;
+use Core\Model;
 use Core\View;
 
 /**
@@ -18,7 +19,7 @@ class _PaymentMethod extends User
     public function getPaymentMethodsAssignedToUser()
     {
         $sql = 'SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :id';
-        $db = static::getDB();
+        $db = Model::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindValue('id', $this->id , PDO::PARAM_INT);
         $stmt->execute();
@@ -29,7 +30,7 @@ class _PaymentMethod extends User
          if($this->ifPaymentMethodCategoryExists($new_payment_method)) {
              if ($this->validateLengthOfCategoryInSettings($new_payment_method)){
                  $sql = 'INSERT INTO payment_methods_assigned_to_users VALUES(NULL,:id,:new_payment_method)';
-                 $db = static::getDB();
+                 $db = Model::getDB();
                  $stmt = $db->prepare($sql);
                  $stmt->bindValue(':new_payment_method',$new_payment_method,PDO::PARAM_STR);
                  $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
@@ -45,7 +46,7 @@ class _PaymentMethod extends User
                      SET name=:edit_payment_method
                      WHERE user_id=:id 
                      AND id= :payment_method_id ';
-                 $db = static::getDB();
+                 $db = Model::getDB();
                  $stmt = $db->prepare($sql);
  
                  $stmt->bindValue(':edit_payment_method',$newNameOfPaymentMethod,PDO::PARAM_STR);
@@ -64,7 +65,7 @@ class _PaymentMethod extends User
                  WHERE user_id = :id
                  AND payment_method_assigned_to_user_id = :idOfPaymentMethod';
  
-         $db = static::getDB();
+         $db = Model::getDB();
          $stmt = $db->prepare($sql);
  
          $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
@@ -74,7 +75,7 @@ class _PaymentMethod extends User
              $sql = 'DELETE FROM payment_methods_assigned_to_users 
                      WHERE user_id=:id 
                      AND id= :payment_method_id ';
-             $db = static::getDB();
+             $db = Model::getDB();
              $stmt = $db->prepare($sql);
  
              $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);
@@ -86,7 +87,7 @@ class _PaymentMethod extends User
          $sql = 'SELECT id FROM `payment_methods_assigned_to_users`
                  WHERE name = :nameOfDefaultCategory
                  AND user_id = :id';
-         $db = static::getDB();
+         $db = Model::getDB();
          $stmt = $db->prepare($sql);
  
          $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
@@ -98,7 +99,7 @@ class _PaymentMethod extends User
          $sql =  'SELECT name from payment_methods_assigned_to_users
          WHERE name = :new_payment_method
          AND user_id = :id';
-         $db = static::getDB();
+         $db = Model::getDB();
          $stmt = $db->prepare($sql);
          $stmt->bindValue(':new_payment_method',$new_payment_method,PDO::PARAM_STR);
          $stmt->bindValue(':id',$this->id,PDO::PARAM_INT);

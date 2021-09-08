@@ -2,6 +2,7 @@
 
 namespace App;
 use \App\Models\User;
+use \App\Models\UserDB;
 use \App\Models\RememberedLogin;
 class Auth 
 {
@@ -40,7 +41,7 @@ class Auth
     {
         
         if (isset($_SESSION['user_id'])) {
-            return User::findByID($_SESSION['user_id']);
+            return UserDB::findByID($_SESSION['user_id']);
         } else {
                 return static::loginFromRememberCookie();
             }

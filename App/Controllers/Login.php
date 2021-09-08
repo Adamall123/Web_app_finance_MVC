@@ -3,6 +3,7 @@
 namespace App\Controllers; 
 use Core\View;
 use App\Models\User;
+use App\Models\UserDB;
 use \App\Auth; 
 use \App\Flash;
 
@@ -13,10 +14,10 @@ class Login extends \Core\Controller{
     }
     public function createAction()
     {       
-            $user = User::authenticate($_POST['email'], $_POST['password']);
+            $userDB = UserDB::authenticate($_POST['email'], $_POST['password']);
             $rememberMe = isset($_POST['remember_me']);
-            if($user){
-                Auth::login($user, $rememberMe);
+            if($userDB){
+                Auth::login($userDB, $rememberMe);
                 Flash::addMessage('Login successful.');
                 $this->redirect(Auth::getReturnToPage());
             }else{

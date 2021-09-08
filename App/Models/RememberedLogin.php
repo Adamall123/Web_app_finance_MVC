@@ -22,7 +22,7 @@ class RememberedLogin extends \Core\Model
     }
     public function getUser()
     {
-        return User::findByID($this->user_id);
+        return UserDB::findByID($this->user_id);
     }
     public function hasExpired()
     {

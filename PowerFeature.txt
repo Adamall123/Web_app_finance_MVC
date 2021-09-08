@@ -1,0 +1,12 @@
+https://developer.aliorbank.pl/openapipl/sb/faq
+
+Access token is valid for 90 days. 
+
+https://developer.aliorbank.pl/
+
+REST API PHP Traversy Media  
+https://www.youtube.com/watch?v=OEWXbpUMODk
+
+https://www.youtube.com/watch?v=7YcW25PHnAA
+https://www.youtube.com/watch?v=dlGtSoigdB0
+

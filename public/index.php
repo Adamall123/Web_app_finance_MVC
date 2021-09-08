@@ -33,36 +33,7 @@ $router->add('login', ['controller' => 'Login', 'action' => 'new']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']); 
 $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action' => 'reset']);
 $router->add('signup/activate/{token:[\da-f]+}',['controller' => 'Signup', 'action' => 'activate']);
-//$router->add('{controller}/{action}/#addnew');
 $router->dispatch($_SERVER['QUERY_STRING']);
 
-// class User 
-// {
-//     protected ?int $id = null;
-//     public function __construct(string $id)
-//     {
-//         $this->id = $id; 
-//     }
-//     public function getName(): ?int
-//     {
-//         return $this->id;
-//     }
-// }
 
-// class Settings extends User 
-// {
-//     public function useChildMethod(){
-//         echo "I am child method called";
-//     }
-// }
 
-// $user = new User(21);
-// var_dump($user->getName());
-// echo "<br>";
-// var_dump($user);
-
-// $profileUser = new Settings(21);
-// echo "<br>";
-// var_dump($profileUser->getName());
-// // $profileUser->useChildMethod();
-// $user->useChildMethod();
